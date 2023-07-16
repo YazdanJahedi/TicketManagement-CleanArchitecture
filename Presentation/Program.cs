@@ -1,3 +1,7 @@
+using FluentValidation.AspNetCore;
+using Infrastructure.Context;
+using Presentation.BuilderConfigurations;
+
 namespace Presentation
 {
     public class Program
@@ -5,8 +9,20 @@ namespace Presentation
         [Obsolete]
         public static void Main(string[] args)
         {
+            var builder = WebApplication.CreateBuilder(args);
+            BuilderConfiguration.BuilderConfig = builder.Configuration;
 
-            var app = Builder.BuildApp(args);
+            builder.Services.AddControllers().AddFluentValidation(FluentValidationConfig.Configuration);
+
+            builder.Services.AddDbContext<ApplicationDbContext>(DbContextOptionConfig.Configuration);
+
+            builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddSwaggerGen(SwaggerGenConfig.Configuration);
+
+            builder.Services.AddAuthentication().AddJwtBearer(JwtBearerConfig.Configuration);
+
+            var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
