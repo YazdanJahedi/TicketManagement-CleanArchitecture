@@ -133,7 +133,7 @@ namespace Presentation.Controllers
                 return BadRequest("You do not have access to entered ticket");
             }
 
-            // upate number of responses and isChecked fields
+            // update number of responses and isChecked fields
             ticket.NumberOfResponses++;
             ticket.IsChecked = false;
 

@@ -6,7 +6,7 @@ namespace Application.Features.LoginUser
     {
         public LoginRequestValidator() 
         {
-            RuleFor(x => x.Email).NotEmpty().NotNull().WithMessage("Email can not be empty or null");
+            RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress().WithMessage("Email can not be empty or null");
             RuleFor(x => x.Password).NotEmpty().NotNull().WithMessage("Password can not be empty or null");
         }
     }

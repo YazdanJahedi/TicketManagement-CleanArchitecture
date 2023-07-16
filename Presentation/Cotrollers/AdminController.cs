@@ -79,7 +79,7 @@ namespace Presentation.Controllers
                 return BadRequest("ticketId not found");
             }
 
-            // upate number of responses and isChecked fields
+            // update number of responses and isChecked fields
             ticket.NumberOfResponses++;
             ticket.IsChecked = true;
             if (ticket.FirstResponseDate == null)

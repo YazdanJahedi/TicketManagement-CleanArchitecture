@@ -44,7 +44,7 @@ namespace Presentation.Controllers
                 return BadRequest(validatorResult.Errors);
             }
 
-            if (!UserQueries.IsUserFound(_context, req.Email))
+            if (UserQueries.IsUserFound(_context, req.Email))
             {
                 return BadRequest("this Email is used before");
             }
@@ -70,7 +70,6 @@ namespace Presentation.Controllers
 
 
             _context.Users.Add(user);
-            // _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return Ok(user);
         }
@@ -118,7 +117,7 @@ namespace Presentation.Controllers
         {
             var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             var role = User.Claims.Where(x => x.Type == ClaimTypes.Role).FirstOrDefault()?.Value;
-            return email + "   role: " + role;
+            return $"email: {email}   role: {role}";
         }
 
     }
