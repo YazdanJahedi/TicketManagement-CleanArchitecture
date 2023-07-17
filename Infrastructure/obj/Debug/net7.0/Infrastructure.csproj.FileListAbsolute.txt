@@ -13,3 +13,5 @@ C:\Users\Yazdan\Desktop\Ticket\Infrastructure\obj\Debug\net7.0\Infrastructure.dl
 C:\Users\Yazdan\Desktop\Ticket\Infrastructure\obj\Debug\net7.0\refint\Infrastructure.dll
 C:\Users\Yazdan\Desktop\Ticket\Infrastructure\obj\Debug\net7.0\Infrastructure.pdb
 C:\Users\Yazdan\Desktop\Ticket\Infrastructure\obj\Debug\net7.0\ref\Infrastructure.dll
+C:\Users\Yazdan\Desktop\Ticket\Infrastructure\bin\Debug\net7.0\Application.dll
+C:\Users\Yazdan\Desktop\Ticket\Infrastructure\bin\Debug\net7.0\Application.pdb

@@ -8,5 +8,11 @@ namespace Application.Repository
     {
         Task<ActionResult<Ticket>> PostResponse(long ticketId, CreateResponseRequest req);
         ActionResult<Ticket> GetResponses(long ticketId);
+        
+
+        // new
+        ActionResult<Ticket> GetAllResponses();
+
+
     }
 }

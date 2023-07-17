@@ -1,5 +1,7 @@
+using Application.Repository;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
+using Infrastructure.Repository;
 using Presentation.BuilderConfigurations;
 
 namespace Presentation
@@ -15,7 +17,10 @@ namespace Presentation
             builder.Services.AddControllers().AddFluentValidation(FluentValidationConfig.Configuration);
 
             builder.Services.AddDbContext<ApplicationDbContext>(DbContextOptionConfig.Configuration);
-
+            
+            // todo:...
+            builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+            
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen(SwaggerGenConfig.Configuration);

@@ -2,14 +2,13 @@
 using Application.Features.LoginUser;
 using Domain.Entities;
 using FluentValidation;
-using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using Application.Features;
-using Infrastructure.Queries;
+using Application.Repository;
 
 namespace Presentation.Controllers
 {
@@ -18,25 +17,25 @@ namespace Presentation.Controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly IUsersRepository _usersRepository;
         private readonly IConfiguration _conf;
 
-        public AuthController(IConfiguration conf, ApplicationDbContext context)
+        public AuthController(IConfiguration conf, IUsersRepository usersRepository)
         {
             _conf = conf;
-            _context = context;
+            _usersRepository = usersRepository;
         }
 
         [HttpPost("signup")]
-        public async Task<ActionResult<User>> Signup(CreateUserRequest req)
+        public ActionResult<User> Signup(CreateUserRequest req)
         {
 
-            if (_context.Users == null)
+            if (_usersRepository.IsContextNull())
             {
                 return NotFound();
             }
 
-
+            // validation check
             CreateUserValidator validator = new();
             var validatorResult = validator.Validate(req);
             if (!validatorResult.IsValid)
@@ -44,20 +43,21 @@ namespace Presentation.Controllers
                 return BadRequest(validatorResult.Errors);
             }
 
-            if (UserQueries.IsUserFound(_context, req.Email))
+            // check if email is used
+            if (_usersRepository.IsUserFoundByEmail(req.Email))
             {
                 return BadRequest("this Email is used before");
             }
 
-            string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
-
-            // first user is admin
+            // first signed up user is Admin
             string role = "User";
-            if (_context.Users.IsNullOrEmpty())
+            if (_usersRepository.IsContextEmptyOrNull())
             {
                 role = "Admin";
             }
 
+            // creating new user
+            string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
             var user = new User
             {
                 Name = req.Name,
@@ -68,21 +68,20 @@ namespace Presentation.Controllers
                 CreationTime = DateTime.Now,
             };
 
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            _usersRepository.AddUserAsync(user);
             return Ok(user);
         }
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginRequest req)
+        public ActionResult<User> Login(LoginRequest req)
         {
-            if (_context.Users == null)
+            if (_usersRepository.IsContextNull())
             {
                 return NotFound();
             }
 
+            // check validation
             LoginRequestValidator validator = new();
             var validatorResult = validator.Validate(req);
             if (!validatorResult.IsValid)
@@ -90,22 +89,25 @@ namespace Presentation.Controllers
                 return BadRequest(validatorResult.Errors);
             }
 
-            if (!UserQueries.IsUserFound(_context,req.Email))
+            // check for email in database
+            if (!_usersRepository.IsUserFoundByEmail(req.Email))
             {
                 return BadRequest("Email not found");
             }
 
-            var user = _context.Users.FirstOrDefault(e => e.Email == req.Email);
+            // find user in database
+            var user = _usersRepository.FindUserByEmail(req.Email);
 
             if (user == null)
             {
                 return NotFound();
             }
 
+            // check user's password 
             if (!BCrypt.Net.BCrypt.Verify(req.Password, user.PasswordHash))
                 return BadRequest("password not correct");
 
-
+            // create token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf.GetSection("AppSettings:Token").Value!));
             var token = CreateUserToken.CreateToken(user,  key);
 

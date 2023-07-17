@@ -14,10 +14,8 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase,
-                                  IFAQRepository,
-                                  IUTicketRepository,
-                                  IResponseRepository
+    public class UserController : ControllerBase
+                                  
     {
 
         private readonly ApplicationDbContext _context;

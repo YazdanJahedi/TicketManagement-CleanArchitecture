@@ -72,6 +72,7 @@ namespace Test
 
             if (!validatorResult.IsValid)
                 Assert.Fail();
+           
         }
     }
 }

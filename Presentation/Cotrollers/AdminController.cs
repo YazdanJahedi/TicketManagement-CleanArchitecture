@@ -12,9 +12,8 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class AdminController : ControllerBase,
-                                   IResponseRepository,
-                                   IATicketRepository
+    public class AdminController : ControllerBase
+                                   
                                   
     {
 
