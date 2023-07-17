@@ -18,14 +18,7 @@ namespace Presentation
 
             builder.Services.AddDbContext<ApplicationDbContext>(DbContextOptionConfig.Configuration);
             
-            // todo:...
-            builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-            builder.Services.AddScoped<ITicketsRepository, TicketsRepository>();
-            builder.Services.AddScoped<IResponsesRepository, ResponsesRepository>();
-            builder.Services.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
-            builder.Services.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
-            //
-
+            AddScopedConfig.Configure(builder);
 
             builder.Services.AddEndpointsApiExplorer();
 
