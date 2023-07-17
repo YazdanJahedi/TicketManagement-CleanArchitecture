@@ -12,27 +12,25 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class AdminController : ControllerBase
-                                   
-                                  
+    public class AdminController : ControllerBase                              
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly ITicketRepository _ticketRepository;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, ITicketRepository ticketRepository)
         {
-            _context = context;
+            _ticketRepository = ticketRepository;
         }
 
         [HttpGet("tickets")]
         public ActionResult<Ticket> GetTickets(bool isCheckd = false)
         {
-            if (_context.Tickets == null)
+            if (_ticketRepository.IsContextNull())
             {
                 return NotFound();
             }
 
-            var items = _context.Tickets.Where(a => a.IsChecked == isCheckd).ToList();
+            var items = _ticketRepository.FindAllByIsChecked(isCheckd).ToList();
 
             return Ok(items);
         }
@@ -40,19 +38,19 @@ namespace Presentation.Controllers
         [HttpDelete("{ticketId}")]
         public async Task<IActionResult> DeleteTicket(long ticketId)
         {
-            if (_context.Tickets == null || _context.Responses == null)
+            if (_ticketRepository.IsContextNull()|| _context.Responses == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(ticketId);
+            var ticket = _ticketRepository.FindById(ticketId);
 
             if (ticket == null)
             {
                 return NotFound();
             }
 
-            _context.Tickets.Remove(ticket);
+            _ticketRepository.RemoveTicket(ticket);
 
             var items = _context.Responses.Where(a => a.TicketId == ticketId).ToList();
             foreach (var item in items)
@@ -66,12 +64,12 @@ namespace Presentation.Controllers
         [HttpPost("tickets/{ticketId}")]
         public async Task<ActionResult<Ticket>> PostResponse(long ticketId, CreateResponseRequest req)
         {
-            if (_context.Responses == null || _context.Tickets == null)
+            if (_context.Responses == null || _ticketRepository.IsContextNull())
             {
                 return NotFound();
             }
 
-            var ticket = _context.Tickets.Find(ticketId);
+            var ticket = _ticketRepository.FindById(ticketId);
 
             if (ticket == null)
             {
@@ -88,16 +86,7 @@ namespace Presentation.Controllers
 
             var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
 
-            _context.Entry(ticket).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            _ticketRepository.UpdateTicketAsync(ticket);
 
             var response = new Response
             {

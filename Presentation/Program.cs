@@ -21,6 +21,7 @@ namespace Presentation
             // todo:...
             builder.Services.AddScoped<IUsersRepository, UsersRepository>();
             
+
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen(SwaggerGenConfig.Configuration);
