@@ -20,7 +20,12 @@ namespace Presentation
             
             // todo:...
             builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-            
+            builder.Services.AddScoped<ITicketsRepository, TicketsRepository>();
+            builder.Services.AddScoped<IResponsesRepository, ResponsesRepository>();
+            builder.Services.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
+            builder.Services.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
+            //
+
 
             builder.Services.AddEndpointsApiExplorer();
 

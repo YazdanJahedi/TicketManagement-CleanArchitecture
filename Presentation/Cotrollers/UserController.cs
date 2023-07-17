@@ -3,10 +3,8 @@ using Application.Features.CreateTicket;
 using Application.Repository;
 using Domain.Entities;
 using FluentValidation;
-using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
