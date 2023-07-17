@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
-    public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
+    public class TicketsRepository : BaseRepository<Ticket>, ITicketsRepository
     {
-        public TicketRepository(ApplicationDbContext _context)
+        public TicketsRepository(ApplicationDbContext _context)
             : base(_context)
         {
         }

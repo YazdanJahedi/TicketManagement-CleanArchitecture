@@ -5,7 +5,7 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace Application.Repository
 {
-    public interface ITicketRepository : IBaseRepository<Ticket>
+    public interface ITicketsRepository : IBaseRepository<Ticket>
     {
         public bool IsContextNull();
         public IQueryable<Ticket> FindAllByIsChecked(bool isChecked);

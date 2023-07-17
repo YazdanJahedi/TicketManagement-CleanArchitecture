@@ -15,11 +15,13 @@ namespace Presentation.Controllers
     public class AdminController : ControllerBase                              
     {
 
-        private readonly ITicketRepository _ticketRepository;
+        private readonly ITicketsRepository _ticketRepository;
+        private readonly IResponsesRepository _responsesRepository;
 
-        public AdminController(ApplicationDbContext context, ITicketRepository ticketRepository)
+        public AdminController(ITicketsRepository ticketRepository, IResponsesRepository responsesRepository)
         {
             _ticketRepository = ticketRepository;
+            _responsesRepository = responsesRepository;
         }
 
         [HttpGet("tickets")]
@@ -36,9 +38,9 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{ticketId}")]
-        public async Task<IActionResult> DeleteTicket(long ticketId)
+        public IActionResult DeleteTicket(long ticketId)
         {
-            if (_ticketRepository.IsContextNull()|| _context.Responses == null)
+            if (_ticketRepository.IsContextNull()|| _responsesRepository.IsContextNull())
             {
                 return NotFound();
             }
@@ -52,19 +54,16 @@ namespace Presentation.Controllers
 
             _ticketRepository.RemoveTicket(ticket);
 
-            var items = _context.Responses.Where(a => a.TicketId == ticketId).ToList();
-            foreach (var item in items)
-                _context.Responses.Remove(item);
-
-            await _context.SaveChangesAsync();
+            var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
+            _responsesRepository.RemoveListOfResponses(items);
 
             return NoContent();
         }
 
         [HttpPost("tickets/{ticketId}")]
-        public async Task<ActionResult<Ticket>> PostResponse(long ticketId, CreateResponseRequest req)
+        public ActionResult<Ticket> PostResponse(long ticketId, CreateResponseRequest req)
         {
-            if (_context.Responses == null || _ticketRepository.IsContextNull())
+            if (_responsesRepository.IsContextNull() || _ticketRepository.IsContextNull())
             {
                 return NotFound();
             }
@@ -97,21 +96,19 @@ namespace Presentation.Controllers
                 CreationTime = DateTime.Now,
             };
 
-            _context.Responses.Add(response);
-            await _context.SaveChangesAsync();
-
+            _responsesRepository.AddResponseAsync(response);
             return Ok(response);
         }
 
         [HttpGet("responses/{ticketId}")]
         public ActionResult<Ticket> GetResponses(long ticketId)
         {
-            if (_context.Responses == null)
+            if (_responsesRepository.IsContextNull())
             {
                 return NotFound();
             }
 
-            var items = _context.Responses.Where(a => a.TicketId == ticketId).ToList();
+            var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
 
             return Ok(items);
         }

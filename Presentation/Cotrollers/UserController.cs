@@ -14,15 +14,17 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase
-                                  
+    public class UserController : ControllerBase                         
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly ITicketsRepository _ticketRepository;
+        private readonly IResponsesRepository _responsesRepository;
 
-        public UserController(ApplicationDbContext context)
+        public UserController(ITicketsRepository ticketRepository, 
+                              IResponsesRepository responsesRepository)
         {
-            _context = context;
+            _ticketRepository = ticketRepository;
+            _responsesRepository = responsesRepository;
         }
 
 
@@ -51,13 +53,14 @@ namespace Presentation.Controllers
 
 
         [HttpPost("request/tickets")]
-        public async Task<ActionResult<Ticket>> PostTicket(CreateTicketRequest req)
+        public ActionResult<Ticket> PostTicket(CreateTicketRequest req)
         {
-            if (_context.Tickets == null)
+            if (_ticketRepository.IsContextNull())
             {
                 return NotFound();
             }
-
+            
+            // check validation
             CreateTicketValidator validator = new();
             var validatorResult = validator.Validate(req);
             if (!validatorResult.IsValid)
@@ -65,9 +68,11 @@ namespace Presentation.Controllers
                 return BadRequest(validatorResult.Errors);
             }
 
+            // extract id from token
             var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(id);
 
+            // create a new ticket instance
             var ticket = new Ticket
             {
                 UserId = userId,
@@ -80,9 +85,7 @@ namespace Presentation.Controllers
                 NumberOfResponses = 0,
             };
 
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
-
+            _ticketRepository.AddTicketAsync(ticket);
             return Ok(ticket);
         }
 
@@ -90,15 +93,17 @@ namespace Presentation.Controllers
         [HttpGet("request/tickets")]
         public ActionResult<Ticket> GetTickes()
         {
-            if (_context.Tickets == null)
+            if (_ticketRepository.IsContextNull())
             {
                 return NotFound();
             }
 
+            // extract user id from token
             var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(id);
 
-            var items = _context.Tickets.Where(a => a.UserId == userId).ToList();
+            // find all relative tickets
+            var items = _ticketRepository.FindAllById(userId).ToList();
             return Ok(items);
         }
 
@@ -106,7 +111,7 @@ namespace Presentation.Controllers
         [HttpPost("request/tickets/{ticketId}")]
         public async Task<ActionResult<Ticket>> PostResponse(long ticketId, CreateResponseRequest req)
         {
-            if (_context.Responses == null || _context.Tickets == null)
+            if (_responsesRepository.IsContextNull() || _ticketRepository.IsContextNull())
             {
                 return NotFound();
             }
@@ -120,7 +125,7 @@ namespace Presentation.Controllers
 
             var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(userIdString);
-            var ticket = _context.Tickets.Find(ticketId);
+            var ticket = _ticketRepository.FindById(userId);
 
             if (ticket == null)
             {
@@ -137,16 +142,7 @@ namespace Presentation.Controllers
 
             var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
 
-            _context.Entry(ticket).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            _ticketRepository.UpdateTicketAsync(ticket);
 
             var response = new Response
             {
@@ -157,22 +153,20 @@ namespace Presentation.Controllers
                 CreationTime = DateTime.Now,
             };
 
-            _context.Responses.Add(response);
-            await _context.SaveChangesAsync();
-
+            _responsesRepository.AddResponseAsync(response);
             return Ok(response);
         }
 
         [HttpGet("responses/{ticketId}")]
         public ActionResult<Ticket> GetResponses(long ticketId)
         {
-            if (_context.Responses == null)
+            if (_responsesRepository.IsContextNull())
             {
                 return NotFound();
             }
 
-            var items = _context.Responses.Where(a => a.TicketId == ticketId).ToList();
-
+            // find all relative responses
+            var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
             return Ok(items);
         }
     }
