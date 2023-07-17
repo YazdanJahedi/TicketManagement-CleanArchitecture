@@ -5,6 +5,7 @@ namespace Application.Repository
 {
     public interface IFAQCategoriesRepository : IBaseRepository<FAQCategory>
     {
-        Task<ActionResult<IEnumerable<FAQCategory>>> GetFAQCategories();
+        public bool IsContextNull();
+        public Task<List<FAQCategory>> GetAll();
     }
 }

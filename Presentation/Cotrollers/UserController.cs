@@ -19,34 +19,43 @@ namespace Presentation.Controllers
 
         private readonly ITicketsRepository _ticketRepository;
         private readonly IResponsesRepository _responsesRepository;
+        private readonly IFAQCategoriesRepository _faqCategoriesRepository;
+        private readonly IFAQItemsRepository _faqItemsRepository;
+
 
         public UserController(ITicketsRepository ticketRepository, 
-                              IResponsesRepository responsesRepository)
+                              IResponsesRepository responsesRepository,
+                              IFAQCategoriesRepository fAQCategoriesRepository,
+                              IFAQItemsRepository fAQItemsRepository
+                              )
         {
             _ticketRepository = ticketRepository;
             _responsesRepository = responsesRepository;
+            _faqCategoriesRepository = fAQCategoriesRepository;
+            _faqItemsRepository = fAQItemsRepository; 
         }
 
 
         [HttpGet("request/FAQ")]
         public async Task<ActionResult<IEnumerable<FAQCategory>>> GetFAQCategories()
         {
-            if (_context.FAQCategories == null)
+            if (_faqCategoriesRepository.IsContextNull())
             {
                 return NotFound();
             }
-            return await _context.FAQCategories.ToListAsync();
+
+            return await _faqCategoriesRepository.GetAll();
         }
 
         [HttpGet("request/FAQ/{id}")]
         public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
         {
-            if (_context.FAQItems == null)
+            if (_faqItemsRepository.IsContextNull())
             {
                 return NotFound();
             }
 
-            var items = _context.FAQItems.Where(a => a.CategoryId == id).ToList();
+            var items = _faqItemsRepository.FindAllByCategoryId(id).ToList();
 
             return Ok(items);
         }
