@@ -52,12 +52,12 @@ namespace Presentation.Controllers
                 return NotFound();
             }
 
-            _ticketRepository.RemoveTicket(ticket);
+            // _ticketRepository.RemoveTicket(ticket);
 
-            var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
-            _responsesRepository.RemoveListOfResponses(items);
+            // var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
+            // _responsesRepository.RemoveListOfResponses(items);
 
-            return NoContent();
+            return Ok("done");
         }
 
         [HttpPost("tickets/{ticketId}")]

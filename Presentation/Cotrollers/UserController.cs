@@ -42,7 +42,7 @@ namespace Presentation.Controllers
                 return NotFound();
             }
 
-            return await _faqCategoriesRepository.GetAll();
+            return  await _faqCategoriesRepository.GetAll();
         }
 
         [HttpGet("request/FAQ/{id}")]
