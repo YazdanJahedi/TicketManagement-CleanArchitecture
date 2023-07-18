@@ -51,7 +51,7 @@ namespace Presentation.Controllers
             {
                 return NotFound();
             }
-
+            _ticketRepository.
             // _ticketRepository.RemoveTicket(ticket);
 
             // var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();

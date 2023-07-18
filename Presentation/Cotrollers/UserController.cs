@@ -132,7 +132,7 @@ namespace Presentation.Controllers
 
             var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(userIdString);
-            var ticket = _ticketRepository.FindById(userId);
+            var ticket = _ticketRepository.FindById(ticketId); //
 
             if (ticket == null)
             {

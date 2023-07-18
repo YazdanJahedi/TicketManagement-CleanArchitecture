@@ -4,6 +4,6 @@ namespace Domain.Entities
 {
     public record FAQCategory : BaseEntity
     {
-        public string? Title { get; set; }
+        public required string CategoryName { get; set; }
     }
 }

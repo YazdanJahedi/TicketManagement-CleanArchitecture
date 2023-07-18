@@ -2,8 +2,7 @@
 {
     public record BaseEntity
     {
-        public long Id { get; set; } 
-        public DateTime CreationTime { get; set; }
-
+        public required long Id { get; set; } 
+        public DateTime CreationDate { get; set; }
     }
 }

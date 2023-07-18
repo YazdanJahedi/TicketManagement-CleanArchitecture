@@ -10,6 +10,6 @@ namespace Application.Repository
         public bool IsContextNull();
         public void AddResponseAsync(Response response);
         public IQueryable<Response> FindAllResonsesByTicketId(long ticketId);
-        public void RemoveListOfResponses(List<Response> items);
+        public void RemoveListOfResponses(List<Response> items); //
     }
 }
