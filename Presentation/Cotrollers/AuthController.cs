@@ -109,8 +109,8 @@ namespace Presentation.Controllers
                 return BadRequest("password not correct");
 
             // create token
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf.GetSection("AppSettings:Token").Value!));
-            var token = CreateUserToken.CreateToken(user,  key);
+            var section = _conf.GetSection("AppSettings:Token");
+            var token = CreateJwtToken.CreateToken(user, section);
 
             return Ok("bearer " + token);
         }
