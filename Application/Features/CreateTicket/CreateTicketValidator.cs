@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using Application.DTOs;
+using FluentValidation;
 
 namespace Application.Features.CreateTicket
 {
-    public class CreateTicketValidator : AbstractValidator<CreateTicketRequest>
+    public class CreateTicketValidator : AbstractValidator<CreateTicketDto>
     {
         public CreateTicketValidator()
         {

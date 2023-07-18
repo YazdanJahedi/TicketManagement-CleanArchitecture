@@ -1,4 +1,4 @@
-﻿using Application.Features.CreateResponse;
+﻿using Application.DTOs;
 using Application.Repository;
 using Domain.Entities;
 using Infrastructure.Context;
@@ -61,7 +61,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("tickets/{ticketId}")]
-        public ActionResult<Ticket> PostResponse(long ticketId, CreateResponseRequest req)
+        public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
         {
             if (_responsesRepository.IsContextNull() || _ticketRepository.IsContextNull())
             {

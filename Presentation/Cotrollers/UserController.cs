@@ -1,4 +1,5 @@
-﻿using Application.Features.CreateResponse;
+﻿using Application.DTOs;
+using Application.Features.CreateResponse;
 using Application.Features.CreateTicket;
 using Application.Repository;
 using Domain.Entities;
@@ -60,7 +61,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost("request/tickets")]
-        public ActionResult<Ticket> PostTicket(CreateTicketRequest req)
+        public ActionResult<Ticket> PostTicket(CreateTicketDto req)
         {
             if (_ticketRepository.IsContextNull())
             {
@@ -116,7 +117,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost("request/tickets/{ticketId}")]
-        public async Task<ActionResult<Ticket>> PostResponse(long ticketId, CreateResponseRequest req)
+        public async Task<ActionResult<Ticket>> PostResponse(long ticketId, CreateMessageDto req)
         {
             if (_responsesRepository.IsContextNull() || _ticketRepository.IsContextNull())
             {

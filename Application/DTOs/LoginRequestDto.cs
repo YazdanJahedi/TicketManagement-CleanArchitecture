@@ -1,6 +1,6 @@
-﻿namespace Application.Features.LoginUser
+﻿namespace Application.DTOs
 {
-    public record LoginRequest
+    public record LoginRequestDto
     {
         public required string Email { get; set; }
         public required string Password { get; set; }

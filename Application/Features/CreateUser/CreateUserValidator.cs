@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using Application.DTOs;
+using FluentValidation;
 
 namespace Application.Features.CreateUser
 {
-    public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+    public class CreateUserValidator : AbstractValidator<CreateUserDto>
     {
         public CreateUserValidator() 
         { 

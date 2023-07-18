@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using Application.Features;
 using Application.Repository;
+using Application.DTOs;
 
 namespace Presentation.Controllers
 {
@@ -27,7 +28,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("signup")]
-        public ActionResult<User> Signup(CreateUserRequest req)
+        public ActionResult<User> Signup(CreateUserDto req)
         {
 
             if (_usersRepository.IsContextNull())
@@ -74,7 +75,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost("login")]
-        public ActionResult<User> Login(LoginRequest req)
+        public ActionResult<User> Login(LoginRequestDto req)
         {
             if (_usersRepository.IsContextNull())
             {
