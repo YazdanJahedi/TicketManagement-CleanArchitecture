@@ -7,12 +7,8 @@ namespace Application.Repository
 {
     public interface ITicketsRepository : IBaseRepository<Ticket>
     {
-        public bool IsContextNull();
-        public IQueryable<Ticket> FindAllByIsChecked(bool isChecked);
-        public IQueryable<Ticket> FindAllById(long id);
+        public IEnumerable<Ticket> FindAllById(long id);
         public Ticket FindById(long id);
-        public void RemoveTicket(Ticket ticket);
-        public void AddTicketAsync(Ticket ticket);
-        public void UpdateTicketAsync(Ticket ticket);
+        public void Remove(Ticket ticket);
     }
 }

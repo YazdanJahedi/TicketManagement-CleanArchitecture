@@ -4,5 +4,6 @@ namespace Application.Repository
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
+        bool IsContextNull();
     }
 }
