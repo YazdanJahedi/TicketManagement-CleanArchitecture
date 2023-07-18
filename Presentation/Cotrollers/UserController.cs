@@ -124,7 +124,7 @@ namespace Presentation.Controllers
                 return NotFound();
             }
 
-            CreateResponseValidator validator = new();
+            CreateMessageValidator validator = new();
             var validatorResult = validator.Validate(req);
             if (!validatorResult.IsValid)
             {

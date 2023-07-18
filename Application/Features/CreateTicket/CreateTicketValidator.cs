@@ -7,8 +7,11 @@ namespace Application.Features.CreateTicket
     {
         public CreateTicketValidator()
         {
-            RuleFor(x => x.Title).NotNull().NotEmpty().WithMessage("Title can not be empty or null");
-            RuleFor(x => x.Description).NotNull().NotEmpty().WithMessage("Descriptiion can not be empty or null");
+            RuleFor(x => x.Title).NotNull().NotEmpty()
+                .WithMessage("Title can not be empty or null");
+
+            RuleFor(x => x.Description).NotNull().NotEmpty()
+                .WithMessage("Descriptiion can not be empty or null");
         }
     }
 }
