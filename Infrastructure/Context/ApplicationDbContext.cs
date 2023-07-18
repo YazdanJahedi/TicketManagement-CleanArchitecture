@@ -15,7 +15,7 @@ namespace Infrastructure.Context
         public DbSet<Ticket> Tickets { get; set; } = null!;
         public DbSet<FAQCategory> FAQCategories { get; set; } = null!;
         public DbSet<FAQItem> FAQItems { get; set; } = null!;
-        public DbSet<Response> Responses { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
         
     }
 }

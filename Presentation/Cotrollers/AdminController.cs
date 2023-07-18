@@ -16,9 +16,9 @@ namespace Presentation.Controllers
     {
 
         private readonly ITicketsRepository _ticketRepository;
-        private readonly IResponsesRepository _responsesRepository;
+        private readonly IMessagesRepository _responsesRepository;
 
-        public AdminController(ITicketsRepository ticketRepository, IResponsesRepository responsesRepository)
+        public AdminController(ITicketsRepository ticketRepository, IMessagesRepository responsesRepository)
         {
             _ticketRepository = ticketRepository;
             _responsesRepository = responsesRepository;

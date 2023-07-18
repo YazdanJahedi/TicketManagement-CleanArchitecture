@@ -4,10 +4,10 @@ using Infrastructure.Context;
 
 namespace Infrastructure.Repository
 {
-    public class ResponsesRepository : BaseRepository<Response>, IResponsesRepository
+    public class MessagesRepository : BaseRepository<Message>, IMessagesRepository
     {
-        public ResponsesRepository(ApplicationDbContext _context): base(_context) { }
-
+        public MessagesRepository(ApplicationDbContext _context): base(_context) { }
+/*
         public void AddResponseAsync(Response response)
         {
             _context.Responses.Add(response);
@@ -30,6 +30,6 @@ namespace Infrastructure.Repository
                 _context.Responses.Remove(item);
             }
             await _context.SaveChangesAsync();
-        }
+        }*/
     }
 }

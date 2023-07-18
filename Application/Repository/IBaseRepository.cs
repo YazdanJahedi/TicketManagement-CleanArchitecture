@@ -4,6 +4,9 @@ namespace Application.Repository
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        bool IsContextNull();
+        public void CheckNull();
+        public void Add(T entity);
+        public IEnumerable<T> GetAll();
+
     }
 }

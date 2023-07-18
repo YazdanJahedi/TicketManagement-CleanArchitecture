@@ -11,14 +11,13 @@ namespace Infrastructure.Repository
     {
         public FAQCategoriesRepository(ApplicationDbContext _context) : base(_context) { }
 
+
+/*
         public async Task<List<FAQCategory>> GetAll()
         {
             return await _context.FAQCategories.ToListAsync();
         }
 
-        public bool IsContextNull()
-        {
-            return _context.FAQCategories == null;
-        }
+*/
     }
 }

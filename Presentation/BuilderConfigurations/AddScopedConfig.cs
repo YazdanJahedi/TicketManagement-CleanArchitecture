@@ -9,7 +9,7 @@ namespace Presentation.BuilderConfigurations
         {
             builder.Services.AddScoped<IUsersRepository, UsersRepository>();
             builder.Services.AddScoped<ITicketsRepository, TicketsRepository>();
-            builder.Services.AddScoped<IResponsesRepository, ResponsesRepository>();
+            builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
             builder.Services.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
             builder.Services.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
         }

@@ -17,13 +17,13 @@ namespace Presentation.Controllers
     {
 
         private readonly ITicketsRepository _ticketRepository;
-        private readonly IResponsesRepository _responsesRepository;
+        private readonly IMessagesRepository _responsesRepository;
         private readonly IFAQCategoriesRepository _faqCategoriesRepository;
         private readonly IFAQItemsRepository _faqItemsRepository;
 
 
         public UserController(ITicketsRepository ticketRepository, 
-                              IResponsesRepository responsesRepository,
+                              IMessagesRepository responsesRepository,
                               IFAQCategoriesRepository fAQCategoriesRepository,
                               IFAQItemsRepository fAQItemsRepository
                               )

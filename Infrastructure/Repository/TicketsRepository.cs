@@ -7,10 +7,7 @@ namespace Infrastructure.Repository
 {
     public class TicketsRepository : BaseRepository<Ticket>, ITicketsRepository
     {
-        public TicketsRepository(ApplicationDbContext _context)
-            : base(_context)
-        {
-        }
+        public TicketsRepository(ApplicationDbContext _context): base(_context) {}
 
         public async void AddTicketAsync(Ticket ticket)
         {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationDbContext _context;
 
@@ -17,5 +17,22 @@ namespace Infrastructure.Repository
         {
             _context = context;
         }
+
+        public virtual void Add(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CheckNull()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IEnumerable<T> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+ 
     }
 }
