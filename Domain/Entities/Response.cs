@@ -2,10 +2,10 @@
 
 namespace Domain.Entities
 {
-    public record Response : BaseEntity
+    public record Message : BaseEntity
     {
         public required long TicketId { get; set; }
-        public string? Writer { get; set; }
         public string? Text { get; set; }
+        public required long CreatorId { get; set; }
     }
 }
