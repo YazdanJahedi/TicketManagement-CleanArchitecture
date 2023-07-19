@@ -6,7 +6,7 @@ namespace Application.Repository
     {
         public void CheckNull();
         public void Add(T entity);
-        public IEnumerable<T> GetAll();
+        public Task<IEnumerable<T>> GetAllAsync();
 
     }
 }

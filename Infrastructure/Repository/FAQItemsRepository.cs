@@ -14,14 +14,24 @@ namespace Infrastructure.Repository
     {
         public FAQItemsRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public IQueryable<FAQItem> FindAllByCategoryId(long id)
+        public IEnumerable<FAQItem> FindAllByCategoryId(long categoryId)
         {
-            return _context.FAQItems.Where(a => a.CategoryId == id);
+            return _context.FAQItems.Where(a => a.CategoryId == categoryId);
         }
 
-        public bool IsContextNull()
+        public override void CheckNull()
         {
-            return _context.FAQItems == null;
+            if(null == _context.FAQItems)
+            {
+                throw new Exception("context is null");
+            }
         }
+
+        public override void Add(FAQItem entity)
+        {
+            _context.FAQItems.Add(entity);
+            _context.SaveChanges();
+        }
+
     }
 }

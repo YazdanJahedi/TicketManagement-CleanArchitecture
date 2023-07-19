@@ -8,7 +8,7 @@ namespace Application.Repository
     public interface ITicketsRepository : IBaseRepository<Ticket>
     {
         public IEnumerable<Ticket> FindAllById(long id);
-        public Ticket FindById(long id);
+        public Ticket? FindById(long id);
         public void Remove(Ticket ticket);
     }
 }

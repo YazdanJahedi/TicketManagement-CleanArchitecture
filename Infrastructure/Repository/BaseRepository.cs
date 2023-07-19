@@ -28,7 +28,7 @@ namespace Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public virtual Task<IEnumerable<T>> GetAllAsync()
         {
             throw new NotImplementedException();
         }

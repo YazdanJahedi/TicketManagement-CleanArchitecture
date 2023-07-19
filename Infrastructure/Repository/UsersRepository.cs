@@ -7,36 +7,23 @@ namespace Infrastructure.Repository
 {
     public class UsersRepository : BaseRepository<User>, IUsersRepository
     {
-        public UsersRepository(ApplicationDbContext _context)
-            :base(_context)
-        {
-        }
+        public UsersRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public async void AddUserAsync(User user)
+        public User? FindByEmail(string email)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public User FindUserByEmail(string email)
-        {
-            // nullable
             return _context.Users.FirstOrDefault(e => e.Email == email);
         }
 
-        public bool IsContextEmptyOrNull()
+        public override void Add(User entity)
         {
-            return _context.Users.IsNullOrEmpty();
+            _context.Users.Add(entity);
+            _context.SaveChanges();
         }
 
-        public bool IsContextNull()
+        public override void CheckNull()
         {
-            return _context.Users == null;
+            if (null == _context.Users) throw new Exception("context is null");
         }
 
-        public bool IsUserFoundByEmail(string email)
-        {
-            return (_context.Users?.Any(e => e.Email == email)).GetValueOrDefault();
-        }
     }
 }

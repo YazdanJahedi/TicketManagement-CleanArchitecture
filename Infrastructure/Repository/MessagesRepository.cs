@@ -7,29 +7,34 @@ namespace Infrastructure.Repository
     public class MessagesRepository : BaseRepository<Message>, IMessagesRepository
     {
         public MessagesRepository(ApplicationDbContext _context): base(_context) { }
-/*
-        public void AddResponseAsync(Response response)
+
+        public IEnumerable<Message> FindAllByTicketId(long ticketId)
         {
-            _context.Responses.Add(response);
+            return _context.Messages.Where(a => a.TicketId == ticketId);
         }
 
-        public IQueryable<Response> FindAllResonsesByTicketId(long ticketId)
+        public Message? FindLastMessageByTicketId(long ticketId)
         {
-            return _context.Responses.Where(a => a.TicketId == ticketId);
+            return  _context.Messages.LastOrDefault(e => e.TicketId == ticketId);
         }
 
-        public bool IsContextNull()
+        public void RemoveAllByTicketId(long ticketId)
         {
-            return _context.Responses == null;
+            var items = _context.Messages.Where(i => i.TicketId == ticketId);
+            _context.Messages.RemoveRange(items);
+            _context.SaveChanges();
         }
 
-        public async void RemoveListOfResponses(List<Response> items)
+        public override void CheckNull()
         {
-            foreach (var item in items)
-            {
-                _context.Responses.Remove(item);
-            }
-            await _context.SaveChangesAsync();
-        }*/
+            if (null == _context) throw new Exception("context is null");
+        }
+
+        public override void Add(Message entity)
+        {
+            _context.Messages.Add(entity);
+            _context.SaveChanges();
+        }
+
     }
 }

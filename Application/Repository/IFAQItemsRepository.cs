@@ -10,7 +10,6 @@ namespace Application.Repository
 {
     public interface IFAQItemsRepository : IBaseRepository<FAQItem>
     {
-        public bool IsContextNull();
-        public IQueryable<FAQItem> FindAllByCategoryId(long id);
+        public IEnumerable<FAQItem> FindAllByCategoryId(long categoryId);
     }
 }

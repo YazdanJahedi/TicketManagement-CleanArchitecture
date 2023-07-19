@@ -7,8 +7,8 @@ namespace Application.Repository
 {
     public interface IMessagesRepository : IBaseRepository<Message>
     {
-        public void AddResponseAsync(Message response);
-        public IQueryable<Message> FindAllByTicketId(long ticketId);
+        public IEnumerable<Message> FindAllByTicketId(long ticketId);
         public void RemoveAllByTicketId(long ticketId);
+        public Message? FindLastMessageByTicketId(long ticketId);
     }
 }
