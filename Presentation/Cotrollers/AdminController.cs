@@ -16,34 +16,28 @@ namespace Presentation.Controllers
     {
 
         private readonly ITicketsRepository _ticketRepository;
-        private readonly IMessagesRepository _responsesRepository;
+        private readonly IMessagesRepository _messagesRepository;
 
         public AdminController(ITicketsRepository ticketRepository, IMessagesRepository responsesRepository)
         {
             _ticketRepository = ticketRepository;
-            _responsesRepository = responsesRepository;
+            _messagesRepository = responsesRepository;
         }
 
         [HttpGet("tickets")]
         public ActionResult<Ticket> GetTickets(bool isCheckd = false)
         {
-            if (_ticketRepository.IsContextNull())
-            {
-                return NotFound();
-            }
+            _ticketRepository.CheckNull(); 
 
-            var items = _ticketRepository.FindAllByIsChecked(isCheckd).ToList();
-
+            var items = _ticketRepository.GetAllAsync();
             return Ok(items);
         }
 
         [HttpDelete("{ticketId}")]
         public IActionResult DeleteTicket(long ticketId)
         {
-            if (_ticketRepository.IsContextNull()|| _responsesRepository.IsContextNull())
-            {
-                return NotFound();
-            }
+            _ticketRepository.CheckNull();
+            _messagesRepository.CheckNull();
 
             var ticket = _ticketRepository.FindById(ticketId);
 
@@ -51,22 +45,18 @@ namespace Presentation.Controllers
             {
                 return NotFound();
             }
-            _ticketRepository.
-            // _ticketRepository.RemoveTicket(ticket);
 
-            // var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
-            // _responsesRepository.RemoveListOfResponses(items);
+            _messagesRepository.RemoveAllByTicketId(ticketId);
+            _ticketRepository.Remove(ticket);
 
             return Ok("done");
         }
 
         [HttpPost("tickets/{ticketId}")]
-        public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
+        public ActionResult<Message> PostMessage(long ticketId, CreateMessageDto req)
         {
-            if (_responsesRepository.IsContextNull() || _ticketRepository.IsContextNull())
-            {
-                return NotFound();
-            }
+            _ticketRepository.CheckNull();
+            _messagesRepository.CheckNull();
 
             var ticket = _ticketRepository.FindById(ticketId);
 
@@ -75,41 +65,33 @@ namespace Presentation.Controllers
                 return BadRequest("ticketId not found");
             }
 
-            // update number of responses and isChecked fields
-            ticket.NumberOfResponses++;
-            ticket.IsChecked = true;
+            // update first response date for the first response
             if (ticket.FirstResponseDate == null)
             {
                 ticket.FirstResponseDate = DateTime.Now;
             }
 
-            var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+            var userId = Convert.ToInt64(userIdString);
 
-            _ticketRepository.UpdateTicketAsync(ticket);
-
-            var response = new Response
+            var message = new Message
             {
                 TicketId = ticketId,
-                IdInTicket = ticket.NumberOfResponses,
-                Writer = userEmail,
+                CreatorId = userId,
                 Text = req.Text,
-                CreationTime = DateTime.Now,
+                CreationDate = DateTime.Now,
             };
 
-            _responsesRepository.AddResponseAsync(response);
-            return Ok(response);
+            _messagesRepository.Add(message);
+            return Ok(message);
         }
 
-        [HttpGet("responses/{ticketId}")]
-        public ActionResult<Ticket> GetResponses(long ticketId)
+        [HttpGet("messages/{ticketId}")]
+        public ActionResult<Message> GetMessages(long ticketId)
         {
-            if (_responsesRepository.IsContextNull())
-            {
-                return NotFound();
-            }
+            _messagesRepository.CheckNull();
 
-            var items = _responsesRepository.FindAllResonsesByTicketId(ticketId).ToList();
-
+            var items = _messagesRepository.FindAllByTicketId(ticketId);
             return Ok(items);
         }
 

@@ -27,7 +27,7 @@ namespace Infrastructure.Repository
 
         public override void CheckNull()
         {
-            if (null == _context) throw new Exception("context is null");
+            if (null == _context.Messages) throw new Exception("context is null");
         }
 
         public override void Add(Message entity)

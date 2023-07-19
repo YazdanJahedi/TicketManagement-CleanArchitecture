@@ -31,10 +31,7 @@ namespace Presentation.Controllers
         public ActionResult<User> Signup(CreateUserDto req)
         {
 
-            if (_usersRepository.IsContextNull())
-            {
-                return NotFound();
-            }
+            _usersRepository.CheckNull();
 
             // validation check
             CreateUserValidator validator = new();
@@ -45,31 +42,27 @@ namespace Presentation.Controllers
             }
 
             // check if email is used
-            if (_usersRepository.IsUserFoundByEmail(req.Email))
+            var foundUser = _usersRepository.FindByEmail(req.Email); 
+            if (foundUser != null)
             {
                 return BadRequest("this Email is used before");
             }
 
-            // first signed up user is Admin
-            string role = "User";
-            if (_usersRepository.IsContextEmptyOrNull())
-            {
-                role = "Admin";
-            }
 
             // creating new user
             string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
+
             var user = new User
             {
                 Name = req.Name,
                 Email = req.Email,
-                Role = role,
+                Role = "User",
                 PhoneNumber = req.PhoneNumber,
                 PasswordHash = passHash,
-                CreationTime = DateTime.Now,
+                CreationDate = DateTime.Now,
             };
 
-            _usersRepository.AddUserAsync(user);
+            _usersRepository.Add(user);
             return Ok(user);
         }
 
@@ -77,10 +70,7 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public ActionResult<User> Login(LoginRequestDto req)
         {
-            if (_usersRepository.IsContextNull())
-            {
-                return NotFound();
-            }
+            _usersRepository.CheckNull();
 
             // check validation
             LoginRequestValidator validator = new();
@@ -90,18 +80,11 @@ namespace Presentation.Controllers
                 return BadRequest(validatorResult.Errors);
             }
 
-            // check for email in database
-            if (!_usersRepository.IsUserFoundByEmail(req.Email))
-            {
-                return BadRequest("Email not found");
-            }
-
-            // find user in database
-            var user = _usersRepository.FindUserByEmail(req.Email);
-
+            // find user by email
+            var user = _usersRepository.FindByEmail(req.Email);
             if (user == null)
             {
-                return NotFound();
+                return BadRequest("Email not found");
             }
 
             // check user's password 
