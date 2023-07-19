@@ -48,7 +48,6 @@ namespace Presentation.Controllers
                 return BadRequest("this Email is used before");
             }
 
-
             // creating new user
             string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
 

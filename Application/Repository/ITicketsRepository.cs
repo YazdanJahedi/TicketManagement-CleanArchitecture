@@ -7,7 +7,7 @@ namespace Application.Repository
 {
     public interface ITicketsRepository : IBaseRepository<Ticket>
     {
-        public IEnumerable<Ticket> FindAllById(long id);
+        public IEnumerable<Ticket> FindAllByCreatorId(long creatorId);
         public Ticket? FindById(long id);
         public void Remove(Ticket ticket);
     }

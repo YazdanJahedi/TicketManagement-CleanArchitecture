@@ -26,9 +26,9 @@ namespace Infrastructure.Repository
             return await _context.Tickets.ToListAsync();
         }
 
-        public IEnumerable<Ticket> FindAllById(long id)
+        public IEnumerable<Ticket> FindAllByCreatorId(long creatorId)
         {
-            return _context.Tickets.Where(a => a.Id == id);
+            return _context.Tickets.Where(a => a.CreatorId == creatorId);
         }
 
         public Ticket? FindById(long id)

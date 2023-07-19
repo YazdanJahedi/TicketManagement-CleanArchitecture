@@ -97,7 +97,7 @@ namespace Presentation.Controllers
             var userId = Convert.ToInt64(id);
 
             // find all relative tickets
-            var items = _ticketRepository.FindAllById(userId).ToList();
+            var items = _ticketRepository.FindAllByCreatorId(userId).ToList();
             return Ok(items);
         }
 
