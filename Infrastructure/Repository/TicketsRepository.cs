@@ -21,9 +21,9 @@ namespace Infrastructure.Repository
             if (null == _context.Tickets) throw new Exception("context is null");
         }
 
-        public override async Task<IEnumerable<Ticket>> GetAllAsync()
+        public override IEnumerable<Ticket> GetAll()
         {
-            return await _context.Tickets.ToListAsync();
+            return _context.Tickets.ToList();
         }
 
         public IEnumerable<Ticket> FindAllByCreatorId(long creatorId)

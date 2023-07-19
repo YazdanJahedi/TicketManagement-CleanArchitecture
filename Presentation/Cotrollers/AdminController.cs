@@ -25,11 +25,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("tickets")]
-        public ActionResult<Ticket> GetTickets(bool isCheckd = false)
+        public ActionResult<Ticket> GetTickets()
         {
             _ticketRepository.CheckNull(); 
 
-            var items = _ticketRepository.GetAllAsync();
+            var items = _ticketRepository.GetAll();
             return Ok(items);
         }
 

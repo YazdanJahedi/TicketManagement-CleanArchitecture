@@ -36,11 +36,11 @@ namespace Presentation.Controllers
 
 
         [HttpGet("request/FAQ")]
-        public async Task<IEnumerable<FAQCategory>> GetFAQCategories()
+        public  IEnumerable<FAQCategory> GetFAQCategories()
         {
             _faqCategoriesRepository.CheckNull();
 
-            return await _faqCategoriesRepository.GetAllAsync();
+            return _faqCategoriesRepository.GetAll();
         }
 
         [HttpGet("request/FAQ/{id}")]
