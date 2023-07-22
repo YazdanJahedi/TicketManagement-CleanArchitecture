@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Message;
 using Application.Repository;
 using Domain.Entities;
 using Infrastructure.Context;

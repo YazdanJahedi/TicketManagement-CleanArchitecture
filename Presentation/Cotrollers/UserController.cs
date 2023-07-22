@@ -1,7 +1,9 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Message;
+using Application.DTOs.Ticket;
 using Application.Features.CreateResponse;
 using Application.Features.CreateTicket;
 using Application.Repository;
+using Application.Responses;
 using Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -98,7 +100,21 @@ namespace Presentation.Controllers
 
             // find all relative tickets
             var items = _ticketRepository.FindAllByCreatorId(userId).ToList();
-            return Ok(items);
+
+            // Map to anther model
+            var resp = items.Select(t => new TicketResponse
+            {
+                Id = t.Id,
+                CreatorId = t.CreatorId,
+                Title = t.Title,
+                Description = t.Description,
+                FirstResponseDate = t.FirstResponseDate,
+                CloseDate = t.CloseDate,
+                // Call method to get IsChecked value
+                IsChecked = true,
+                CreationDate = t.CreationDate,
+            });
+            return Ok(resp);
         }
 
 
