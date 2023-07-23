@@ -7,6 +7,7 @@ using Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Common;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
@@ -102,9 +103,10 @@ namespace Presentation.Controllers
                 Description = t.Description,
                 FirstResponseDate = t.FirstResponseDate,
                 CloseDate = t.CloseDate,
-                IsChecked = CalculateIsCheckedField(t.Id),
+                IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
                 CreationDate = t.CreationDate,
             });
+            
             return Ok(resp);
         }
 
@@ -154,14 +156,5 @@ namespace Presentation.Controllers
             return Ok(items);
         }
 
-
-        private bool CalculateIsCheckedField(long ticketId)
-        {
-            var message = _messagesRepository.FindLastMessageByTicketId(ticketId);
-            if (message == null) return false;
-            var user = _usersRepository.FindByEmail(message.CreatorEmail);
-            if (user == null) return false;
-            return user.Role.Equals("Admin");
-        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Application.DTOs;
+using Application.DTOs.Ticket;
 using Application.Repository;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Common;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
@@ -15,18 +17,33 @@ namespace Presentation.Controllers
 
         private readonly ITicketsRepository _ticketRepository;
         private readonly IMessagesRepository _messagesRepository;
-
-        public AdminController(ITicketsRepository ticketRepository, IMessagesRepository responsesRepository)
+        private readonly IUsersRepository _usersRepository;
+        public AdminController(ITicketsRepository ticketRepository, 
+                               IMessagesRepository responsesRepository, 
+                               IUsersRepository usersRepository)
         {
             _ticketRepository = ticketRepository;
             _messagesRepository = responsesRepository;
+            _usersRepository = usersRepository;
         }
 
         [HttpGet("tickets")]
         public ActionResult<Ticket> GetTickets()
         {
-            var items = _ticketRepository.GetAll();
-            return Ok(items);
+            var ticketItems = _ticketRepository.GetAll();
+            var ticketResponseItems = ticketItems.Select(t =>
+            new TicketResponse
+            {
+                Id = t.Id,
+                CreatorId = t.CreatorId,
+                Title = t.Title,
+                Description = t.Description,
+                FirstResponseDate = t.FirstResponseDate,
+                CloseDate = t.CloseDate,
+                IsChecked = CommonMethods.CalculateIsCheckedField(t.Id,_usersRepository, _messagesRepository),
+                CreationDate = t.CreationDate,
+            });
+            return Ok(ticketResponseItems);
         }
 
         [HttpDelete("{ticketId}")]
@@ -37,7 +54,7 @@ namespace Presentation.Controllers
 
             if (ticket == null)
             {
-                return NotFound();
+                return NotFound("Ticket not found");
             }
 
             _messagesRepository.RemoveAllByTicketId(ticketId);
@@ -57,14 +74,12 @@ namespace Presentation.Controllers
                 return BadRequest("ticketId not found");
             }
 
-            // update first response date for the first response
+            // Update first_response_date for the first response
             if (ticket.FirstResponseDate == null)
             {
-                ticket.FirstResponseDate = DateTime.Now;
+                ticket.FirstResponseDate = DateTime.Now;              
             }
 
-            var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-            var userId = Convert.ToInt64(userIdString);
             var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             if (userEmail == null) return BadRequest("Email not found");
 
@@ -88,5 +103,13 @@ namespace Presentation.Controllers
             return Ok(items);
         }
 
+
+        [HttpGet("userInfo/{email}")]
+        public ActionResult<User> GetUsreInformation(string email)
+        {
+            var user = _usersRepository.FindByEmail(email);
+            if(user == null) return NotFound("User not found");
+            return user;
+        }
     }
 }
