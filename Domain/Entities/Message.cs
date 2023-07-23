@@ -6,6 +6,6 @@ namespace Domain.Entities
     {
         public required long TicketId { get; set; }
         public required string Text { get; set; }
-        public required long CreatorId { get; set; }
+        public required string CreatorEmail { get; set; }
     }
 }

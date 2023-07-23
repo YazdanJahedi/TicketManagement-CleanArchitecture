@@ -23,12 +23,11 @@ CREATE TABLE [dbo].[FAQItems] (
 CREATE TABLE [dbo].[Messages] (
     [Id]           BIGINT        IDENTITY (1, 1) NOT NULL,
     [TicketId]     BIGINT        NOT NULL, -- FK
-    [CreatorId]    BIGINT        NOT NULL, -- FK
+    [CreatorEmail]    VARCHAR(MAX)        NOT NULL,
     [Text]         VARCHAR (MAX) NULL,
     [CreationDate] DATETIME      NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     FOREIGN KEY (TicketId) REFERENCES Tickets(Id),
-    FOREIGN KEY (CreatorId) REFERENCES Users(Id)
     
 );
 
