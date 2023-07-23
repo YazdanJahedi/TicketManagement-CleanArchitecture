@@ -16,11 +16,6 @@ namespace Infrastructure.Repository
             _context.SaveChanges(); 
         }
 
-        public override void CheckNull()
-        {
-            if (null == _context.Tickets) throw new Exception("context is null");
-        }
-
         public override IEnumerable<Ticket> GetAll()
         {
             return _context.Tickets.ToList();

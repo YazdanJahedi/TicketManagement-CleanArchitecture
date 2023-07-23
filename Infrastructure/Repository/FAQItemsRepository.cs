@@ -19,14 +19,6 @@ namespace Infrastructure.Repository
             return _context.FAQItems.Where(a => a.CategoryId == categoryId);
         }
 
-        public override void CheckNull()
-        {
-            if(null == _context.FAQItems)
-            {
-                throw new Exception("context is null");
-            }
-        }
-
         public override void Add(FAQItem entity)
         {
             _context.FAQItems.Add(entity);

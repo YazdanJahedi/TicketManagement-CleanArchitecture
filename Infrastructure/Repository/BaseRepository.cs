@@ -23,11 +23,6 @@ namespace Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public virtual void CheckNull()
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual IEnumerable<T> GetAll()
         {
             throw new NotImplementedException();

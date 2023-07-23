@@ -42,16 +42,12 @@ namespace Presentation.Controllers
         [HttpGet("request/FAQ")]
         public  IEnumerable<FAQCategory> GetFAQCategories()
         {
-            _faqCategoriesRepository.CheckNull();
-
             return _faqCategoriesRepository.GetAll();
         }
 
         [HttpGet("request/FAQ/{id}")]
         public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
         {
-            _faqItemsRepository.CheckNull();
-
             var items = _faqItemsRepository.FindAllByCategoryId(id);
 
             return Ok(items);
@@ -60,9 +56,7 @@ namespace Presentation.Controllers
 
         [HttpPost("request/tickets")]
         public ActionResult<Ticket> PostTicket(CreateTicketDto req)
-        {
-            _ticketRepository.CheckNull();
-            
+        {            
             // check validation
             CreateTicketValidator validator = new();
             var validatorResult = validator.Validate(req);
@@ -94,8 +88,6 @@ namespace Presentation.Controllers
         [HttpGet("request/tickets")]
         public ActionResult<Ticket> GetTickes()
         {
-            _ticketRepository.CheckNull();
-
             // extract user id from token
             var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(id);
@@ -122,8 +114,6 @@ namespace Presentation.Controllers
         [HttpPost("request/tickets/{ticketId}")]
         public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
         {
-            _ticketRepository.CheckNull();
-            _messagesRepository.CheckNull();
 
             CreateMessageValidator validator = new();
             var validatorResult = validator.Validate(req);
@@ -163,15 +153,12 @@ namespace Presentation.Controllers
         [HttpGet("messages/{ticketId}")]
         public ActionResult<Ticket> GetMessages(long ticketId)
         {
-            _messagesRepository.CheckNull();
-
             // find all relative responses
             var items = _messagesRepository.FindAllByTicketId(ticketId);
             return Ok(items);
         }
 
 
-        // todo: fix this
         private bool CalculateIsCheckedField(long ticketId)
         {
             var message = _messagesRepository.FindLastMessageByTicketId(ticketId);

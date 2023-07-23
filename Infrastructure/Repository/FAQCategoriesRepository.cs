@@ -15,14 +15,6 @@ namespace Infrastructure.Repository
             return _context.FAQCategories.ToList();
         }
 
-        public override void CheckNull()
-        {
-            if (null == _context.FAQCategories)
-            {
-                throw new Exception("context is null");  // todo : make an exeption class
-            }
-        }
-
         public override void Add(FAQCategory entity)
         {
             _context.FAQCategories.Add(entity);

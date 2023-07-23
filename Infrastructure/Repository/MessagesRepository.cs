@@ -25,11 +25,6 @@ namespace Infrastructure.Repository
             _context.SaveChanges();
         }
 
-        public override void CheckNull()
-        {
-            if (null == _context.Messages) throw new Exception("context is null");
-        }
-
         public override void Add(Message entity)
         {
             _context.Messages.Add(entity);

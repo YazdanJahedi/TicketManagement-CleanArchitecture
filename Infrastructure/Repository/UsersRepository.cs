@@ -20,10 +20,5 @@ namespace Infrastructure.Repository
             _context.SaveChanges();
         }
 
-        public override void CheckNull()
-        {
-            if (null == _context.Users) throw new Exception("context is null");
-        }
-
     }
 }
