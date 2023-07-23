@@ -25,8 +25,6 @@ namespace Presentation.Controllers
         [HttpGet("tickets")]
         public ActionResult<Ticket> GetTickets()
         {
-            _ticketRepository.CheckNull(); 
-
             var items = _ticketRepository.GetAll();
             return Ok(items);
         }
@@ -34,8 +32,6 @@ namespace Presentation.Controllers
         [HttpDelete("{ticketId}")]
         public IActionResult DeleteTicket(long ticketId)
         {
-            _ticketRepository.CheckNull();
-            _messagesRepository.CheckNull();
 
             var ticket = _ticketRepository.FindById(ticketId);
 
@@ -53,8 +49,6 @@ namespace Presentation.Controllers
         [HttpPost("tickets/{ticketId}")]
         public ActionResult<Message> PostMessage(long ticketId, CreateMessageDto req)
         {
-            _ticketRepository.CheckNull();
-            _messagesRepository.CheckNull();
 
             var ticket = _ticketRepository.FindById(ticketId);
 
@@ -89,7 +83,6 @@ namespace Presentation.Controllers
         [HttpGet("messages/{ticketId}")]
         public ActionResult<Message> GetMessages(long ticketId)
         {
-            _messagesRepository.CheckNull();
 
             var items = _messagesRepository.FindAllByTicketId(ticketId);
             return Ok(items);
