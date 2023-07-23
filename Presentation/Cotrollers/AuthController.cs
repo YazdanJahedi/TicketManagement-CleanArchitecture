@@ -28,25 +28,20 @@ namespace Presentation.Controllers
         [HttpPost("signup")]
         public ActionResult<User> Signup(CreateUserDto req)
         {
-
-            _usersRepository.CheckNull();
-
-            // validation check
-            CreateUserValidator validator = new();
-            var validatorResult = validator.Validate(req);
-            if (!validatorResult.IsValid)
+            // Validation check
+            if (!CreateUserValidator.IsValid(req))
             {
-                return BadRequest(validatorResult.Errors);
+                return BadRequest("validation error: Email must be in email format and password can not be empty");
             }
 
-            // check if email is used
+            // Check if email is used
             var foundUser = _usersRepository.FindByEmail(req.Email); 
             if (foundUser != null)
             {
                 return BadRequest("this Email is used before");
             }
 
-            // creating new user
+            // Creating new user
             string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
 
             var user = new User
@@ -59,6 +54,7 @@ namespace Presentation.Controllers
                 CreationDate = DateTime.Now,
             };
 
+            // Add new user to the data base
             _usersRepository.Add(user);
             return Ok(user);
         }
@@ -67,14 +63,11 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public ActionResult<User> Login(LoginRequestDto req)
         {
-            _usersRepository.CheckNull();
 
             // check validation
-            LoginRequestValidator validator = new();
-            var validatorResult = validator.Validate(req);
-            if (!validatorResult.IsValid)
+            if (!LoginRequestValidator.IsValid(req))
             {
-                return BadRequest(validatorResult.Errors);
+                return BadRequest("validation error: Email or Password can not be empty");
             }
 
             // find user by email

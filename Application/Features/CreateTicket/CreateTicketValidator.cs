@@ -1,4 +1,6 @@
-﻿using Application.DTOs.Ticket;
+﻿using Application.DTOs;
+using Application.DTOs.Ticket;
+using Application.Features.LoginUser;
 using FluentValidation;
 
 namespace Application.Features.CreateTicket
@@ -12,6 +14,12 @@ namespace Application.Features.CreateTicket
 
             RuleFor(x => x.Description).NotNull().NotEmpty()
                 .WithMessage("Descriptiion can not be empty or null");
+        }
+        public static bool IsValid(CreateTicketDto createTicketDto)
+        {
+            CreateTicketValidator validator = new();
+            var validatorResult = validator.Validate(createTicketDto);
+            return validatorResult.IsValid;
         }
     }
 }

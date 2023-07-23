@@ -58,11 +58,9 @@ namespace Presentation.Controllers
         public ActionResult<Ticket> PostTicket(CreateTicketDto req)
         {            
             // check validation
-            CreateTicketValidator validator = new();
-            var validatorResult = validator.Validate(req);
-            if (!validatorResult.IsValid)
+            if (!CreateTicketValidator.IsValid(req))
             {
-                return BadRequest(validatorResult.Errors);
+                return BadRequest("validation error: Title can not be empty");
             }
 
             // extract id from token
@@ -114,12 +112,10 @@ namespace Presentation.Controllers
         [HttpPost("request/tickets/{ticketId}")]
         public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
         {
-
-            CreateMessageValidator validator = new();
-            var validatorResult = validator.Validate(req);
-            if (!validatorResult.IsValid)
+            // check validation
+            if (!CreateMessageValidator.IsValid(req))
             {
-                return BadRequest(validatorResult.Errors);
+                return BadRequest("validation error: Title can not be empty");
             }
 
             var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;

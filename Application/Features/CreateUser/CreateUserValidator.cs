@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Features.LoginUser;
 using FluentValidation;
 
 namespace Application.Features.CreateUser
@@ -12,6 +13,12 @@ namespace Application.Features.CreateUser
 
             RuleFor(x => x.Password).NotEmpty().NotNull()
                 .WithMessage("Password can not be empty or null");
+        }
+        public static bool IsValid(CreateUserDto createUserDto)
+        {
+            CreateUserValidator validator = new();
+            var validatorResult = validator.Validate(createUserDto);
+            return validatorResult.IsValid;
         }
     }
 }

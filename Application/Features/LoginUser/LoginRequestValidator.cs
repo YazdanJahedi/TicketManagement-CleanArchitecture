@@ -13,5 +13,12 @@ namespace Application.Features.LoginUser
             RuleFor(x => x.Password).NotEmpty().NotNull()
                 .WithMessage("Password can not be empty or null");
         }
+
+        public static bool IsValid(LoginRequestDto loginRequestDto)
+        {
+            LoginRequestValidator validator = new();
+            var validatorResult = validator.Validate(loginRequestDto);
+            return validatorResult.IsValid;
+        }
     }
 }
