@@ -43,7 +43,6 @@ namespace Presentation.Controllers
 
             // Creating new user
             string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
-
             var user = new User
             {
                 Name = req.Name,
@@ -59,33 +58,32 @@ namespace Presentation.Controllers
             return Ok(user);
         }
 
-
         [HttpPost("login")]
         public ActionResult<User> Login(LoginRequestDto req)
         {
 
-            // check validation
+            // Check validation
             if (!LoginRequestValidator.IsValid(req))
             {
                 return BadRequest("validation error: Email or Password can not be empty");
             }
 
-            // find user by email
+            // Find user by email
             var user = _usersRepository.FindByEmail(req.Email);
             if (user == null)
             {
                 return BadRequest("Email not found");
             }
 
-            // check user's password 
+            // Check user's password 
             if (!BCrypt.Net.BCrypt.Verify(req.Password, user.PasswordHash))
-                return BadRequest("password not correct");
+                return BadRequest("Password not correct");
 
             // create token
             var section = _conf.GetSection("AppSettings:Token");
             var token = CreateJwtToken.CreateToken(user, section);
 
-            return Ok("bearer " + token);
+            return Ok(token);
         }
 
         [HttpGet("WhoAmI"), Authorize]

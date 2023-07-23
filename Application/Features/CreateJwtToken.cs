@@ -28,7 +28,7 @@ namespace Application.Features
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return jwt;
+            return "bearer "  + jwt;
         }
     }
 }
