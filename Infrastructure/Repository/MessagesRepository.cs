@@ -15,7 +15,7 @@ namespace Infrastructure.Repository
 
         public Message? FindLastMessageByTicketId(long ticketId)
         {
-            return  _context.Messages.LastOrDefault(e => e.TicketId == ticketId);
+            return  _context.Messages.OrderBy(m => m.CreationDate).LastOrDefault(e => e.TicketId == ticketId);
         }
 
         public void RemoveAllByTicketId(long ticketId)

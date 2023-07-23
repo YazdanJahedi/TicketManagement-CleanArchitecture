@@ -1,10 +1,8 @@
-﻿using Application.DTOs.Message;
+﻿using Application.DTOs;
 using Application.Repository;
 using Domain.Entities;
-using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
@@ -73,11 +71,13 @@ namespace Presentation.Controllers
 
             var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(userIdString);
+            var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            if (userEmail == null) return BadRequest("Email not found");
 
             var message = new Message
             {
                 TicketId = ticketId,
-                CreatorId = userId,
+                CreatorEmail = userEmail,
                 Text = req.Text,
                 CreationDate = DateTime.Now,
             };

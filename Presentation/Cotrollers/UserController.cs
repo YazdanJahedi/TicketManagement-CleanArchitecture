@@ -1,9 +1,8 @@
-﻿using Application.DTOs.Message;
+﻿using Application.DTOs;
 using Application.DTOs.Ticket;
 using Application.Features.CreateResponse;
 using Application.Features.CreateTicket;
 using Application.Repository;
-using Application.Responses;
 using Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -22,18 +21,21 @@ namespace Presentation.Controllers
         private readonly IMessagesRepository _messagesRepository;
         private readonly IFAQCategoriesRepository _faqCategoriesRepository;
         private readonly IFAQItemsRepository _faqItemsRepository;
+        private readonly IUsersRepository _usersRepository;
 
 
         public UserController(ITicketsRepository ticketRepository, 
                               IMessagesRepository responsesRepository,
                               IFAQCategoriesRepository fAQCategoriesRepository,
-                              IFAQItemsRepository fAQItemsRepository
+                              IFAQItemsRepository fAQItemsRepository,
+                              IUsersRepository usersRepository
                               )
         {
             _ticketRepository = ticketRepository;
             _messagesRepository = responsesRepository;
             _faqCategoriesRepository = fAQCategoriesRepository;
-            _faqItemsRepository = fAQItemsRepository; 
+            _faqItemsRepository = fAQItemsRepository;
+            _usersRepository = usersRepository;
         }
 
 
@@ -110,8 +112,7 @@ namespace Presentation.Controllers
                 Description = t.Description,
                 FirstResponseDate = t.FirstResponseDate,
                 CloseDate = t.CloseDate,
-                // Call method to get IsChecked value
-                IsChecked = true,
+                IsChecked = CalculateIsCheckedField(t.Id),
                 CreationDate = t.CreationDate,
             });
             return Ok(resp);
@@ -144,14 +145,13 @@ namespace Presentation.Controllers
                 return BadRequest("You do not have access to entered ticket");
             }
 
-            // update number of responses and isChecked fields
-            //ticket.NumberOfResponses++;
-            //ticket.IsChecked = false;
+            var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            if (userEmail == null) return BadRequest("Email not found");
 
             var response = new Message
             {
                 TicketId = ticketId,
-                CreatorId = userId,
+                CreatorEmail= userEmail,
                 Text = req.Text,
                 CreationDate = DateTime.Now,
             };
@@ -168,6 +168,17 @@ namespace Presentation.Controllers
             // find all relative responses
             var items = _messagesRepository.FindAllByTicketId(ticketId);
             return Ok(items);
+        }
+
+
+        // todo: fix this
+        private bool CalculateIsCheckedField(long ticketId)
+        {
+            var message = _messagesRepository.FindLastMessageByTicketId(ticketId);
+            if (message == null) return false;
+            var user = _usersRepository.FindByEmail(message.CreatorEmail);
+            if (user == null) return false;
+            return user.Role.Equals("Admin");
         }
     }
 }
