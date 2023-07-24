@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Application.Features;
 using Application.Repository;
 using Application.DTOs;
+using Application.DTOs.LoginDtos;
 
 namespace Presentation.Controllers
 {
@@ -83,15 +84,14 @@ namespace Presentation.Controllers
             var section = _conf.GetSection("AppSettings:Token");
             var token = CreateJwtToken.CreateToken(user, section);
 
-            return Ok(token);
-        }
+            var response = new LoginResponseDto
+            {             
+                Email = user.Email,
+                Role = user.Role,
+                Token = token,
+            };
 
-        [HttpGet("WhoAmI"), Authorize]
-        public string WhoAmI()
-        {
-            var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-            var role = User.Claims.Where(x => x.Type == ClaimTypes.Role).FirstOrDefault()?.Value;
-            return $"email: {email}   role: {role}";
+            return Ok(response);
         }
 
     }

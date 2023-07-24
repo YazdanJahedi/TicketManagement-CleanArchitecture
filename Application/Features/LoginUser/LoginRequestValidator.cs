@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.LoginDtos;
 using FluentValidation;
 
 namespace Application.Features.LoginUser
