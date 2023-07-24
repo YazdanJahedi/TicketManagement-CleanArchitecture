@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Ticket;
+using Application.DTOs.TicketDtos;
 using Application.Repository;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +32,7 @@ namespace Presentation.Controllers
         {
             var ticketItems = _ticketRepository.GetAll();
             var ticketResponseItems = ticketItems.Select(t =>
-            new TicketResponse
+            new TicketResponseDto
             {
                 Id = t.Id,
                 CreatorId = t.CreatorId,

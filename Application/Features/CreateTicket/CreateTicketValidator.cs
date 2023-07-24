@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Ticket;
+using Application.DTOs.TicketDtos;
 using Application.Features.LoginUser;
 using FluentValidation;
 

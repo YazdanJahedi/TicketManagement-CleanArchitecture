@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Ticket;
+using Application.DTOs.TicketDtos;
 using Application.Features.CreateResponse;
 using Application.Features.CreateTicket;
 using Application.Repository;
@@ -95,7 +95,7 @@ namespace Presentation.Controllers
             var ticketItems = _ticketRepository.FindAllByCreatorId(userId).ToList();
 
             // Map to anther model
-            var ticketResponseItems = ticketItems.Select(t => new TicketResponse
+            var ticketResponseItems = ticketItems.Select(t => new TicketResponseDto
             {
                 Id = t.Id,
                 CreatorId = t.CreatorId,

@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.Ticket
+﻿namespace Application.DTOs.TicketDtos
 {
     public record CreateTicketDto
     {
