@@ -92,10 +92,10 @@ namespace Presentation.Controllers
             var userId = Convert.ToInt64(id);
 
             // find all relative tickets
-            var items = _ticketRepository.FindAllByCreatorId(userId).ToList();
+            var ticketItems = _ticketRepository.FindAllByCreatorId(userId).ToList();
 
             // Map to anther model
-            var resp = items.Select(t => new TicketResponse
+            var ticketResponseItems = ticketItems.Select(t => new TicketResponse
             {
                 Id = t.Id,
                 CreatorId = t.CreatorId,
@@ -107,7 +107,7 @@ namespace Presentation.Controllers
                 CreationDate = t.CreationDate,
             });
             
-            return Ok(resp);
+            return Ok(ticketResponseItems);
         }
 
 

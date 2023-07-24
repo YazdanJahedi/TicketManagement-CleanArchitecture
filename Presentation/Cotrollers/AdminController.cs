@@ -104,7 +104,7 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpGet("userInfo/{email}")]
+        [HttpGet("userInfo")]
         public ActionResult<User> GetUsreInformation(string email)
         {
             var user = _usersRepository.FindByEmail(email);
