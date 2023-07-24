@@ -12,7 +12,8 @@ namespace Infrastructure.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TicketManagementTest;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true;");
+            var connectionString = "Server=(localdb)\\mssqllocaldb;Database=TicketManagementDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true;";
+            optionsBuilder.UseSqlServer(connectionString);
         }
         
         public DbSet<User> Users { get; set; } = null!;

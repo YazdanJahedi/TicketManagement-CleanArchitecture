@@ -16,7 +16,7 @@ namespace Presentation
 
             builder.Services.AddControllers().AddFluentValidation(FluentValidationConfig.Configuration);
 
-            builder.Services.AddDbContext<ApplicationDbContext>(/*DbContextOptionConfig.Configuration*/);
+            builder.Services.AddDbContext<ApplicationDbContext>();
             
             AddScopedConfig.Configure(builder);
 
