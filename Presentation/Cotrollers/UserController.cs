@@ -15,7 +15,7 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase                         
+    public class UserController : ControllerBase
     {
 
         private readonly ITicketsRepository _ticketRepository;
@@ -25,7 +25,7 @@ namespace Presentation.Controllers
         private readonly IUsersRepository _usersRepository;
 
 
-        public UserController(ITicketsRepository ticketRepository, 
+        public UserController(ITicketsRepository ticketRepository,
                               IMessagesRepository responsesRepository,
                               IFAQCategoriesRepository fAQCategoriesRepository,
                               IFAQItemsRepository fAQItemsRepository,
@@ -41,10 +41,13 @@ namespace Presentation.Controllers
 
 
         [HttpGet("request/FAQ")]
-        public  IEnumerable<FAQCategory> GetFAQCategories()
+        public ActionResult<IEnumerable<FAQCategory>> GetFAQCategories()
         {
-            return _faqCategoriesRepository.GetAll();
+            var items = _faqCategoriesRepository.GetAll();
+
+            return Ok(items);
         }
+
 
         [HttpGet("request/FAQ/{id}")]
         public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
@@ -57,7 +60,7 @@ namespace Presentation.Controllers
 
         [HttpPost("request/tickets")]
         public ActionResult<Ticket> PostTicket(CreateTicketDto req)
-        {            
+        {
             // check validation
             if (!CreateTicketValidator.IsValid(req))
             {
@@ -85,16 +88,16 @@ namespace Presentation.Controllers
 
 
         [HttpGet("request/tickets")]
-        public ActionResult<Ticket> GetTickes()
+        public ActionResult<IEnumerable<Ticket>> GetTickes()
         {
             // extract user id from token
             var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(id);
 
             // find all relative tickets
-            var ticketItems = _ticketRepository.FindAllByCreatorId(userId).ToList();
+            var ticketItems = _ticketRepository.FindAllByCreatorId(userId);
 
-            // Map to anther model
+            // map to response model
             var ticketResponseItems = ticketItems.Select(t => new TicketResponseDto
             {
                 Id = t.Id,
@@ -106,7 +109,7 @@ namespace Presentation.Controllers
                 IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
                 CreationDate = t.CreationDate,
             });
-            
+
             return Ok(ticketResponseItems);
         }
 
@@ -122,8 +125,9 @@ namespace Presentation.Controllers
 
             var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
             var userId = Convert.ToInt64(userIdString);
-            var ticket = _ticketRepository.FindById(ticketId);
 
+            // check access validation to ticket
+            var ticket = _ticketRepository.FindById(ticketId);
             if (ticket == null)
             {
                 return BadRequest("ticketId not found");
@@ -139,7 +143,7 @@ namespace Presentation.Controllers
             var response = new Message
             {
                 TicketId = ticketId,
-                CreatorEmail= userEmail,
+                CreatorEmail = userEmail,
                 Text = req.Text,
                 CreationDate = DateTime.Now,
             };
@@ -148,10 +152,24 @@ namespace Presentation.Controllers
             return Ok(response);
         }
 
+
         [HttpGet("messages/{ticketId}")]
-        public ActionResult<Ticket> GetMessages(long ticketId)
+        public ActionResult<IEnumerable<Ticket>> GetMessages(long ticketId)
         {
-            // find all relative responses
+            var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+            var userId = Convert.ToInt64(userIdString);
+
+            // check access validation to ticket
+            var ticket = _ticketRepository.FindById(ticketId);
+            if (ticket == null)
+            {
+                return BadRequest("ticketId not found");
+            }
+            if (ticket.CreatorId != userId)
+            {
+                return BadRequest("You do not have access to entered ticket");
+            }
+
             var items = _messagesRepository.FindAllByTicketId(ticketId);
             return Ok(items);
         }

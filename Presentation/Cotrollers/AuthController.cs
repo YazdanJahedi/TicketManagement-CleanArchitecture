@@ -43,14 +43,14 @@ namespace Presentation.Controllers
             }
 
             // Creating new user
-            string passHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(req.Password);
             var user = new User
             {
                 Name = req.Name,
                 Email = req.Email,
                 Role = "User",
                 PhoneNumber = req.PhoneNumber,
-                PasswordHash = passHash,
+                PasswordHash = hashedPassword,
                 CreationDate = DateTime.Now,
             };
 
@@ -62,7 +62,6 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public ActionResult<User> Login(LoginRequestDto req)
         {
-
             // Check validation
             if (!LoginRequestValidator.IsValid(req))
             {
@@ -78,12 +77,15 @@ namespace Presentation.Controllers
 
             // Check user's password 
             if (!BCrypt.Net.BCrypt.Verify(req.Password, user.PasswordHash))
+            {
                 return BadRequest("Password not correct");
+            }
 
             // create token
             var section = _conf.GetSection("AppSettings:Token");
             var token = CreateJwtToken.CreateToken(user, section);
 
+            // create login response 
             var response = new LoginResponseDto
             {             
                 Email = user.Email,

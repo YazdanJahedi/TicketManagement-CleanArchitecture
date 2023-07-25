@@ -12,14 +12,14 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class AdminController : ControllerBase                              
+    public class AdminController : ControllerBase
     {
 
         private readonly ITicketsRepository _ticketRepository;
         private readonly IMessagesRepository _messagesRepository;
         private readonly IUsersRepository _usersRepository;
-        public AdminController(ITicketsRepository ticketRepository, 
-                               IMessagesRepository responsesRepository, 
+        public AdminController(ITicketsRepository ticketRepository,
+                               IMessagesRepository responsesRepository,
                                IUsersRepository usersRepository)
         {
             _ticketRepository = ticketRepository;
@@ -28,26 +28,31 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("tickets")]
-        public ActionResult<Ticket> GetTickets()
+        public ActionResult<IEnumerable<Ticket>> GetTickets()
         {
+            // get all items
             var ticketItems = _ticketRepository.GetAll();
+
+            // create response 
             var ticketResponseItems = ticketItems.Select(t =>
-            new TicketResponseDto
-            {
-                Id = t.Id,
-                CreatorId = t.CreatorId,
-                Title = t.Title,
-                Description = t.Description,
-                FirstResponseDate = t.FirstResponseDate,
-                CloseDate = t.CloseDate,
-                IsChecked = CommonMethods.CalculateIsCheckedField(t.Id,_usersRepository, _messagesRepository),
-                CreationDate = t.CreationDate,
-            });
+                    new TicketResponseDto
+                    {
+                        Id = t.Id,
+                        CreatorId = t.CreatorId,
+                        Title = t.Title,
+                        Description = t.Description,
+                        FirstResponseDate = t.FirstResponseDate,
+                        CloseDate = t.CloseDate,
+                        IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
+                        CreationDate = t.CreationDate,
+                    }
+                );
+
             return Ok(ticketResponseItems);
         }
 
         [HttpDelete("{ticketId}")]
-        public IActionResult DeleteTicket(long ticketId)
+        public ActionResult DeleteTicket(long ticketId)
         {
 
             var ticket = _ticketRepository.FindById(ticketId);
@@ -77,7 +82,7 @@ namespace Presentation.Controllers
             // Update first_response_date for the first response
             if (ticket.FirstResponseDate == null)
             {
-                ticket.FirstResponseDate = DateTime.Now;              
+                ticket.FirstResponseDate = DateTime.Now;
             }
 
             var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
@@ -96,19 +101,22 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("messages/{ticketId}")]
-        public ActionResult<Message> GetMessages(long ticketId)
+        public ActionResult<IEnumerable<Message>> GetMessages(long ticketId)
         {
 
             var items = _messagesRepository.FindAllByTicketId(ticketId);
             return Ok(items);
         }
 
-
         [HttpGet("userInfo")]
         public ActionResult<User> GetUsreInformation(string email)
         {
             var user = _usersRepository.FindByEmail(email);
-            if(user == null) return NotFound("User not found");
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
             return user;
         }
     }
