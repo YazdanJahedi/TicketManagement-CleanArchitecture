@@ -9,6 +9,6 @@ namespace Application.Repository
     {
         public IEnumerable<Ticket> FindAllByCreatorId(long creatorId);
         public Ticket? FindById(long id);
-        public void Remove(Ticket ticket);
+        public Task RemoveAsync(Ticket ticket);
     }
 }

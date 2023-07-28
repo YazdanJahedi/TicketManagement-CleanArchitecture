@@ -14,11 +14,6 @@ namespace Infrastructure.Repository
             return _context.Users.FirstOrDefault(e => e.Email == email);
         }
 
-        public override void Add(User entity)
-        {
-            _context.Users.Add(entity);
-            _context.SaveChanges();
-        }
 
     }
 }

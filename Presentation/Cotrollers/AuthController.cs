@@ -55,7 +55,7 @@ namespace Presentation.Controllers
             };
 
             // Add new user to the data base
-            _usersRepository.Add(user);
+            _usersRepository.AddAsync(user);
             return Ok(user);
         }
 

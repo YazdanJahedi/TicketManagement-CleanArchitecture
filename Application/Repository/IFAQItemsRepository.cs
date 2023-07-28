@@ -10,6 +10,6 @@ namespace Application.Repository
 {
     public interface IFAQItemsRepository : IBaseRepository<FAQItem>
     {
-        public IEnumerable<FAQItem> FindAllByCategoryId(long categoryId);
+        public Task<IEnumerable<FAQItem>> FindAllByCategoryIdAsync(long categoryId);
     }
 }

@@ -14,15 +14,9 @@ namespace Infrastructure.Repository
     {
         public FAQItemsRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public IEnumerable<FAQItem> FindAllByCategoryId(long categoryId)
+        public async Task<IEnumerable<FAQItem>> FindAllByCategoryIdAsync(long categoryId)
         {
-            return _context.FAQItems.Where(a => a.CategoryId == categoryId);
-        }
-
-        public override void Add(FAQItem entity)
-        {
-            _context.FAQItems.Add(entity);
-            _context.SaveChanges();
+            return await _context.FAQItems.Where(a => a.CategoryId == categoryId).ToListAsync();
         }
 
     }

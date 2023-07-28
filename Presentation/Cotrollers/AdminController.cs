@@ -31,10 +31,10 @@ namespace Presentation.Controllers
         public ActionResult<IEnumerable<Ticket>> GetTickets()
         {
             // get all items
-            var ticketItems = _ticketRepository.GetAll();
+            var ticketItems = _ticketRepository.GetAllAsync();
 
             // create response 
-            var ticketResponseItems = ticketItems.Select(t =>
+          /*  var ticketResponseItems = ticketItems.Select(t =>
                     new TicketResponseDto
                     {
                         Id = t.Id,
@@ -46,9 +46,9 @@ namespace Presentation.Controllers
                         IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
                         CreationDate = t.CreationDate,
                     }
-                );
+                );*/
 
-            return Ok(ticketResponseItems);
+            return Ok(ticketItems);
         }
 
         [HttpDelete("{ticketId}")]
@@ -63,7 +63,7 @@ namespace Presentation.Controllers
             }
 
             _messagesRepository.RemoveAllByTicketId(ticketId);
-            _ticketRepository.Remove(ticket);
+            _ticketRepository.RemoveAsync(ticket);
 
             return Ok("done");
         }
@@ -96,7 +96,7 @@ namespace Presentation.Controllers
                 CreationDate = DateTime.Now,
             };
 
-            _messagesRepository.Add(message);
+            _messagesRepository.AddAsync(message);
             return Ok(message);
         }
 
@@ -104,7 +104,7 @@ namespace Presentation.Controllers
         public ActionResult<IEnumerable<Message>> GetMessages(long ticketId)
         {
 
-            var items = _messagesRepository.FindAllByTicketId(ticketId);
+            var items = _messagesRepository.FindAllByTicketIdAsync(ticketId);
             return Ok(items);
         }
 

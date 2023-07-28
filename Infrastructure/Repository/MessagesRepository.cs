@@ -1,6 +1,7 @@
 ﻿using Application.Repository;
 using Domain.Entities;
 using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -8,26 +9,22 @@ namespace Infrastructure.Repository
     {
         public MessagesRepository(ApplicationDbContext _context): base(_context) { }
 
-        public IEnumerable<Message> FindAllByTicketId(long ticketId)
+        public async Task<IEnumerable<Message>> FindAllByTicketIdAsync(long ticketId)
         {
-            return _context.Messages.Where(a => a.TicketId == ticketId);
+            return await _context.Messages.Where(a => a.TicketId == ticketId).ToListAsync();
         }
 
+        // can be changed?? ... Think...
         public Message? FindLastMessageByTicketId(long ticketId)
         {
             return  _context.Messages.OrderBy(m => m.CreationDate).LastOrDefault(e => e.TicketId == ticketId);
         }
 
+        // delete this
         public void RemoveAllByTicketId(long ticketId)
         {
             var items = _context.Messages.Where(i => i.TicketId == ticketId);
             _context.Messages.RemoveRange(items);
-            _context.SaveChanges();
-        }
-
-        public override void Add(Message entity)
-        {
-            _context.Messages.Add(entity);
             _context.SaveChanges();
         }
 

@@ -10,17 +10,6 @@ namespace Infrastructure.Repository
     {
         public TicketsRepository(ApplicationDbContext _context): base(_context) {}
 
-        public override void Add(Ticket entity)
-        {
-            _context.Tickets.Add(entity);
-            _context.SaveChanges(); 
-        }
-
-        public override IEnumerable<Ticket> GetAll()
-        {
-            return _context.Tickets.ToList();
-        }
-
         public IEnumerable<Ticket> FindAllByCreatorId(long creatorId)
         {
             return _context.Tickets.Where(a => a.CreatorId == creatorId);
@@ -31,10 +20,11 @@ namespace Infrastructure.Repository
             return _context.Tickets.Find(id);
         }
 
-        public void Remove(Ticket ticket)
+        // make Adds return Task too...
+        public async Task RemoveAsync(Ticket ticket)
         {
             _context.Tickets.Remove(ticket);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
     }

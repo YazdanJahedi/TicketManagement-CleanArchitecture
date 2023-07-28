@@ -1,15 +1,11 @@
 ﻿using Application.Repository;
 using Domain.Common;
 using Infrastructure.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationDbContext _context;
 
@@ -18,14 +14,15 @@ namespace Infrastructure.Repository
             _context = context;
         }
 
-        public virtual void Add(T entity)
+        public async void AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().ToListAsync();
         }
 
  

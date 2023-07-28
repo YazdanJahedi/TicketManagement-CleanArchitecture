@@ -6,19 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Repository
 {
     public class FAQCategoriesRepository : BaseRepository<FAQCategory>, IFAQCategoriesRepository
-
     {
         public FAQCategoriesRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public override IEnumerable<FAQCategory> GetAll()
-        {
-            return _context.FAQCategories.ToList();
-        }
-
-        public override void Add(FAQCategory entity)
-        {
-            _context.FAQCategories.Add(entity);
-            _context.SaveChanges();
-        }
     }
 }
