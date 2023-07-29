@@ -13,7 +13,8 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<FAQCategory>> TestMethod()
         {
             return await _context.FAQCategories
-                .Include(x => x.Items).ToListAsync();
+                .Include(x => x.Items)
+                .ToListAsync();
         }
 
     }

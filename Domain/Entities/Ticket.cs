@@ -10,8 +10,9 @@ namespace Domain.Entities
         public required string Title { get; set; }
         public required string Description { get; set; }
         public DateTime? FirstResponseDate { get; set; }
-        public DateTime? CloseDate { get; set; }
 
+        //public DateTime? CloseDate { get; set; }
+        // status
         // FAQ categori id
 
         public virtual User Creator { get; set; } // = null!;
