@@ -1,4 +1,4 @@
-﻿/*using Application.DTOs;
+﻿using Application.DTOs;
 using Application.DTOs.TicketDtos;
 using Application.Features.CreateResponse;
 using Application.Features.CreateTicket;
@@ -14,7 +14,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class UserController : ControllerBase
     {
 
@@ -40,19 +40,22 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpGet("request/FAQ")]
-        public ActionResult<IEnumerable<FAQCategory>> GetFAQCategories()
+        [HttpGet("requestttttttttttttttttttt/FAQ")]
+        public async Task<ActionResult<IEnumerable<FAQCategory>>> GetFAQCategories()
         {
-            var items = _faqCategoriesRepository.GetAll();
+            //var items = _faqCategoriesRepository.GetAllAsync();
 
-            return Ok(items);
+            //
+            var i = await _faqCategoriesRepository.TestMethod();
+
+            return Ok(i);
         }
 
 
         [HttpGet("request/FAQ/{id}")]
         public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
         {
-            var items = _faqItemsRepository.FindAllByCategoryId(id);
+            var items = _faqItemsRepository.FindAllByCategoryIdAsync(id);
 
             return Ok(items);
         }
@@ -82,7 +85,7 @@ namespace Presentation.Controllers
                 CloseDate = null,
             };
 
-            _ticketRepository.Add(ticket);
+            _ticketRepository.AddAsync(ticket);
             return Ok(ticket);
         }
 
@@ -148,7 +151,7 @@ namespace Presentation.Controllers
                 CreationDate = DateTime.Now,
             };
 
-            _messagesRepository.Add(response);
+            _messagesRepository.AddAsync(response);
             return Ok(response);
         }
 
@@ -170,10 +173,9 @@ namespace Presentation.Controllers
                 return BadRequest("You do not have access to entered ticket");
             }
 
-            var items = _messagesRepository.FindAllByTicketId(ticketId);
+            var items = _messagesRepository.FindAllByTicketIdAsync(ticketId);
             return Ok(items);
         }
 
     }
 }
-*/

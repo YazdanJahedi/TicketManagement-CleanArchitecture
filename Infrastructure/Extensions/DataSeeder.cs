@@ -21,6 +21,8 @@ namespace Infrastructure.Extensions
                         Email = "admin@admin.com",
                         PasswordHash = "$2a$11$.64fLerPDfuVgkHnbF3o6uBF1MGQqfxYoPivqq8HkwvevmKIbT5gy", // 1234
                         Role = "Admin",
+                        PhoneNumber = "1234567890",
+                        Name = "Admin",
                     }
                 );
         }

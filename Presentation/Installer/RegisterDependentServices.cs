@@ -34,7 +34,11 @@ namespace Presentation.Installer
                         options.ImplicitlyValidateChildProperties = true;
                         options.ImplicitlyValidateRootCollectionElements = true;
                         options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-                    });
+                    }
+                ).AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
         }
 
         private static void RegisterSwaggerGen(this IServiceCollection service)
