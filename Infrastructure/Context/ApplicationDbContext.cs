@@ -20,6 +20,15 @@ namespace Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Ticket>()
+                .HasOne<User>(t => t.Creator)
+                .WithMany(u => u.Tickets)
+                .HasForeignKey(t => t.CreatorId);
+
+            modelBuilder.Entity<Message>()
+                .HasOne<Ticket>(m => m.Ticket)
+                .WithMany(t => t.Messages)
+                .HasForeignKey(m => m.TicketId);
             modelBuilder.Seed();
         }
 

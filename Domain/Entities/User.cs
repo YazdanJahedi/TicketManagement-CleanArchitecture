@@ -9,5 +9,8 @@ namespace Domain.Entities
         public required string Role { get; set; }
         public required string PasswordHash { get; set; }
         public string? PhoneNumber { get; set; }
+
+        public virtual ICollection<Ticket>? Tickets { get; set; }
+
     }
 }
