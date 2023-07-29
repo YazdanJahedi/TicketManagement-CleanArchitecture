@@ -11,6 +11,6 @@ namespace Domain.Entities
         public required string Description { get; set; }
 
 
-        public virtual FAQCategory Category { get; set; }
+        public virtual FAQCategory? Category { get; set; }
     }
 }

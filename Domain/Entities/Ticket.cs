@@ -15,7 +15,7 @@ namespace Domain.Entities
         // status
         // FAQ categori id
 
-        public virtual User Creator { get; set; } // = null!;
+        public virtual User? Creator { get; set; } // = null!;
         public virtual ICollection<Message>? Messages { get; set; }
     }
 }
