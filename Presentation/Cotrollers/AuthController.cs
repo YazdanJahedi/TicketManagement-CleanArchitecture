@@ -5,6 +5,7 @@ using Application.Repository;
 using Application.DTOs.UserDtos;
 using Application.Features.UserFeatures.Queries.Login;
 using MediatR;
+using Application.DTOs;
 
 namespace Presentation.Controllers
 {
@@ -59,9 +60,10 @@ namespace Presentation.Controllers
             {
                 var response = await _mediator.Send(req);
                 return Ok(response);
-            } catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
+            } 
+            catch (Exception ex)
+            {  
+                return BadRequest(new ExceptionDto(ex.GetType().Name , ex.Message));               
             }
             
         }

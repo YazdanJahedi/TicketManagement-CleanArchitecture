@@ -1,4 +1,5 @@
-﻿using Application.DTOs.UserDtos;
+﻿using Application.Common.Exceptions;
+using Application.DTOs.UserDtos;
 using Application.Repository;
 using BCrypt.Net;
 using MediatR;
@@ -22,15 +23,15 @@ namespace Application.Features.UserFeatures.Queries.Login
             // Check validation
             if (!LoginRequestValidator.IsValid(request))
             {
-                throw new Exception("validation error: Email or Password can not be empty");
+                throw new ValidationErrorException("Email should be in email form and password can not be empty");
             }
 
             // Find user by email
             var user = await _usersRepository.FindByEmailAsync(request.Email);
-            if (user == null) throw new Exception("something"); // user or pass not correct 
+            if (user == null) throw new NotFoundException("username or password is not correct"); 
 
             var isPasswordVerified = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
-            if (!isPasswordVerified) throw new Exception("something");  // user or pass not correct 
+            if (!isPasswordVerified) throw new NotFoundException("username or password is not correct");
 
             // create token
             var token = CreateJwtToken.CreateToken(user);
