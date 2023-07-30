@@ -1,7 +1,6 @@
-using Application.DTOs;
-using Application.DTOs.LoginDtos;
-using Application.Features.CreateUser;
-using Application.Features.LoginUser;
+using Application.DTOs.UserDtos;
+using Application.Features.User.Commands.Signup;
+using Application.Features.User.Queries.Login;
 
 namespace Test
 {
@@ -11,7 +10,7 @@ namespace Test
         [TestMethod]
         public void TestCreateUserRequestValidation1()
         {
-            CreateUserDto req = new CreateUserDto
+            SignupRequest req = new SignupRequest
             { 
                 Email = "ali.123",   // email is not valid
                 Name  = "ali",
@@ -19,7 +18,7 @@ namespace Test
                 PhoneNumber = "1234567890",              
             };
 
-            CreateUserValidator validator = new();
+            SignupRequestValidator validator = new();
             var validatorResult = validator.Validate(req);
 
             if (validatorResult.IsValid)
@@ -29,7 +28,7 @@ namespace Test
         [TestMethod]
         public void TestCreateUserRequestValidation2()
         {
-            CreateUserDto req = new CreateUserDto
+            SignupRequest req = new SignupRequest
             {
                 Email = "ali@ali.com",   // email is valid
                 Name = "ali",
@@ -37,7 +36,7 @@ namespace Test
                 PhoneNumber = "1234567890",
             };
 
-            CreateUserValidator validator = new();
+            SignupRequestValidator validator = new();
             var validatorResult = validator.Validate(req);
 
             if (!validatorResult.IsValid)
@@ -47,7 +46,7 @@ namespace Test
         [TestMethod]
         public void TestLoginRequestValidation1()
         {
-            LoginRequestDto req = new LoginRequestDto
+            LoginRequest req = new LoginRequest
             {
                 Email = "hassan@",   // email is not valid
                 Password = "something",
@@ -63,7 +62,7 @@ namespace Test
         [TestMethod]
         public void TestLoginRequestValidation2()
         {
-            LoginRequestDto req = new LoginRequestDto
+            LoginRequest req = new LoginRequest
             {
                 Email = "ali33@ali12.com",   // email is valid
                 Password = "something",

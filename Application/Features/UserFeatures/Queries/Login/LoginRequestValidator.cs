@@ -1,11 +1,11 @@
-﻿using Application.DTOs.LoginDtos;
+﻿using Application.DTOs.UserDtos;
 using FluentValidation;
 
-namespace Application.Features.LoginUser
+namespace Application.Features.UserFeatures.Queries.Login
 {
-    public class LoginRequestValidator : AbstractValidator<LoginRequestDto>
+    public class LoginRequestValidator : AbstractValidator<LoginRequest>
     {
-        public LoginRequestValidator() 
+        public LoginRequestValidator()
         {
             RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress()
                 .WithMessage("Email can not be empty or null");
@@ -14,7 +14,7 @@ namespace Application.Features.LoginUser
                 .WithMessage("Password can not be empty or null");
         }
 
-        public static bool IsValid(LoginRequestDto loginRequestDto)
+        public static bool IsValid(LoginRequest loginRequestDto)
         {
             LoginRequestValidator validator = new();
             var validatorResult = validator.Validate(loginRequestDto);

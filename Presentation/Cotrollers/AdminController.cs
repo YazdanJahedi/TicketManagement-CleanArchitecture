@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿/*using Application.DTOs.MessageDtos;
 using Application.DTOs.TicketDtos;
 using Application.Repository;
 using Domain.Entities;
@@ -34,7 +34,7 @@ namespace Presentation.Controllers
             var ticketItems = _ticketRepository.GetAllAsync();
 
             // create response 
-          /*  var ticketResponseItems = ticketItems.Select(t =>
+          *//*  var ticketResponseItems = ticketItems.Select(t =>
                     new TicketResponseDto
                     {
                         Id = t.Id,
@@ -46,7 +46,7 @@ namespace Presentation.Controllers
                         IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
                         CreationDate = t.CreationDate,
                     }
-                );*/
+                );*//*
 
             return Ok(ticketItems);
         }
@@ -121,3 +121,4 @@ namespace Presentation.Controllers
         }
     }
 }
+*/

@@ -4,7 +4,7 @@ namespace Application.Repository
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        public void AddAsync(T entity);
+        public void AddAsync(T entity); // return Task
         public Task<IEnumerable<T>> GetAllAsync();
 
     }

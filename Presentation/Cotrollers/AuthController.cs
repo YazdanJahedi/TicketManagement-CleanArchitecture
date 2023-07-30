@@ -1,14 +1,10 @@
-﻿using Application.Features.CreateUser;
-using Application.Features.LoginUser;
-using Domain.Entities;
-using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using Application.Features;
 using Application.Repository;
-using Application.DTOs;
-using Application.DTOs.LoginDtos;
+using Application.DTOs.UserDtos;
+using Application.Features.UserFeatures.Queries.Login;
+using MediatR;
 
 namespace Presentation.Controllers
 {
@@ -17,20 +13,17 @@ namespace Presentation.Controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly IUsersRepository _usersRepository;
-        private readonly IConfiguration _conf;
-
-        public AuthController(IConfiguration conf, IUsersRepository usersRepository)
+        private readonly IMediator _mediator;
+        public AuthController(IMediator mediator)
         {
-            _conf = conf;
-            _usersRepository = usersRepository;
+            _mediator = mediator;
         }
 
-        [HttpPost("signup")]
-        public ActionResult<User> Signup(CreateUserDto req)
+        /*[HttpPost("signup")]
+        public ActionResult<User> Signup(SignupRequest req)
         {
             // Validation check
-            if (!CreateUserValidator.IsValid(req))
+            if (!SignupRequestValidator.IsValid(req))
             {
                 return BadRequest("validation error: Email must be in email format and password can not be empty");
             }
@@ -57,43 +50,20 @@ namespace Presentation.Controllers
             // Add new user to the data base
             _usersRepository.AddAsync(user);
             return Ok(user);
-        }
+        }*/
 
         [HttpPost("login")]
-        public ActionResult<User> Login(LoginRequestDto req)
+        public async Task<ActionResult<User>> Login(LoginRequest req)
         {
-            // Check validation
-            if (!LoginRequestValidator.IsValid(req))
+            try
             {
-                return BadRequest("validation error: Email or Password can not be empty");
-            }
-
-            // Find user by email
-            var user = _usersRepository.FindByEmail(req.Email);
-            if (user == null)
+                var response = await _mediator.Send(req);
+                return Ok(response);
+            } catch (Exception ex)
             {
-                return BadRequest("Email not found");
+                return BadRequest(ex.Message);
             }
-
-            // Check user's password 
-            if (!BCrypt.Net.BCrypt.Verify(req.Password, user.PasswordHash))
-            {
-                return BadRequest("Password not correct");
-            }
-
-            // create token
-            var section = _conf.GetSection("AppSettings:Token");
-            var token = CreateJwtToken.CreateToken(user, section);
-
-            // create login response 
-            var response = new LoginResponseDto
-            {             
-                Email = user.Email,
-                Role = user.Role,
-                Token = token,
-            };
-
-            return Ok(response);
+            
         }
 
     }

@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.MessageDtos;
 using FluentValidation;
 
 namespace Application.Features.CreateResponse

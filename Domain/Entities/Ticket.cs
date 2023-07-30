@@ -7,15 +7,15 @@ namespace Domain.Entities
     {
         [ForeignKey("Creator")]
         public required long CreatorId { get; set; }
+        public virtual User? Creator { get; set; }
+
+        [ForeignKey("FAQCategory")]
+        public required long FaqCategoryId { get; set; }
+
         public required string Title { get; set; }
         public required string Description { get; set; }
         public DateTime? FirstResponseDate { get; set; }
-
-        //public DateTime? CloseDate { get; set; }
-        // status
-        // FAQ categori id
-
-        public virtual User? Creator { get; set; } // = null!;
+ 
         public virtual ICollection<Message>? Messages { get; set; }
     }
 }

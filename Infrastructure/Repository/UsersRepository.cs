@@ -1,6 +1,7 @@
 ﻿using Application.Repository;
 using Domain.Entities;
 using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Repository
@@ -9,9 +10,9 @@ namespace Infrastructure.Repository
     {
         public UsersRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public User? FindByEmail(string email)
+        public async Task<User?> FindByEmailAsync(string email)
         {
-            return _context.Users.FirstOrDefault(e => e.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
         }
 
 

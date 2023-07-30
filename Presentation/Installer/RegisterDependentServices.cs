@@ -1,12 +1,15 @@
-﻿using Application.Repository;
+﻿using Application.Features.UserFeatures.Queries.Login;
+using Application.Repository;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
 using Infrastructure.Repository;
+using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 using System.Text;
+using System.Web.Mvc;
 
 namespace Presentation.Installer
 {
@@ -80,6 +83,9 @@ namespace Presentation.Installer
             service.AddScoped<IMessagesRepository, MessagesRepository>();
             service.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
             service.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
+
+            // correct it
+            service.AddMediatR(typeof(LoginRequestQuery));
         }
 
     }

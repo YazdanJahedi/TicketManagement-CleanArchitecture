@@ -1,6 +1,8 @@
-﻿namespace Application.DTOs.LoginDtos
+﻿using MediatR;
+
+namespace Application.DTOs.UserDtos
 {
-    public record LoginRequestDto
+    public record LoginRequest : IRequest<LoginResponse>
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
