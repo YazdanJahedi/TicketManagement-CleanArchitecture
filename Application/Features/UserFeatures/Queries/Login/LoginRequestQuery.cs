@@ -1,11 +1,8 @@
 ﻿using Application.Common.Exceptions;
 using Application.DTOs.UserDtos;
 using Application.Repository;
-using BCrypt.Net;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System.Web.Helpers;
-using System.Web.Mvc;
+
 
 namespace Application.Features.UserFeatures.Queries.Login
 {

@@ -20,38 +20,19 @@ namespace Presentation.Controllers
             _mediator = mediator;
         }
 
-        /*[HttpPost("signup")]
+        [HttpPost("signup")]
         public ActionResult<User> Signup(SignupRequest req)
         {
-            // Validation check
-            if (!SignupRequestValidator.IsValid(req))
+            try
             {
-                return BadRequest("validation error: Email must be in email format and password can not be empty");
+                var response = _mediator.Send(req);
+                return Ok(response);
             }
-
-            // Check if email is used
-            var foundUser = _usersRepository.FindByEmail(req.Email); 
-            if (foundUser != null)
+            catch (Exception ex)
             {
-                return BadRequest("this Email is used before");
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }
-
-            // Creating new user
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(req.Password);
-            var user = new User
-            {
-                Name = req.Name,
-                Email = req.Email,
-                Role = "User",
-                PhoneNumber = req.PhoneNumber,
-                PasswordHash = hashedPassword,
-                CreationDate = DateTime.Now,
-            };
-
-            // Add new user to the data base
-            _usersRepository.AddAsync(user);
-            return Ok(user);
-        }*/
+        }
 
         [HttpPost("login")]
         public async Task<ActionResult<User>> Login(LoginRequest req)

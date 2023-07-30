@@ -2,7 +2,7 @@
 
 namespace Application.DTOs.UserDtos
 {
-    public record SignupRequest : IRequest
+    public record SignupRequest : IRequest<SignupResponse>
     {
         public required string Name { get; set; }
         public required string Email { get; set; }

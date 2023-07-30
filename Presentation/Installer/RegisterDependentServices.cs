@@ -1,4 +1,6 @@
-﻿using Application.Features.UserFeatures.Queries.Login;
+﻿using Application.DTOs.UserDtos;
+using Application.Features.UserFeatures.Commands.Signup;
+using Application.Features.UserFeatures.Queries.Login;
 using Application.Repository;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
@@ -86,6 +88,7 @@ namespace Presentation.Installer
 
             // correct it
             service.AddMediatR(typeof(LoginRequestQuery));
+            service.AddMediatR(typeof(SignupRequestQuery));
         }
 
     }
