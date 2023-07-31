@@ -15,9 +15,9 @@ namespace Infrastructure.Repository
             return _context.Tickets.Where(a => a.CreatorId == creatorId);
         }
 
-        public Ticket? FindById(long id)
+        public async Task<Ticket?> FindByIdAsync(long id)
         {
-            return _context.Tickets.Find(id);
+            return await _context.Tickets.FindAsync(id);
         }
 
         // make Adds return Task too...
