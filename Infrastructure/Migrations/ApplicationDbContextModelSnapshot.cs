@@ -136,10 +136,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatorEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -162,9 +158,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime?>("CloseDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -174,6 +167,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FaqCategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("FirstResponseDate")
                         .HasColumnType("datetime2");
@@ -185,6 +181,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("FaqCategoryId");
 
                     b.ToTable("Tickets");
                 });
@@ -267,7 +265,15 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.FAQCategory", "FaqCategory")
+                        .WithMany()
+                        .HasForeignKey("FaqCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Creator");
+
+                    b.Navigation("FaqCategory");
                 });
 
             modelBuilder.Entity("Domain.Entities.FAQCategory", b =>

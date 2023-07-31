@@ -11,6 +11,7 @@ namespace Domain.Entities
 
         [ForeignKey("FAQCategory")]
         public required long FaqCategoryId { get; set; }
+        public virtual FAQCategory? FaqCategory { get; set; }
 
         public required string Title { get; set; }
         public required string Description { get; set; }

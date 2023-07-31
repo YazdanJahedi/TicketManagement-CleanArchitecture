@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class inint : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,15 +74,21 @@ namespace Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    FaqCategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstResponseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CloseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_FAQCategories_FaqCategoryId",
+                        column: x => x.FaqCategoryId,
+                        principalTable: "FAQCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tickets_Users_CreatorId",
                         column: x => x.CreatorId,
@@ -99,7 +105,6 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TicketId = table.Column<long>(type: "bigint", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatorEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -153,6 +158,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Tickets_CreatorId",
                 table: "Tickets",
                 column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_FaqCategoryId",
+                table: "Tickets",
+                column: "FaqCategoryId");
         }
 
         /// <inheritdoc />
@@ -165,10 +175,10 @@ namespace Infrastructure.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "FAQCategories");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "FAQCategories");
 
             migrationBuilder.DropTable(
                 name: "Users");

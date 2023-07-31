@@ -36,10 +36,15 @@ namespace Infrastructure.Context
                 .WithMany(c => c.Items)
                 .HasForeignKey(i => i.CategoryId);
 
-            modelBuilder.Entity<Message>()
-                .HasOne<User>(m => m.Creator)
+            //modelBuilder.Entity<Message>()
+            //    .HasOne<User>(m => m.Creator)
+            //    .WithMany()
+            //    .HasForeignKey(m => m.CreatorId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne<FAQCategory>(t => t.FaqCategory)
                 .WithMany()
-                .HasForeignKey(m => m.CreatorId);
+                .HasForeignKey(t => t.FaqCategoryId);
 
             modelBuilder.Seed();
         }
