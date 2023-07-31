@@ -1,182 +1,150 @@
-﻿/*using Application.DTOs.MessageDtos;
+﻿using Application.DTOs;
+using Application.DTOs.MessageDtos;
 using Application.DTOs.TicketDtos;
-using Application.Features.CreateResponse;
-using Application.Features.CreateTicket;
-using Application.Repository;
-using Domain.Entities;
-using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Common;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
 
-        private readonly ITicketsRepository _ticketRepository;
-        private readonly IMessagesRepository _messagesRepository;
-        private readonly IFAQCategoriesRepository _faqCategoriesRepository;
-        private readonly IFAQItemsRepository _faqItemsRepository;
-        private readonly IUsersRepository _usersRepository;
+        private readonly IMediator _mediator;
 
-
-        public UserController(ITicketsRepository ticketRepository,
-                              IMessagesRepository responsesRepository,
-                              IFAQCategoriesRepository fAQCategoriesRepository,
-                              IFAQItemsRepository fAQItemsRepository,
-                              IUsersRepository usersRepository
-                              )
+        public UserController(IMediator mediator)
         {
-            _ticketRepository = ticketRepository;
-            _messagesRepository = responsesRepository;
-            _faqCategoriesRepository = fAQCategoriesRepository;
-            _faqItemsRepository = fAQItemsRepository;
-            _usersRepository = usersRepository;
+            _mediator = mediator;
         }
 
 
-        [HttpGet("requestttttttttttttttttttt/FAQ")]
-        public async Task<ActionResult<IEnumerable<FAQCategory>>> GetFAQCategories()
-        {
-            //var items = _faqCategoriesRepository.GetAllAsync();
+        //[HttpGet("requestttttttttttttttttttt/FAQ")]
+        //public async Task<ActionResult<IEnumerable<FAQCategory>>> GetFAQCategories()
+        //{
+        //    //var items = _faqCategoriesRepository.GetAllAsync();
 
-            //
-            var i = await _faqCategoriesRepository.TestMethod();
+        //    //
+        //    var i = await _faqCategoriesRepository.TestMethod();
 
-            return Ok(i);
-        }
+        //    return Ok(i);
+        //}
 
 
-        [HttpGet("request/FAQ/{id}")]
-        public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
-        {
-            var items = _faqItemsRepository.FindAllByCategoryIdAsync(id);
+        //[HttpGet("request/FAQ/{id}")]
+        //public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
+        //{
+        //    var items = _faqItemsRepository.FindAllByCategoryIdAsync(id);
 
-            return Ok(items);
-        }
+        //    return Ok(items);
+        //}
 
 
         [HttpPost("request/tickets")]
-        public ActionResult<Ticket> PostTicket(CreateTicketDto req)
+        public async Task<ActionResult<CreateTicketResponse>> PostTicket(CreateTicketRequest req)
         {
-            // check validation
-            if (!CreateTicketValidator.IsValid(req))
+            try
             {
-                return BadRequest("validation error: Title can not be empty");
+                var response = await _mediator.Send(req);
+                return Ok(response);
             }
-
-            // extract id from token
-            var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-            var userId = Convert.ToInt64(id);
-
-            // create a new ticket instance
-            var ticket = new Ticket
+            catch(Exception ex)
             {
-                CreatorId = userId,
-                Title = req.Title,
-                Description = req.Description,
-                CreationDate = DateTime.Now,
-                FirstResponseDate = null,
-                CloseDate = null,
-            };
-
-            _ticketRepository.AddAsync(ticket);
-            return Ok(ticket);
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
         }
 
 
-        [HttpGet("request/tickets")]
-        public ActionResult<IEnumerable<Ticket>> GetTickes()
-        {
-            // extract user id from token
-            var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-            var userId = Convert.ToInt64(id);
+    //    [HttpGet("request/tickets")]
+    //    public ActionResult<IEnumerable<Ticket>> GetTickes()
+    //    {
+    //        // extract user id from token
+    //        var v = User.Claims;
+    //        User.
+    //        var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+    //        var userId = Convert.ToInt64(id);
 
-            // find all relative tickets
-            var ticketItems = _ticketRepository.FindAllByCreatorId(userId);
+    //        // find all relative tickets
+    //        var ticketItems = _ticketRepository.FindAllByCreatorId(userId);
 
-            // map to response model
-            var ticketResponseItems = ticketItems.Select(t => new TicketResponseDto
-            {
-                Id = t.Id,
-                CreatorId = t.CreatorId,
-                Title = t.Title,
-                Description = t.Description,
-                FirstResponseDate = t.FirstResponseDate,
-                CloseDate = t.CloseDate,
-                IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
-                CreationDate = t.CreationDate,
-            });
+    //        // map to response model
+    //        var ticketResponseItems = ticketItems.Select(t => new CreateTicketResponse
+    //        {
+    //            Id = t.Id,
+    //            CreatorId = t.CreatorId,
+    //            Title = t.Title,
+    //            FirstResponseDate = t.FirstResponseDate,
+    //            //IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
+    //            CreationDate = t.CreationDate,
+    //            FaqCategoryId = 1,
+    //        });
 
-            return Ok(ticketResponseItems);
-        }
-
-
-        [HttpPost("request/tickets/{ticketId}")]
-        public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
-        {
-            // check validation
-            if (!CreateMessageValidator.IsValid(req))
-            {
-                return BadRequest("validation error: Title can not be empty");
-            }
-
-            var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-            var userId = Convert.ToInt64(userIdString);
-
-            // check access validation to ticket
-            var ticket = _ticketRepository.FindById(ticketId);
-            if (ticket == null)
-            {
-                return BadRequest("ticketId not found");
-            }
-            if (ticket.CreatorId != userId)
-            {
-                return BadRequest("You do not have access to entered ticket");
-            }
-
-            var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-            if (userEmail == null) return BadRequest("Email not found");
-
-            var response = new Message
-            {
-                TicketId = ticketId,
-                CreatorEmail = userEmail,
-                Text = req.Text,
-                CreationDate = DateTime.Now,
-            };
-
-            _messagesRepository.AddAsync(response);
-            return Ok(response);
-        }
+    //        return Ok(ticketResponseItems);
+    //    }
 
 
-        [HttpGet("messages/{ticketId}")]
-        public ActionResult<IEnumerable<Ticket>> GetMessages(long ticketId)
-        {
-            var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-            var userId = Convert.ToInt64(userIdString);
+    //    [HttpPost("request/tickets/{ticketId}")]
+    //    public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
+    //    {
+    //        // check validation
+    //        if (!CreateMessageValidator.IsValid(req))
+    //        {
+    //            return BadRequest("validation error: Title can not be empty");
+    //        }
 
-            // check access validation to ticket
-            var ticket = _ticketRepository.FindById(ticketId);
-            if (ticket == null)
-            {
-                return BadRequest("ticketId not found");
-            }
-            if (ticket.CreatorId != userId)
-            {
-                return BadRequest("You do not have access to entered ticket");
-            }
+    //        var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+    //        var userId = Convert.ToInt64(userIdString);
 
-            var items = _messagesRepository.FindAllByTicketIdAsync(ticketId);
-            return Ok(items);
-        }
+    //        // check access validation to ticket
+    //        var ticket = _ticketRepository.FindById(ticketId);
+    //        if (ticket == null)
+    //        {
+    //            return BadRequest("ticketId not found");
+    //        }
+    //        if (ticket.CreatorId != userId)
+    //        {
+    //            return BadRequest("You do not have access to entered ticket");
+    //        }
+
+    //        var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+    //        if (userEmail == null) return BadRequest("Email not found");
+
+    //        var response = new Message
+    //        {
+    //            TicketId = ticketId,
+    //            CreatorId = userId,
+    //            Text = req.Text,
+    //            CreationDate = DateTime.Now,
+    //        };
+
+    //        _messagesRepository.AddAsync(response);
+    //        return Ok(response);
+    //    }
+
+
+    //    [HttpGet("messages/{ticketId}")]
+    //    public ActionResult<IEnumerable<Ticket>> GetMessages(long ticketId)
+    //    {
+    //        var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+    //        var userId = Convert.ToInt64(userIdString);
+
+    //        // check access validation to ticket
+    //        var ticket = _ticketRepository.FindById(ticketId);
+    //        if (ticket == null)
+    //        {
+    //            return BadRequest("ticketId not found");
+    //        }
+    //        if (ticket.CreatorId != userId)
+    //        {
+    //            return BadRequest("You do not have access to entered ticket");
+    //        }
+
+    //        var items = _messagesRepository.FindAllByTicketIdAsync(ticketId);
+    //        return Ok(items);
+    //    }
 
     }
 }
-*/

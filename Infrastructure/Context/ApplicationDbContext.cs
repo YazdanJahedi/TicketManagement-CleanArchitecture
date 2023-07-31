@@ -34,12 +34,15 @@ namespace Infrastructure.Context
             modelBuilder.Entity<FAQItem>()
                 .HasOne<FAQCategory>(i => i.Category)
                 .WithMany(c => c.Items)
-                .HasForeignKey(i => i.CategoryId);
+                .HasForeignKey(i => i.CategoryId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<Message>()
-            //    .HasOne<User>(m => m.Creator)
-            //    .WithMany()
-            //    .HasForeignKey(m => m.CreatorId);
+            modelBuilder.Entity<Message>()
+                .HasOne<User>(m => m.Creator)
+                .WithMany()
+                .HasForeignKey(m => m.CreatorId)
+                .OnDelete(DeleteBehavior.NoAction);
+                
 
             modelBuilder.Entity<Ticket>()
                 .HasOne<FAQCategory>(t => t.FaqCategory)

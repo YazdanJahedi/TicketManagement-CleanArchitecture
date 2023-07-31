@@ -7,11 +7,10 @@ namespace Application.Features.UserFeatures.Commands.Signup
     {
         public SignupRequestValidator()
         {
-            RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress()
-                .WithMessage("Email can not be empty or null");
-
-            RuleFor(x => x.Password).NotEmpty().NotNull()
-                .WithMessage("Password can not be empty or null");
+            RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress();
+            RuleFor(x => x.Password).NotEmpty().NotNull();
+            RuleFor(x => x.PhoneNumber).NotEmpty().NotNull();
+            RuleFor(x => x.Name).NotEmpty().NotNull();
         }
         public static bool IsValid(SignupRequest createUserDto)
         {

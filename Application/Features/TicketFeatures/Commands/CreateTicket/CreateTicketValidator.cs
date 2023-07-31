@@ -2,9 +2,9 @@
 using Application.DTOs.TicketDtos;
 using FluentValidation;
 
-namespace Application.Features.CreateTicket
+namespace Application.Features.TicketFeatures.Commands.CreateTicket
 {
-    public class CreateTicketValidator : AbstractValidator<CreateTicketDto>
+    public class CreateTicketValidator : AbstractValidator<CreateTicketRequest>
     {
         public CreateTicketValidator()
         {
@@ -14,7 +14,7 @@ namespace Application.Features.CreateTicket
             RuleFor(x => x.Description).NotNull().NotEmpty()
                 .WithMessage("Descriptiion can not be empty or null");
         }
-        public static bool IsValid(CreateTicketDto createTicketDto)
+        public static bool IsValid(CreateTicketRequest createTicketDto)
         {
             CreateTicketValidator validator = new();
             var validatorResult = validator.Validate(createTicketDto);

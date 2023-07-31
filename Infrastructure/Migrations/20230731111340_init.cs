@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class inint : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,8 +63,7 @@ namespace Infrastructure.Migrations
                         name: "FK_FAQItems_FAQCategories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "FAQCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -76,7 +75,6 @@ namespace Infrastructure.Migrations
                     CreatorId = table.Column<long>(type: "bigint", nullable: false),
                     FaqCategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstResponseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -104,6 +102,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TicketId = table.Column<long>(type: "bigint", nullable: false),
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -116,6 +115,11 @@ namespace Infrastructure.Migrations
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -148,6 +152,11 @@ namespace Infrastructure.Migrations
                 name: "IX_FAQItems_CategoryId",
                 table: "FAQItems",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_CreatorId",
+                table: "Messages",
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_TicketId",

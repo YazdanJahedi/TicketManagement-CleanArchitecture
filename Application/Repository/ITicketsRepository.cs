@@ -1,5 +1,4 @@
-﻿using Application.Features.CreateTicket;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Eventing.Reader;
 

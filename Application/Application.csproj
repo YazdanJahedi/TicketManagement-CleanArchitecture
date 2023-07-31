@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="DTOs\FaqCategoryDto\" />
     <Folder Include="DTOs\FaqItemsDto\" />
+    <Folder Include="Features\TicketFeatures\Queries\" />
   </ItemGroup>
 
 </Project>

@@ -9,9 +9,9 @@ namespace Domain.Entities
         public required long TicketId { get; set; }
         public virtual Ticket? Ticket { get; set; }
 
-        //[ForeignKey("Creator")]
-        //public required long CreatorId { get; set; }
-        //public virtual User? Creator { get; set; }
+        [ForeignKey("Creator")]
+        public required long CreatorId { get; set; }
+        public virtual User? Creator { get; set; }
 
         public required string Text { get; set; }
 
