@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.TicketFeatures.Commands.CreateTicket
 {
-    public class CreateTicketQuery : IRequestHandler<CreateTicketRequest, CreateTicketResponse>
+    public class CreateTicketCommand : IRequestHandler<CreateTicketRequest, CreateTicketResponse>
     {
 
         private readonly ITicketsRepository _ticketRepository;
         private readonly IMessagesRepository _messagesRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateTicketQuery(ITicketsRepository ticketRepository, IMessagesRepository messagesRepository, IHttpContextAccessor httpContextAccessor)
+        public CreateTicketCommand(ITicketsRepository ticketRepository, IMessagesRepository messagesRepository, IHttpContextAccessor httpContextAccessor)
         {
             _ticketRepository = ticketRepository;
             _messagesRepository = messagesRepository;

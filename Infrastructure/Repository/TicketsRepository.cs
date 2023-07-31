@@ -17,7 +17,10 @@ namespace Infrastructure.Repository
 
         public async Task<Ticket?> FindByIdAsync(long id)
         {
-            return await _context.Tickets.FindAsync(id);
+            return await _context.Tickets
+                .Include(t => t.Messages)
+                .Include(m => m.Creator)
+                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         // make Adds return Task too...

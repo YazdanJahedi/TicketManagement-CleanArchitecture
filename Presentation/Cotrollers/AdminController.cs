@@ -61,6 +61,20 @@ namespace Presentation.Controllers
             }
         }
 
+
+        [HttpPost("GetFullTicket/{ticketId}")]
+        public async Task<ActionResult<GetTicketResponse>> GetFullTicket(long ticketId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetTicketRequest(ticketId));
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
  /*       [HttpPost("tickets/{ticketId}")]
         public ActionResult<Message> PostMessage(long ticketId, CreateMessageDto req)
         {

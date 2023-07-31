@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 namespace Application.Features.TicketFeatures.Commands.DeleteTicket
 {
 
-    internal class DeleteTicketQuery : IRequestHandler<DeleteTicketRequest>
+    internal class DeleteTicketCommand : IRequestHandler<DeleteTicketRequest>
     {
         private readonly ITicketsRepository _ticketsRepository;
-        public DeleteTicketQuery(ITicketsRepository ticketsRepository) 
+        public DeleteTicketCommand(ITicketsRepository ticketsRepository) 
         { 
             _ticketsRepository = ticketsRepository;
         }

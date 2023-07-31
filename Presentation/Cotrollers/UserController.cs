@@ -141,7 +141,6 @@ namespace Presentation.Controllers
     //        {
     //            return BadRequest("You do not have access to entered ticket");
     //        }
-
     //        var items = _messagesRepository.FindAllByTicketIdAsync(ticketId);
     //        return Ok(items);
     //    }

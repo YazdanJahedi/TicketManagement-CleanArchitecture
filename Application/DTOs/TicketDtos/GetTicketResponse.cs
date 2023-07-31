@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.DTOs.MessageDtos;
+using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +10,9 @@ namespace Application.DTOs.TicketDtos
 {
     public record GetTicketResponse
     {
-        // NOT USED YET
-        public bool? IsChecked { get; set; }
-        //public DateTime? CloseDate { get; set; }
-        // status  -> checked / not checked / closed
-        // number of messages
+        public required long FaqCategoryId { get; set; }
+        public required string Title { get; set; }
+        public IEnumerable<GetMessageResponse>? Messages { get; set; }
+
     }
 }
