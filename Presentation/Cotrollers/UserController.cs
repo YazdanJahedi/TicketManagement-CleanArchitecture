@@ -1,8 +1,10 @@
 ﻿using Application.DTOs;
 using Application.DTOs.FaqCategoryDto;
+using Application.DTOs.FaqItemsDto;
 using Application.DTOs.MessageDtos;
 using Application.DTOs.TicketDtos;
 using Application.Features.FaqCategoryFeatures.Queries;
+using Application.Features.FaqItemFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,18 +37,23 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-
             }
         }
 
 
-        //[HttpGet("request/FAQ/{id}")]
-        //public ActionResult<IEnumerable<FAQItem>> GetFAQItems(int id)
-        //{
-        //    var items = _faqItemsRepository.FindAllByCategoryIdAsync(id);
+        [HttpGet("request/FAQ/{id}")]
+        public async Task<ActionResult<IEnumerable<GetFaqItemsResponse>>> GetFAQItems(long id)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetFaqItemsRequest(id));
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
 
-        //    return Ok(items);
-        //}
+        }
 
 
         [HttpPost("request/tickets")]
