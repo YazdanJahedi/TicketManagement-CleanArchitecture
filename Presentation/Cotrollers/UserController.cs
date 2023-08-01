@@ -1,6 +1,8 @@
 ﻿using Application.DTOs;
+using Application.DTOs.FaqCategoryDto;
 using Application.DTOs.MessageDtos;
 using Application.DTOs.TicketDtos;
+using Application.Features.FaqCategoryFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +24,20 @@ namespace Presentation.Controllers
         }
 
 
-        //[HttpGet("requestttttttttttttttttttt/FAQ")]
-        //public async Task<ActionResult<IEnumerable<FAQCategory>>> GetFAQCategories()
-        //{
-        //    //var items = _faqCategoriesRepository.GetAllAsync();
+        [HttpGet("request/FAQ")]
+        public async Task<ActionResult<IEnumerable<GetFaqCategoriesResponse>>> GetFAQCategories()
+        {
+            try
+            {
+                var respose = await _mediator.Send(new GetFaqCategoriesRequest());
+                return Ok(respose);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
 
-        //    //
-        //    var i = await _faqCategoriesRepository.TestMethod();
-
-        //    return Ok(i);
-        //}
+            }
+        }
 
 
         //[HttpGet("request/FAQ/{id}")]
@@ -125,8 +131,8 @@ namespace Presentation.Controllers
         //    }
 
 
-        [HttpGet("getTicket/{ticketId}")]
-        public async Task<ActionResult<GetTicketResponse>> GetFullTicket(long ticketId)
+        [HttpGet("request/getTicket/{ticketId}")]
+        public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
         {
             try
             {

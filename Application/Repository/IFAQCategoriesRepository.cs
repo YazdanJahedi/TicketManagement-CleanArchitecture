@@ -5,7 +5,5 @@ namespace Application.Repository
 {
     public interface IFAQCategoriesRepository : IBaseRepository<FAQCategory>
     {
-        public Task<IEnumerable<FAQCategory>> TestMethod();
-
     }
 }

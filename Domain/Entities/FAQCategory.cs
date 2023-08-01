@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public required string CategoryName { get; set; }
 
-        public virtual ICollection<FAQItem>? Items { get; set; }
+        //public virtual ICollection<FAQItem>? Items { get; set; }
 
     }
 }

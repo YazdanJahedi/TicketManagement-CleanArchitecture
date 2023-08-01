@@ -9,13 +9,5 @@ namespace Infrastructure.Repository
     {
         public FAQCategoriesRepository(ApplicationDbContext _context) : base(_context) { }
 
-
-        public async Task<IEnumerable<FAQCategory>> TestMethod()
-        {
-            return await _context.FAQCategories
-                .Include(x => x.Items)
-                .ToListAsync();
-        }
-
     }
 }

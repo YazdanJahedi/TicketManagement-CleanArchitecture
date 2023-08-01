@@ -33,7 +33,7 @@ namespace Infrastructure.Context
 
             modelBuilder.Entity<FAQItem>()
                 .HasOne<FAQCategory>(i => i.Category)
-                .WithMany(c => c.Items)
+                .WithMany()
                 .HasForeignKey(i => i.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
 
