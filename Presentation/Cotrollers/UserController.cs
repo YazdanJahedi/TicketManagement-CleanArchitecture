@@ -99,46 +99,21 @@ namespace Presentation.Controllers
         //    }
 
 
-        //    [HttpPost("request/tickets/{ticketId}")]
-        //    public ActionResult<Ticket> PostResponse(long ticketId, CreateMessageDto req)
-        //    {
-        //        // check validation
-        //        if (!CreateMessageValidator.IsValid(req))
-        //        {
-        //            return BadRequest("validation error: Title can not be empty");
-        //        }
-
-        //        var userIdString = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-        //        var userId = Convert.ToInt64(userIdString);
-
-        //        // check access validation to ticket
-        //        var ticket = _ticketRepository.FindById(ticketId);
-        //        if (ticket == null)
-        //        {
-        //            return BadRequest("ticketId not found");
-        //        }
-        //        if (ticket.CreatorId != userId)
-        //        {
-        //            return BadRequest("You do not have access to entered ticket");
-        //        }
-
-        //        var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-        //        if (userEmail == null) return BadRequest("Email not found");
-
-        //        var response = new Message
-        //        {
-        //            TicketId = ticketId,
-        //            CreatorId = userId,
-        //            Text = req.Text,
-        //            CreationDate = DateTime.Now,
-        //        };
-
-        //        _messagesRepository.AddAsync(response);
-        //        return Ok(response);
-        //    }
+        [HttpPost("request/messages")]
+        public async Task<ActionResult> PostMessage(CreateMessageRequest req)
+        {
+            try
+            {
+                var response = await _mediator.Send(req);
+                return Ok();
+            } catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
 
 
-        [HttpGet("request/getTicket/{ticketId}")]
+        [HttpGet("request/tickets/{ticketId}")]
         public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
         {
             try

@@ -1,18 +1,20 @@
 ﻿using Application.DTOs.MessageDtos;
 using FluentValidation;
 
-namespace Application.Features.CreateResponse
+namespace Application.Features.MessageFeatures.Commands.CreateMessage
 {
-    public class CreateMessageValidator : AbstractValidator<CreateMessageDto>
+    public class CreateMessageValidator : AbstractValidator<CreateMessageRequest>
     {
         public CreateMessageValidator()
         {
             RuleFor(x => x.Text).NotNull().NotEmpty()
                 .WithMessage("Message can not be empty or null");
 
+            RuleFor(x => x.TicketId).NotEmpty().NotNull();
+
         }
 
-        public static bool IsValid(CreateMessageDto createMessageDto)
+        public static bool IsValid(CreateMessageRequest createMessageDto)
         {
             CreateMessageValidator validator = new();
             var validatorResult = validator.Validate(createMessageDto);
