@@ -56,12 +56,13 @@ namespace Application.Features.MessageFeatures.Commands.CreateMessage
 
 
             // fill status field and first-response-date
-            if (role == "User") ticket.Status = "Not Checked";
+            if (role == "User" && ticket.Status != "Not Checked") ticket.Status = "Not Checked";
             else // role == "Admin"
             {
                 ticket.Status = "Checked";
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
             }
+
 
             return Unit.Value;
         }

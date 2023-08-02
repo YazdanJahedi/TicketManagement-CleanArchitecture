@@ -5,6 +5,7 @@ using Application.DTOs.UserDtos;
 using Application.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 
@@ -26,9 +27,11 @@ namespace Application.Features.TicketFeatures.Queries.GetTicket
             var idString = _httpContextAccessor.HttpContext?.User
                 .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var userId = Convert.ToInt64(idString);
-            
+            var role = _httpContextAccessor.HttpContext?.User
+                .Claims.First(x => x.Type == ClaimTypes.Role).Value;
+
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId);
-            if (ticket == null || ticket.Creator!.Id != userId) throw new NotFoundException("Ticket not found");
+            if (ticket == null || (role == "User" && ticket.Creator!.Id != userId)) throw new NotFoundException("Ticket not found");
             
             var response = new GetTicketResponse
             {

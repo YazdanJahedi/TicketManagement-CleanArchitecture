@@ -39,33 +39,34 @@ namespace Presentation.Controllers
         }
 
 
-        //[HttpGet("tickets/{userName}")]
-        //public async Task<ActionResult<IEnumerable<Ticket>>> GetSearchedTickets(string userName)
+        //[httpget("tickets/{username}")]
+        //public async task<actionresult<ienumerable<ticket>>> getsearchedtickets(string username)
         //{
         //    try
         //    {
-        //        var respone = await _mediator.Send(new GetTicketsListRequest(userName));
-        //        return Ok(respone);
+        //        var respone = await _mediator.send(new getticketslistrequest(username));
+        //        return ok(respone);
         //    }
-        //    catch (Exception ex)
+        //    catch (exception ex)
         //    {
-        //        return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+        //        return badrequest(new exceptiondto(ex.gettype().name, ex.message));
         //    }
         //}
 
-        [HttpDelete("{ticketId}")]
-        public async Task<ActionResult> DeleteTicket(long ticketId)
+        [HttpGet("tickts/{ticketId}")]
+        public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
         {
             try
             {
-                await _mediator.Send(new DeleteTicketRequest(ticketId));
-                return Ok();
+                var respones = await _mediator.Send(new GetTicketRequest(ticketId));
+                return Ok(respones);
             }
             catch (Exception ex)
             {
                 return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }
         }
+
 
         [HttpPost("message")]
         public async Task<ActionResult> PostMessage(CreateMessageRequest req)
@@ -81,25 +82,19 @@ namespace Presentation.Controllers
             }
         }
 
-        /*
-        [HttpGet("messages/{ticketId}")]
-        public ActionResult<IEnumerable<Message>> GetMessages(long ticketId)
+        [HttpDelete("{ticketId}")]
+        public async Task<ActionResult> DeleteTicket(long ticketId)
         {
-
-            var items = _messagesRepository.FindAllByTicketIdAsync(ticketId);
-            return Ok(items);
+            try
+            {
+                await _mediator.Send(new DeleteTicketRequest(ticketId));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
         }
 
-        [HttpGet("userInfo")]
-        public ActionResult<User> GetUsreInformation(string email)
-        {
-            var user = _usersRepository.FindByEmail(email);
-            if (user == null)
-            {
-                return NotFound("User not found");
-            }
-
-            return user;
-        }*/
     }
 }
