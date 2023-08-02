@@ -39,10 +39,10 @@ namespace Application.Features.TicketFeatures.Queries.GetTicket
                         Text = m.Text,
                         Creator = new GetUserInformationRequest
                         {
-                            Name = m.Creator?.Name , 
-                            PhoneNumber = m.Creator?.PhoneNumber ,
-                            Email = m.Creator?.Email ,
-                            Role = m.Creator?.Role ,
+                            Name = m.Creator!.Name , 
+                            PhoneNumber = m.Creator.PhoneNumber ,
+                            Email = m.Creator.Email ,
+                            Role = m.Creator.Role ,
                         },
                         CreationDate = m.CreationDate,
                     }),
