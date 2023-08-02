@@ -27,6 +27,64 @@ namespace Presentation.Controllers
         }
 
 
+        [HttpGet("request/tickets")]
+        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes()
+        {
+            try
+            {
+                var respone = await _mediator.Send(new GetTicketsListRequest());
+                return Ok(respone);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+        [HttpGet("request/tickets/{ticketId}")]
+        public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
+        {
+            try
+            {
+                var response = await _mediator.Send(new GetTicketRequest(ticketId));
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+
+        [HttpPost("request/tickets")]
+        public async Task<ActionResult<CreateTicketResponse>> PostTicket(CreateTicketRequest req)
+        {
+            try
+            {
+                var response = await _mediator.Send(req);
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+
+        [HttpPost("request/messages")]
+        public async Task<ActionResult> PostMessage(CreateMessageRequest req)
+        {
+            try
+            {
+                var response = await _mediator.Send(req);
+                return Ok();
+            } catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+
         [HttpGet("request/FAQ")]
         public async Task<ActionResult<IEnumerable<GetFaqCategoriesResponse>>> GetFAQCategories()
         {
@@ -49,70 +107,12 @@ namespace Presentation.Controllers
             {
                 var response = await _mediator.Send(new GetFaqItemsRequest(id));
                 return Ok(response);
-            }catch (Exception ex)
-            {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-            }
-
-        }
-
-
-        [HttpPost("request/tickets")]
-        public async Task<ActionResult<CreateTicketResponse>> PostTicket(CreateTicketRequest req)
-        {
-            try
-            {
-                var response = await _mediator.Send(req);
-                return Ok(response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-            }
-        }
-
-
-        [HttpGet("request/tickets")]
-        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes()
-        {
-            try
-            {
-                var respone = await _mediator.Send(new GetTicketsListRequest());
-                return Ok(respone);
-            }
-            catch( Exception ex)
-            {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-            }
-        }
-
-
-        [HttpPost("request/messages")]
-        public async Task<ActionResult> PostMessage(CreateMessageRequest req)
-        {
-            try
-            {
-                var response = await _mediator.Send(req);
-                return Ok();
-            } catch (Exception ex)
-            {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-            }
-        }
-
-
-        [HttpGet("request/tickets/{ticketId}")]
-        public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
-        {
-            try
-            {
-                var response = await _mediator.Send(new GetTicketRequest(ticketId));
-                return Ok(response);
             }
             catch (Exception ex)
             {
                 return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }
+
         }
 
     }
