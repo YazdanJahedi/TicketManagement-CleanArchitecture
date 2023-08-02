@@ -12,6 +12,7 @@ namespace Application.DTOs.TicketDtos
     {
         public required long FaqCategoryId { get; set; }
         public required string Title { get; set; }
+        public required string Status { get; set; }
         public IEnumerable<GetMessageResponse>? Messages { get; set; }
 
     }

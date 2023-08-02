@@ -47,6 +47,7 @@ namespace Application.Features.TicketFeatures.Queries.GetTicket
                         CreationDate = m.CreationDate,
                     }),
                 FaqCategoryId = ticket.FaqCategoryId,
+                Status = ticket.Status,
             };
 
             

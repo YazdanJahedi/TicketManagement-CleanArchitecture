@@ -8,10 +8,6 @@ namespace Application.DTOs.TicketDtos
 {
     public record GetTicketsListResponse
     {
-        // NOT USED YET
-        public bool? IsChecked { get; set; }
-        //public DateTime? CloseDate { get; set; }
-        // status  -> checked / not checked / closed
-        // number of messages
+        // Not implemented
     }
 }

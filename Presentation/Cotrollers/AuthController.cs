@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.DTOs.UserDtos;
 using MediatR;
 using Application.DTOs;
+using Application.DTOs.Common;
 
 namespace Presentation.Controllers
 {

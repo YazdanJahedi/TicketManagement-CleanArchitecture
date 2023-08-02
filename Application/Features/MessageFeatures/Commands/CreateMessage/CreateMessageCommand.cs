@@ -54,6 +54,15 @@ namespace Application.Features.MessageFeatures.Commands.CreateMessage
 
             await _messagesRepository.AddAsync(response);
 
+
+            // fill status field and first-response-date
+            if (role == "User") ticket.Status = "Not Checked";
+            else // role == "Admin"
+            {
+                ticket.Status = "Checked";
+                if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
+            }
+
             return Unit.Value;
         }
     }

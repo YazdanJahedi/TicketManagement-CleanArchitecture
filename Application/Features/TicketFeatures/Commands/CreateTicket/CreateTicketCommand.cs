@@ -48,6 +48,7 @@ namespace Application.Features.TicketFeatures.Commands.CreateTicket
                 Title = request.Title,
                 CreationDate = DateTime.Now,
                 FaqCategoryId = request.FaqCatgoryId,
+                Status = "Not Checked", 
             };
 
             await _ticketRepository.AddAsync(ticket);

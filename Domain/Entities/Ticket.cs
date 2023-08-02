@@ -16,7 +16,9 @@ namespace Domain.Entities
         public required string Title { get; set; }
         public DateTime? FirstResponseDate { get; set; }
         
-        // close date
+        public required string Status { get; set; }
+        public DateTime? CloseDate { get; set; }
+
         public virtual ICollection<Message>? Messages { get; set; }
     }
 }
