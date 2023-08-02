@@ -31,6 +31,8 @@ namespace Application.Features.MessageFeatures.Commands.CreateMessage
             var idString = _httpContextAccessor.HttpContext?.User.
                 Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var userId = Convert.ToInt64(idString);
+            var role = _httpContextAccessor.HttpContext?.User.
+                Claims.First(x => x.Type == ClaimTypes.Role).Value;
 
             // check validation
             if (!CreateMessageValidator.IsValid(request))
@@ -40,8 +42,8 @@ namespace Application.Features.MessageFeatures.Commands.CreateMessage
 
             // check access validation to ticket
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId);
-            if (ticket == null || ticket.CreatorId != userId) throw new NotFoundException("TicketId not found");
-            
+            if (ticket == null || (ticket.CreatorId != userId && role == "User")) throw new NotFoundException("TicketId not found");
+
             var response = new Message
             {
                 TicketId = request.TicketId,

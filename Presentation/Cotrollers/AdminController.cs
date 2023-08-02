@@ -61,38 +61,21 @@ namespace Presentation.Controllers
             }
         }
 
- /*       [HttpPost("tickets/{ticketId}")]
-        public ActionResult<Message> PostMessage(long ticketId, CreateMessageDto req)
+        [HttpPost("message")]
+        public async Task<ActionResult> PostMessage(CreateMessageRequest req)
         {
-
-            var ticket = _ticketRepository.FindById(ticketId);
-
-            if (ticket == null)
+            try 
             {
-                return BadRequest("ticketId not found");
+                var response = await _mediator.Send(req);
+                return Ok();
+            } 
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }
-
-            // Update first_response_date for the first response
-            if (ticket.FirstResponseDate == null)
-            {
-                ticket.FirstResponseDate = DateTime.Now;
-            }
-
-            var userEmail = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-            if (userEmail == null) return BadRequest("Email not found");
-
-            var message = new Message
-            {
-                TicketId = ticketId,
-                CreatorEmail = userEmail,
-                Text = req.Text,
-                CreationDate = DateTime.Now,
-            };
-
-            _messagesRepository.AddAsync(message);
-            return Ok(message);
         }
 
+        /*
         [HttpGet("messages/{ticketId}")]
         public ActionResult<IEnumerable<Message>> GetMessages(long ticketId)
         {

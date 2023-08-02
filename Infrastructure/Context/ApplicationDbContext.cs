@@ -23,7 +23,7 @@ namespace Infrastructure.Context
 
             modelBuilder.Entity<Ticket>()
                 .HasOne<User>(t => t.Creator)
-                .WithMany(u => u.Tickets)
+                .WithMany(/*u => u.Tickets*/)
                 .HasForeignKey(t => t.CreatorId);
 
             modelBuilder.Entity<Message>()

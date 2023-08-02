@@ -33,22 +33,23 @@ namespace Application.Features.TicketFeatures.Queries.GetTicket
             var response = new GetTicketResponse
             {
                 Title = ticket.Title,
-                Messages = ticket.Messages?.Select(m =>
+                Messages = ticket.Messages!.Select(m =>
                     new GetMessageResponse
                     {
                         Text = m.Text,
                         Creator = new GetUserInformationRequest
                         {
-                            Name = m.Creator!.Name , 
-                            PhoneNumber = m.Creator.PhoneNumber ,
-                            Email = m.Creator.Email ,
-                            Role = m.Creator.Role ,
+                            Name = m.Creator?.Name , 
+                            PhoneNumber = m.Creator?.PhoneNumber ,
+                            Email = m.Creator?.Email ,
+                            Role = m.Creator?.Role ,
                         },
                         CreationDate = m.CreationDate,
                     }),
                 FaqCategoryId = ticket.FaqCategoryId,
             };
 
+            
             return response;
         }
     }
