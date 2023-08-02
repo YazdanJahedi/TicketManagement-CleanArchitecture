@@ -24,29 +24,34 @@ namespace Presentation.Controllers
             _mediator = mediator;
         }
 
-/*        [HttpGet("tickets")]
-        public ActionResult<IEnumerable<Ticket>> GetTickets()
+        [HttpGet("tickets")]
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
         {
-            // get all items
-            var ticketItems = _ticketRepository.GetAllAsync();
+            try
+            {
+                var respone = await _mediator.Send(new GetTicketsListRequest());
+                return Ok(respone);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
 
-            // create response 
-            var ticketResponseItems = ticketItems.Select(t =>
-                    new TicketResponseDto
-                    {
-                        Id = t.Id,
-                        CreatorId = t.CreatorId,
-                        Title = t.Title,
-                        Description = t.Description,
-                        FirstResponseDate = t.FirstResponseDate,
-                        CloseDate = t.CloseDate,
-                        IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
-                        CreationDate = t.CreationDate,
-                    }
-                );
 
-            return Ok(ticketItems);
-        }*/
+        //[HttpGet("tickets/{userName}")]
+        //public async Task<ActionResult<IEnumerable<Ticket>>> GetSearchedTickets(string userName)
+        //{
+        //    try
+        //    {
+        //        var respone = await _mediator.Send(new GetTicketsListRequest(userName));
+        //        return Ok(respone);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+        //    }
+        //}
 
         [HttpDelete("{ticketId}")]
         public async Task<ActionResult> DeleteTicket(long ticketId)

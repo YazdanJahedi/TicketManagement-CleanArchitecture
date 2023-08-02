@@ -72,32 +72,19 @@ namespace Presentation.Controllers
         }
 
 
-        //    [HttpGet("request/tickets")]
-        //    public ActionResult<IEnumerable<Ticket>> GetTickes()
-        //    {
-        //        // extract user id from token
-        //        var v = User.Claims;
-        //        User.
-        //        var id = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-        //        var userId = Convert.ToInt64(id);
-
-        //        // find all relative tickets
-        //        var ticketItems = _ticketRepository.FindAllByCreatorId(userId);
-
-        //        // map to response model
-        //        var ticketResponseItems = ticketItems.Select(t => new CreateTicketResponse
-        //        {
-        //            Id = t.Id,
-        //            CreatorId = t.CreatorId,
-        //            Title = t.Title,
-        //            FirstResponseDate = t.FirstResponseDate,
-        //            //IsChecked = CommonMethods.CalculateIsCheckedField(t.Id, _usersRepository, _messagesRepository),
-        //            CreationDate = t.CreationDate,
-        //            FaqCategoryId = 1,
-        //        });
-
-        //        return Ok(ticketResponseItems);
-        //    }
+        [HttpGet("request/tickets")]
+        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes()
+        {
+            try
+            {
+                var respone = await _mediator.Send(new GetTicketsListRequest());
+                return Ok(respone);
+            }
+            catch( Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
 
 
         [HttpPost("request/messages")]

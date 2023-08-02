@@ -10,9 +10,9 @@ namespace Infrastructure.Repository
     {
         public TicketsRepository(ApplicationDbContext _context): base(_context) {}
 
-        public IEnumerable<Ticket> FindAllByCreatorId(long creatorId)
+        public async Task<IEnumerable<Ticket>> FindAllByCreatorIdAsync(long creatorId)
         {
-            return _context.Tickets.Where(a => a.CreatorId == creatorId);
+            return await _context.Tickets.Where(a => a.CreatorId == creatorId).ToListAsync();
         }
 
         public async Task<Ticket?> FindByIdAsync(long id)

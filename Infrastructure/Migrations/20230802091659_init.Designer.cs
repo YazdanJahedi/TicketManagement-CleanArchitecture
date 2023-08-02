@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230731111340_init")]
+    [Migration("20230802091659_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -166,6 +166,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime?>("CloseDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -177,6 +180,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("FirstResponseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -242,7 +249,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.FAQItem", b =>
                 {
                     b.HasOne("Domain.Entities.FAQCategory", "Category")
-                        .WithMany("Items")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -272,7 +279,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
                 {
                     b.HasOne("Domain.Entities.User", "Creator")
-                        .WithMany("Tickets")
+                        .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -288,19 +295,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("FaqCategory");
                 });
 
-            modelBuilder.Entity("Domain.Entities.FAQCategory", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
                 {
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }
