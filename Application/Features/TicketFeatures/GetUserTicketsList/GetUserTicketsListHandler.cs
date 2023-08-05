@@ -1,6 +1,8 @@
 ﻿using Application.Common.Exceptions;
 using Application.Features.TicketFeatures.GetTicketsList;
 using Application.Repository;
+using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,11 +14,13 @@ namespace Application.Features.TicketFeatures.GetUserTicketsList
 {
     public class GetUserTicketsListHandler : IRequestHandler<GetUserTicketsListRequest, IEnumerable<GetTicketsListResponse>?>
     {
-        public readonly IUsersRepository _usersRepository;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-        public GetUserTicketsListHandler(IUsersRepository usersRepository)
+        public GetUserTicketsListHandler(IUsersRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<GetTicketsListResponse>?> Handle(GetUserTicketsListRequest request, CancellationToken cancellationToken)
@@ -24,16 +28,7 @@ namespace Application.Features.TicketFeatures.GetUserTicketsList
             var user = await _usersRepository.FindByNameAsync(request.UserName);
             if (user == null) throw new NotFoundException("user not found");
 
-            var response = user.Tickets?.Select(t =>
-                new GetTicketsListResponse
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Status = t.Status,
-                    FirstResponseDate = t.FirstResponseDate,
-                    CloseDate = t.CloseDate,
-                }
-            );
+            var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(user.Tickets);
 
             return response;
         }

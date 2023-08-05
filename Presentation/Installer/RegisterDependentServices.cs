@@ -1,4 +1,5 @@
 ﻿using Application.Features.UserFeatures.Login;
+using Application.Features.UserFeatures.Signup;
 using Application.Repository;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
@@ -88,7 +89,11 @@ namespace Presentation.Installer
 
             // correct it
             service.AddMediatR(typeof(LoginRequestHandler));
-            
+
+            //
+            service.AddAutoMapper(typeof(SignupMapper));
+            service.AddControllersWithViews();
+
         }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.FaqCategoryFeatures.GetAllCategories
 {
-    public record GetAllFaqCategoriesResponse
+    public record GetFaqCategoriesResponse
     {
         public required long Id { get; set; }
         public required string CategoryName { get; set; }

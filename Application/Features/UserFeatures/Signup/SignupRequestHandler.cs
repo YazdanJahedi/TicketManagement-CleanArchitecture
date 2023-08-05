@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Repository;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
@@ -10,10 +11,12 @@ namespace Application.Features.UserFeatures.Signup
     {
 
         private readonly IUsersRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-        public SignupRequestHandler(IUsersRepository usersRepository)
+        public SignupRequestHandler(IUsersRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
+            _mapper = mapper;
         }
 
         public async Task<SignupResponse> Handle(SignupRequest request, CancellationToken cancellationToken)
@@ -43,13 +46,7 @@ namespace Application.Features.UserFeatures.Signup
             // Add new user to the data base
             await _usersRepository.AddAsync(user);
 
-            var response = new SignupResponse
-            {
-                Email = user.Email,
-                Name = user.Name,
-                PhoneNumber = user.PhoneNumber,
-                CreationDate = user.CreationDate,
-            };
+            var response = _mapper.Map<SignupResponse>(user);
 
             return response;
         }

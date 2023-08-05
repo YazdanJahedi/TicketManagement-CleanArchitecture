@@ -1,4 +1,5 @@
 ﻿using Application.Repository;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -15,12 +16,13 @@ namespace Application.Features.TicketFeatures.GetTicketsList
     {
         private readonly ITicketsRepository _ticketsRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-
-        public GetTicketsListHandler(ITicketsRepository ticketsRepository, IHttpContextAccessor httpContextAccessor)
+        public GetTicketsListHandler(ITicketsRepository ticketsRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _ticketsRepository = ticketsRepository;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<GetTicketsListResponse>> Handle(GetTicketsListRequest request, CancellationToken cancellationToken)
@@ -37,16 +39,8 @@ namespace Application.Features.TicketFeatures.GetTicketsList
             else // role == "User"
                 tickets = await _ticketsRepository.FindAllByCreatorIdAsync(userId);
 
-            var response = tickets.Select(t =>
-                new GetTicketsListResponse
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Status = t.Status,
-                    CloseDate = t.CloseDate,
-                    FirstResponseDate = t.FirstResponseDate,
-                }
-            );
+            var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
+
             return response;
         }
     }

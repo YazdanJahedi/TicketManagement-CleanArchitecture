@@ -41,7 +41,7 @@ namespace Application.Features.MessageFeatures.CreateMessage
 
             // check access validation to ticket
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId);
-            if (ticket == null || ticket.CreatorId != userId && role == "User") throw new NotFoundException("TicketId not found");
+            if (ticket == null || (ticket.CreatorId != userId && role == "User")) throw new NotFoundException("TicketId not found");
 
             var response = new Message
             {

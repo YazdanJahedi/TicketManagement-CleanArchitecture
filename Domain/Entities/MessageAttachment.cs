@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public record Attachment : BaseEntity
+    public record MessageAttachment : BaseEntity
     {
         [ForeignKey("Message")]
         public required long MessageId { get; set; }

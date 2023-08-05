@@ -87,11 +87,11 @@ namespace Presentation.Controllers
 
 
         [HttpGet("request/FAQ")]
-        public async Task<ActionResult<IEnumerable<GetAllFaqCategoriesResponse>>> GetFAQCategories()
+        public async Task<ActionResult<IEnumerable<GetFaqCategoriesResponse>>> GetFAQCategories()
         {
             try
             {
-                var respose = await _mediator.Send(new GetAllFaqCategoriesRequest());
+                var respose = await _mediator.Send(new GetFaqCategoriesRequest());
                 return Ok(respose);
             }
             catch (Exception ex)
