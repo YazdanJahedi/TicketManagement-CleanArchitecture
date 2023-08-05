@@ -62,6 +62,7 @@ namespace Application.Features.MessageFeatures.Commands.CreateMessage
                 ticket.Status = "Checked";
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
             }
+            await _ticketsRepository.UpdateAsync(ticket);
 
 
             return Unit.Value;

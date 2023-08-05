@@ -82,6 +82,21 @@ namespace Presentation.Controllers
             }
         }
 
+        [HttpPost("tickets/close/{ticketId}")]
+        public async Task<ActionResult> CloseTicket(long ticketId)
+        {
+            try
+            {
+                await _mediator.Send(new PostCloseTicketRequest(ticketId));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+
         [HttpDelete("{ticketId}")]
         public async Task<ActionResult> DeleteTicket(long ticketId)
         {

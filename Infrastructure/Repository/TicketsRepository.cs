@@ -29,5 +29,11 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(Ticket ticket)
+        {
+            _context.Entry(ticket).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
