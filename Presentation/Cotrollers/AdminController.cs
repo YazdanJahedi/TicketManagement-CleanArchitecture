@@ -1,7 +1,10 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Common;
-using Application.DTOs.MessageDtos;
-using Application.DTOs.TicketDtos;
+using Application.Features.MessageFeatures.CreateMessage;
+using Application.Features.TicketFeatures.CloseTicket;
+using Application.Features.TicketFeatures.DeleteTicket;
+using Application.Features.TicketFeatures.GetTicket;
+using Application.Features.TicketFeatures.GetTicketsList;
+using Application.Features.TicketFeatures.GetUserTicketsList;
 using Application.Repository;
 using Domain.Entities;
 using MediatR;
@@ -39,21 +42,21 @@ namespace Presentation.Controllers
         }
 
 
-        //[httpget("tickets/{username}")]
-        //public async task<actionresult<ienumerable<ticket>>> getsearchedtickets(string username)
-        //{
-        //    try
-        //    {
-        //        var respone = await _mediator.send(new getticketslistrequest(username));
-        //        return ok(respone);
-        //    }
-        //    catch (exception ex)
-        //    {
-        //        return badrequest(new exceptiondto(ex.gettype().name, ex.message));
-        //    }
-        //}
+        [HttpGet("tickets/{username}")]
+        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetUserTicketsList(string username)
+        {
+            try
+            {
+                var respone = await _mediator.Send(new GetUserTicketsListRequest(username));
+                return Ok(respone);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
 
-        [HttpGet("tickts/{ticketId}")]
+        [HttpGet("tickt/{ticketId}")]
         public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
         {
             try

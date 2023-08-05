@@ -1,6 +1,5 @@
-using Application.DTOs.UserDtos;
-using Application.Features.UserFeatures.Commands.Signup;
-using Application.Features.UserFeatures.Queries.Login;
+using Application.Features.UserFeatures.Login;
+using Application.Features.UserFeatures.Signup;
 
 namespace Test
 {

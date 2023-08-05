@@ -10,7 +10,7 @@ namespace Domain.Entities
         public required string PasswordHash { get; set; }
         public required string PhoneNumber { get; set; }
 
-        //public virtual ICollection<Ticket>? Tickets { get; set; }
+        public virtual ICollection<Ticket>? Tickets { get; set; }
 
     }
 }

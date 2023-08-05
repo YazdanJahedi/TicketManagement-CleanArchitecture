@@ -23,7 +23,7 @@ namespace Infrastructure.Context
 
             modelBuilder.Entity<Ticket>()
                 .HasOne<User>(t => t.Creator)
-                .WithMany(/*u => u.Tickets*/)
+                .WithMany(u => u.Tickets)
                 .HasForeignKey(t => t.CreatorId);
 
             modelBuilder.Entity<Message>()
@@ -57,6 +57,6 @@ namespace Infrastructure.Context
         public DbSet<FAQCategory> FAQCategories { get; set; } = null!;
         public DbSet<FAQItem> FAQItems { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
-
+        //public DbSet<Attachment> Attachments { get; set; } = null!;
     }
 }

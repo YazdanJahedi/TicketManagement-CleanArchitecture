@@ -1,11 +1,12 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Common;
-using Application.DTOs.FaqCategoryDto;
-using Application.DTOs.FaqItemsDto;
-using Application.DTOs.MessageDtos;
-using Application.DTOs.TicketDtos;
+using Application.Features.FaqCategoryFeatures.GetAllCategories;
 using Application.Features.FaqCategoryFeatures.Queries;
+using Application.Features.FaqItemFeatures.GetAllFaqItems;
 using Application.Features.FaqItemFeatures.Queries;
+using Application.Features.MessageFeatures.CreateMessage;
+using Application.Features.TicketFeatures.CreateTicket;
+using Application.Features.TicketFeatures.GetTicket;
+using Application.Features.TicketFeatures.GetTicketsList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -86,11 +87,11 @@ namespace Presentation.Controllers
 
 
         [HttpGet("request/FAQ")]
-        public async Task<ActionResult<IEnumerable<GetFaqCategoriesResponse>>> GetFAQCategories()
+        public async Task<ActionResult<IEnumerable<GetAllFaqCategoriesResponse>>> GetFAQCategories()
         {
             try
             {
-                var respose = await _mediator.Send(new GetFaqCategoriesRequest());
+                var respose = await _mediator.Send(new GetAllFaqCategoriesRequest());
                 return Ok(respose);
             }
             catch (Exception ex)

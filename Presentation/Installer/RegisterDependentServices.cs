@@ -1,11 +1,10 @@
-﻿using Application.DTOs.UserDtos;
-using Application.Features.UserFeatures.Commands.Signup;
-using Application.Features.UserFeatures.Queries.Login;
+﻿using Application.Features.UserFeatures.Login;
 using Application.Repository;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
 using Infrastructure.Repository;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -88,8 +87,8 @@ namespace Presentation.Installer
             service.AddHttpContextAccessor();
 
             // correct it
-            service.AddMediatR(typeof(LoginRequestQuery));
-            service.AddMediatR(typeof(SignupRequestQuery));
+            service.AddMediatR(typeof(LoginRequestHandler));
+            
         }
 
     }
