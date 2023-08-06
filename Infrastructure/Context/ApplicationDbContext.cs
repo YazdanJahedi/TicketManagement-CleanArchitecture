@@ -57,6 +57,7 @@ namespace Infrastructure.Context
         public DbSet<FAQCategory> FAQCategories { get; set; } = null!;
         public DbSet<FAQItem> FAQItems { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
-        //public DbSet<Attachment> Attachments { get; set; } = null!;
+        
+        public DbSet<MessageAttachment> MessageAttachments { get; set; } = null!;
     }
 }

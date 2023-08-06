@@ -3,6 +3,8 @@ using Application.Features.FaqCategoryFeatures.GetAllCategories;
 using Application.Features.FaqCategoryFeatures.Queries;
 using Application.Features.FaqItemFeatures.GetAllFaqItems;
 using Application.Features.FaqItemFeatures.Queries;
+using Application.Features.MessageAttachmentFeatures.DownloadFile;
+using Application.Features.MessageAttachmentFeatures.UploadFile;
 using Application.Features.MessageFeatures.CreateMessage;
 using Application.Features.TicketFeatures.CreateTicket;
 using Application.Features.TicketFeatures.GetTicket;
@@ -26,6 +28,22 @@ namespace Presentation.Controllers
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpPost("updload")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Upload([FromForm] UploadFileRequest req)
+        {
+            await _mediator.Send(req);
+            return Ok();
+        }
+
+        [HttpPost("download")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Upload(DownloadFileRequest req)
+        {
+            await _mediator.Send(req);
+            return Ok();
         }
 
 
