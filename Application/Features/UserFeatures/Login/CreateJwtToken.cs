@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Domain.Entities;
 
-namespace Application.Features
+namespace Application.Features.UserFeatures.Login
 {
     public static class CreateJwtToken
     {
@@ -28,7 +28,7 @@ namespace Application.Features
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return "bearer "  + jwt;
+            return "bearer " + jwt;
         }
     }
 }
