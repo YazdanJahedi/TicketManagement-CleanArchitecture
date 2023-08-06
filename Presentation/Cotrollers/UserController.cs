@@ -7,6 +7,7 @@ using Application.Features.MessageFeatures.CreateMessage;
 using Application.Features.TicketFeatures.CreateTicket;
 using Application.Features.TicketFeatures.GetTicket;
 using Application.Features.TicketFeatures.GetTicketsList;
+using Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,12 +59,12 @@ namespace Presentation.Controllers
 
 
         [HttpPost("request/tickets")]
-        public async Task<ActionResult<CreateTicketResponse>> PostTicket(CreateTicketRequest req)
+        public async Task<ActionResult> PostTicket(CreateTicketRequest req)
         {
             try
             {
-                var response = await _mediator.Send(req);
-                return Ok(response);
+                await _mediator.Send(req);
+                return Ok();
             }
             catch(Exception ex)
             {
@@ -77,7 +78,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _mediator.Send(req);
+                await _mediator.Send(req);
                 return Ok();
             } catch (Exception ex)
             {

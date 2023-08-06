@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Repository;
+using AutoMapper;
 using MediatR;
 
 
@@ -8,10 +9,12 @@ namespace Application.Features.UserFeatures.Login
     public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-        public LoginRequestHandler(IUsersRepository usersRepository)
+        public LoginRequestHandler(IUsersRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
+            _mapper = mapper;
         }
 
         public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -29,16 +32,8 @@ namespace Application.Features.UserFeatures.Login
             var isPasswordVerified = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
             if (!isPasswordVerified) throw new NotFoundException("username or password is not correct");
 
-            // create token
-            var token = CreateJwtToken.CreateToken(user);
-
             // create login response 
-            var response = new LoginResponse
-            {
-                Email = user.Email,
-                Role = user.Role,
-                Token = token,
-            };
+            var response = _mapper.Map<LoginResponse>(user);
 
             return response;
         }

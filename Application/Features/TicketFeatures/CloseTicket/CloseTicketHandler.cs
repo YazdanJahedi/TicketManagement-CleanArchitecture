@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.TicketFeatures.CloseTicket
 {
-    public class CloseTicketCommand : IRequestHandler<PostCloseTicketRequest>
+    public class CloseTicketHandler : IRequestHandler<PostCloseTicketRequest>
     {
         private readonly ITicketsRepository _ticketRepository;
 
 
-        public CloseTicketCommand(ITicketsRepository ticketRepository)
+        public CloseTicketHandler(ITicketsRepository ticketRepository)
         {
             _ticketRepository = ticketRepository;
         }

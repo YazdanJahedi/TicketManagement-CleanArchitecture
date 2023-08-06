@@ -32,22 +32,12 @@ namespace Application.Features.UserFeatures.Signup
             if (foundUser != null) throw new Exception("this Email is used before");
 
             // Creating new user
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            var user = new User
-            {
-                Name = request.Name,
-                Email = request.Email,
-                Role = "User",
-                PhoneNumber = request.PhoneNumber,
-                PasswordHash = hashedPassword,
-                CreationDate = DateTime.Now,
-            };
+            var user = _mapper.Map<User>(request);
 
             // Add new user to the data base
             await _usersRepository.AddAsync(user);
 
             var response = _mapper.Map<SignupResponse>(user);
-
             return response;
         }
     }

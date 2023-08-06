@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.TicketFeatures.GetTicketsList
+namespace Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList
 {
     public class GetTicketsListHandler : IRequestHandler<GetTicketsListRequest, IEnumerable<GetTicketsListResponse>>
     {

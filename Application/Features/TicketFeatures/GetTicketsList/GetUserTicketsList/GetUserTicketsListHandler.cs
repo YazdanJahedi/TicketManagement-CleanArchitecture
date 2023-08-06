@@ -1,5 +1,4 @@
 ﻿using Application.Common.Exceptions;
-using Application.Features.TicketFeatures.GetTicketsList;
 using Application.Repository;
 using AutoMapper;
 using Domain.Entities;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.TicketFeatures.GetUserTicketsList
+namespace Application.Features.TicketFeatures.GetTicketsList.GetUserTicketsList
 {
     public class GetUserTicketsListHandler : IRequestHandler<GetUserTicketsListRequest, IEnumerable<GetTicketsListResponse>?>
     {

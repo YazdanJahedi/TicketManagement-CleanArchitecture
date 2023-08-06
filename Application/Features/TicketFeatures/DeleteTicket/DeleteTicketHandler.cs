@@ -22,12 +22,8 @@ namespace Application.Features.TicketFeatures.DeleteTicket
         public async Task<Unit> Handle(DeleteTicketRequest request, CancellationToken cancellationToken)
         {
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId);
-
-            if (ticket == null)
-            {
-                throw new NotFoundException("Ticket not found");
-            }
-
+            if (ticket == null) throw new NotFoundException("Ticket not found");
+            
             await _ticketsRepository.RemoveAsync(ticket);
             return Unit.Value;
         }

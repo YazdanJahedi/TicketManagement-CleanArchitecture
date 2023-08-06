@@ -10,7 +10,7 @@ namespace Application.Features.TicketFeatures.GetTicketsList
 {
     public class GetTicketsListMapper : Profile
     {
-        public GetTicketsListMapper() 
+        public GetTicketsListMapper()
         {
             CreateMap<Ticket, GetTicketsListResponse>();
         }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.TicketFeatures.CreateTicket
 {
-    public class CreateTicketHandler : IRequestHandler<CreateTicketRequest, CreateTicketResponse>
+    public class CreateTicketHandler : IRequestHandler<CreateTicketRequest>
     {
 
         private readonly ITicketsRepository _ticketRepository;
@@ -27,7 +27,7 @@ namespace Application.Features.TicketFeatures.CreateTicket
             return _httpContextAccessor;
         }
 
-        public async Task<CreateTicketResponse> Handle(CreateTicketRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateTicketRequest request, CancellationToken cancellationToken)
         {
             var idString = _httpContextAccessor.HttpContext?.User.
                 Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -49,8 +49,6 @@ namespace Application.Features.TicketFeatures.CreateTicket
                 Status = "Not Checked",
             };
 
-            await _ticketRepository.AddAsync(ticket);
-
             var firstMesage = new Message
             {
                 TicketId = ticket.Id,
@@ -60,15 +58,10 @@ namespace Application.Features.TicketFeatures.CreateTicket
 
             };
 
+            await _ticketRepository.AddAsync(ticket);
             await _messagesRepository.AddAsync(firstMesage);
 
-            var response = new CreateTicketResponse
-            {
-                Title = ticket.Title,
-                Description = firstMesage.Text,
-                CreationDate = ticket.CreationDate,
-            };
-            return response;
+            return Unit.Value;
 
         }
     }
