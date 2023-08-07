@@ -19,7 +19,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<ActionResult<SignupResponse>> Signup(SignupRequest req)
+        public async Task<ActionResult<SignupResponse>> Signup([FromForm] SignupRequest req)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponse>> Login(LoginRequest req)
+        public async Task<ActionResult<LoginResponse>> Login([FromForm] LoginRequest req)
         {
             try
             {
