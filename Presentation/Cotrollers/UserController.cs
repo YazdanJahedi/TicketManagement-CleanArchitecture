@@ -30,22 +30,6 @@ namespace Presentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("updload")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Upload([FromForm] UploadFileRequest req)
-        {
-            await _mediator.Send(req);
-            return Ok();
-        }
-
-        [HttpPost("download")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Upload(DownloadFileRequest req)
-        {
-            await _mediator.Send(req);
-            return Ok();
-        }
-
 
         [HttpGet("request/tickets")]
         public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes()
@@ -92,13 +76,41 @@ namespace Presentation.Controllers
 
 
         [HttpPost("request/messages")]
-        public async Task<ActionResult> PostMessage(CreateMessageRequest req)
+        public async Task<ActionResult> PostMessage([FromForm] CreateMessageRequest req)
         {
             try
             {
                 await _mediator.Send(req);
                 return Ok();
             } catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+        [HttpPost("request/messages/updload")]
+        public async Task<ActionResult> Upload([FromForm] UploadFileRequest req)
+        {
+            try
+            {
+                await _mediator.Send(req);
+                return Ok();
+            } 
+            catch(Exception ex) 
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+        [HttpPost("request/messages/download")]
+        public async Task<ActionResult> Download(DownloadFileRequest req)
+        {
+            try
+            {
+                var response = await _mediator.Send(req);
+                return File(response.FileData, response.MimeType, response.FileName);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.MessageAttachmentFeatures.DownloadFile
 {
-    public class DownloadFileRequest : IRequest
+    public class DownloadFileRequest : IRequest<DownloadFileResponse>
     {
         public long attachmentId { get; set; }
         public DownloadFileRequest(long attachmentId)

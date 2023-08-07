@@ -1,37 +1,33 @@
 ﻿using Application.Common.Exceptions;
 using Application.Repository;
+using AutoMapper;
 using MediatR;
-
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.MessageAttachmentFeatures.DownloadFile
 {
 
-    public class DownloadFileHandler : IRequestHandler<DownloadFileRequest>
+    public class DownloadFileHandler : IRequestHandler<DownloadFileRequest, DownloadFileResponse>
     {
 
         private readonly IMessageAttachmentsRepository _messageAttachmentsRepository;
-        public DownloadFileHandler(IMessageAttachmentsRepository messageAttachmentsRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
+
+        public DownloadFileHandler(IMessageAttachmentsRepository messageAttachmentsRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _messageAttachmentsRepository = messageAttachmentsRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(DownloadFileRequest request, CancellationToken cancellationToken)
+        public async Task<DownloadFileResponse> Handle(DownloadFileRequest request, CancellationToken cancellationToken)
         {
             var attachment = await _messageAttachmentsRepository.FindById(request.attachmentId);
             if (attachment == null) throw new NotFoundException("attachment not found");
 
-            var data = new MemoryStream(attachment.FileData);
-            var downloadFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "DownloadedFiles");
-            var downloadPath = Path.Combine(downloadFolderPath, attachment.FileName);
-
-            Directory.CreateDirectory(downloadFolderPath); // Create directory if does not exist
-
-            using (var fileStream = new FileStream(downloadPath, FileMode.Create, FileAccess.Write))
-            {
-                await data.CopyToAsync(fileStream);
-            }
-
-            return Unit.Value;
+            var response = _mapper.Map<DownloadFileResponse>(attachment);
+            return response;
         }
     }
 }
