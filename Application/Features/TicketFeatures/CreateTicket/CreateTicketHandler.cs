@@ -53,6 +53,8 @@ namespace Application.Features.TicketFeatures.CreateTicket
                 Status = "Not Checked",
             };
 
+            await _ticketRepository.AddAsync(ticket);
+
             var firstMesage = new Message
             {
                 TicketId = ticket.Id,
@@ -62,10 +64,9 @@ namespace Application.Features.TicketFeatures.CreateTicket
 
             };
 
-            await _ticketRepository.AddAsync(ticket);
-            //await _messagesRepository.AddAsync(firstMesage);
-            //if (request.Attachments != null)
-            //    await _messageAttachmentService.SaveMultipeAttachments(request.Attachments, firstMesage.Id);
+            await _messagesRepository.AddAsync(firstMesage);
+            if (request.Attachments != null)
+                await _messageAttachmentService.SaveMultipeAttachments(request.Attachments, firstMesage.Id);
 
             return Unit.Value;
 

@@ -1,4 +1,5 @@
 ﻿using Application.Common.DTOs;
+using Application.Features.MessageAttachmentFeatures.DownloadFile;
 using Application.Features.MessageFeatures.CreateMessage;
 using Application.Features.TicketFeatures.CloseTicket;
 using Application.Features.TicketFeatures.DeleteTicket;
@@ -72,20 +73,6 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpPost("message")]
-        public async Task<ActionResult> PostMessage([FromForm] CreateMessageRequest req)
-        {
-            try 
-            {
-                var response = await _mediator.Send(req);
-                return Ok();
-            } 
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-            }
-        }
-
         [HttpPost("tickets/close/{ticketId}")]
         public async Task<ActionResult> CloseTicket(long ticketId)
         {
@@ -101,7 +88,7 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpDelete("{ticketId}")]
+        [HttpDelete("tickets/{ticketId}")]
         public async Task<ActionResult> DeleteTicket(long ticketId)
         {
             try
@@ -114,6 +101,36 @@ namespace Presentation.Controllers
                 return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }
         }
+
+        [HttpPost("messages")]
+        public async Task<ActionResult> PostMessage([FromForm] CreateMessageRequest req)
+        {
+            try 
+            {
+                var response = await _mediator.Send(req);
+                return Ok();
+            } 
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
+
+        [HttpPost("messages/download")]
+        public async Task<ActionResult> Download(DownloadFileRequest req)
+        {
+            try
+            {
+                var response = await _mediator.Send(req);
+                return File(response.FileData, response.MimeType, response.FileName);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+            }
+        }
+
 
     }
 }
