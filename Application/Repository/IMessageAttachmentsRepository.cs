@@ -10,5 +10,7 @@ namespace Application.Repository
     public interface IMessageAttachmentsRepository : IBaseRepository<MessageAttachment>
     {
         public Task<MessageAttachment?> FindById(long id);
+        public Task AddAsyncWithoutSaveChanges(MessageAttachment messageAttachment);
+        public Task SaveChangesAsync();
     }
 }

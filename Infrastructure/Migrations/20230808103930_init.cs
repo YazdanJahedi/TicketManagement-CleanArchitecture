@@ -28,21 +28,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MessageAttachments",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MessageAttachments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -139,6 +124,28 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "MessageAttachments",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MessageId = table.Column<long>(type: "bigint", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageAttachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MessageAttachments_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "FAQCategories",
                 columns: new[] { "Id", "CategoryName", "CreationDate" },
@@ -169,6 +176,11 @@ namespace Infrastructure.Migrations
                 name: "IX_FAQItems_CategoryId",
                 table: "FAQItems",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessageAttachments_MessageId",
+                table: "MessageAttachments",
+                column: "MessageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_CreatorId",

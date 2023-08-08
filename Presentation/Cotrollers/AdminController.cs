@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.Common.DTOs;
 using Application.Features.MessageFeatures.CreateMessage;
 using Application.Features.TicketFeatures.CloseTicket;
 using Application.Features.TicketFeatures.DeleteTicket;
@@ -73,7 +73,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost("message")]
-        public async Task<ActionResult> PostMessage(CreateMessageRequest req)
+        public async Task<ActionResult> PostMessage([FromForm] CreateMessageRequest req)
         {
             try 
             {

@@ -10,9 +10,10 @@ namespace Domain.Entities
 {
     public record MessageAttachment : BaseEntity
     {
-        //[ForeignKey("Message")]
-        //public required long MessageId { get; set; }
-        //public virtual Message? Message { get; set; }
+        [ForeignKey("Message")]
+        public required long MessageId { get; set; }
+        public virtual Message? Message { get; set; }
+
         public required string FileName { get; set; }
         public byte[] FileData { get; set; }
 

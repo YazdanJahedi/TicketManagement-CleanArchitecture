@@ -15,5 +15,6 @@ namespace Domain.Entities
 
         public required string Text { get; set; }
 
+        public virtual IEnumerable<MessageAttachment>? Attachments { get; set; }
     }
 }

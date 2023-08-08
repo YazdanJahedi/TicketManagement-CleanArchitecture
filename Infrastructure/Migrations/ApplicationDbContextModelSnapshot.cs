@@ -174,7 +174,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("MessageId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
 
                     b.ToTable("MessageAttachments");
                 });
@@ -297,6 +302,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Ticket");
                 });
 
+            modelBuilder.Entity("Domain.Entities.MessageAttachment", b =>
+                {
+                    b.HasOne("Domain.Entities.Message", "Message")
+                        .WithMany("Attachments")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
+                });
+
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
                 {
                     b.HasOne("Domain.Entities.User", "Creator")
@@ -314,6 +330,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("FaqCategory");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Message", b =>
+                {
+                    b.Navigation("Attachments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ticket", b =>

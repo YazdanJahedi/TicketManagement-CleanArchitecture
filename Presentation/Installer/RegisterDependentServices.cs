@@ -1,6 +1,8 @@
 ﻿using Application.Features.UserFeatures.Login;
 using Application.Features.UserFeatures.Signup;
+using Application.Interfaces;
 using Application.Repository;
+using Application.Services;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
 using Infrastructure.Repository;
@@ -86,6 +88,8 @@ namespace Presentation.Installer
             service.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
             service.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
             service.AddScoped<IMessageAttachmentsRepository, MessageAttachmentsRepository>();
+
+            service.AddScoped<IMessageAttachmentService, MessageAttachementtService>();
 
             service.AddHttpContextAccessor();
 

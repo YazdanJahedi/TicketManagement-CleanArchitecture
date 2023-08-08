@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.Common.DTOs;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -26,8 +26,14 @@ namespace Application.Features.TicketFeatures.GetTicket
                             Email = m.Creator.Email,
                             Role = m.Creator.Role
                         },
-                        CreationDate = m.CreationDate
-                    })))
+                        CreationDate = m.CreationDate,
+                        Attachments = m.Attachments.Select(x => 
+                        new GetAttachmentDetailsDto
+                        { 
+                            Id = x.Id,
+                            FileName = x.FileName
+                        })
+                    })))                    
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
         }
     }

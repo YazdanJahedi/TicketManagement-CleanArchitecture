@@ -1,10 +1,9 @@
-﻿using Application.DTOs;
+﻿using Application.Common.DTOs;
 using Application.Features.FaqCategoryFeatures.GetAllCategories;
 using Application.Features.FaqCategoryFeatures.Queries;
 using Application.Features.FaqItemFeatures.GetAllFaqItems;
 using Application.Features.FaqItemFeatures.Queries;
 using Application.Features.MessageAttachmentFeatures.DownloadFile;
-using Application.Features.MessageAttachmentFeatures.UploadFile;
 using Application.Features.MessageFeatures.CreateMessage;
 using Application.Features.TicketFeatures.CreateTicket;
 using Application.Features.TicketFeatures.GetTicket;
@@ -61,7 +60,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost("request/tickets")]
-        public async Task<ActionResult> PostTicket(CreateTicketRequest req)
+        public async Task<ActionResult> PostTicket([FromForm] CreateTicketRequest req)
         {
             try
             {
@@ -83,20 +82,6 @@ namespace Presentation.Controllers
                 await _mediator.Send(req);
                 return Ok();
             } catch (Exception ex)
-            {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
-            }
-        }
-
-        [HttpPost("request/messages/updload")]
-        public async Task<ActionResult> Upload([FromForm] UploadFileRequest req)
-        {
-            try
-            {
-                await _mediator.Send(req);
-                return Ok();
-            } 
-            catch(Exception ex) 
             {
                 return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
             }

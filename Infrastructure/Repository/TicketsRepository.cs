@@ -20,6 +20,8 @@ namespace Infrastructure.Repository
             return await _context.Tickets
                         .Include(t => t.Messages)!
                             .ThenInclude(m => m.Creator)
+                        .Include(t => t.Messages)!
+                            .ThenInclude(m => m.Attachments)
                         .FirstOrDefaultAsync(t => t.Id == id);
         }
 

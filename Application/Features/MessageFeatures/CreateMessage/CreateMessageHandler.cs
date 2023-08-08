@@ -1,4 +1,5 @@
 ﻿using Application.Common.Exceptions;
+using Application.Interfaces;
 using Application.Repository;
 using Domain.Entities;
 using MediatR;
@@ -17,12 +18,15 @@ namespace Application.Features.MessageFeatures.CreateMessage
         private readonly ITicketsRepository _ticketsRepository;
         private readonly IMessagesRepository _messagesRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMessageAttachmentService _messageAttachmentService;
 
-        public CreateMessageHandler(ITicketsRepository ticketsRepository, IMessagesRepository messagesRepository, IHttpContextAccessor httpContextAccessor)
+        public CreateMessageHandler(ITicketsRepository ticketsRepository, IMessagesRepository messagesRepository,
+                                    IHttpContextAccessor httpContextAccessor, IMessageAttachmentService messageAttachmentService)
         {
             _httpContextAccessor = httpContextAccessor;
             _ticketsRepository = ticketsRepository;
             _messagesRepository = messagesRepository;
+            _messageAttachmentService = messageAttachmentService;
         }
 
         public async Task<Unit> Handle(CreateMessageRequest request, CancellationToken cancellationToken)
@@ -43,7 +47,7 @@ namespace Application.Features.MessageFeatures.CreateMessage
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId);
             if (ticket == null || (ticket.CreatorId != userId && role == "User")) throw new NotFoundException("TicketId not found");
 
-            var response = new Message
+            var message = new Message
             {
                 TicketId = request.TicketId,
                 CreatorId = userId,
@@ -51,8 +55,10 @@ namespace Application.Features.MessageFeatures.CreateMessage
                 CreationDate = DateTime.Now,
             };
 
-            await _messagesRepository.AddAsync(response);
+            await _messagesRepository.AddAsync(message);
 
+            if (request.Attacments != null) 
+                await _messageAttachmentService.SaveMultipeAttachments(request.Attacments, message.Id);
 
             // fill status field and first-response-date
             if (role == "User" && ticket.Status != "Not Checked") ticket.Status = "Not Checked";
@@ -62,7 +68,6 @@ namespace Application.Features.MessageFeatures.CreateMessage
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
             }
             await _ticketsRepository.UpdateAsync(ticket);
-
 
             return Unit.Value;
         }

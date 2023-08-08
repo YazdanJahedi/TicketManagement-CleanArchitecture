@@ -49,6 +49,11 @@ namespace Infrastructure.Context
                 .WithMany()
                 .HasForeignKey(t => t.FaqCategoryId);
 
+            modelBuilder.Entity<MessageAttachment>()
+                .HasOne<Message>(a => a.Message)
+                .WithMany(m => m.Attachments)
+                .HasForeignKey(a => a.MessageId);
+
             modelBuilder.Seed();
         }
 
@@ -57,7 +62,6 @@ namespace Infrastructure.Context
         public DbSet<FAQCategory> FAQCategories { get; set; } = null!;
         public DbSet<FAQItem> FAQItems { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
-        
         public DbSet<MessageAttachment> MessageAttachments { get; set; } = null!;
     }
 }

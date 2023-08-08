@@ -1,5 +1,4 @@
-﻿using Application.DTOs;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.Features.TicketFeatures.CreateTicket
 {

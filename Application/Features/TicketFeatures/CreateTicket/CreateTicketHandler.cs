@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.AspNetCore.Http;
+using Application.Interfaces;
 
 namespace Application.Features.TicketFeatures.CreateTicket
 {
@@ -14,12 +15,15 @@ namespace Application.Features.TicketFeatures.CreateTicket
         private readonly ITicketsRepository _ticketRepository;
         private readonly IMessagesRepository _messagesRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMessageAttachmentService _messageAttachmentService;
 
-        public CreateTicketHandler(ITicketsRepository ticketRepository, IMessagesRepository messagesRepository, IHttpContextAccessor httpContextAccessor)
+        public CreateTicketHandler(ITicketsRepository ticketRepository, IMessagesRepository messagesRepository,
+                                   IHttpContextAccessor httpContextAccessor, IMessageAttachmentService messageAttachmentService)
         {
             _ticketRepository = ticketRepository;
             _messagesRepository = messagesRepository;
             _httpContextAccessor = httpContextAccessor;
+            _messageAttachmentService = messageAttachmentService;
         }
 
         public IHttpContextAccessor Get_httpContextAccessor()
@@ -59,7 +63,9 @@ namespace Application.Features.TicketFeatures.CreateTicket
             };
 
             await _ticketRepository.AddAsync(ticket);
-            await _messagesRepository.AddAsync(firstMesage);
+            //await _messagesRepository.AddAsync(firstMesage);
+            //if (request.Attachments != null)
+            //    await _messageAttachmentService.SaveMultipeAttachments(request.Attachments, firstMesage.Id);
 
             return Unit.Value;
 

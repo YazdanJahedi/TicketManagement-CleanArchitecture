@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using Application.DTOs;
 using Application.Features.UserFeatures.Signup;
 using Application.Features.UserFeatures.Login;
+using Application.Common.DTOs;
 
 namespace Presentation.Controllers
 {

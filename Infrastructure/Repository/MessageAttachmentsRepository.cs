@@ -1,6 +1,7 @@
 ﻿using Application.Repository;
 using Domain.Entities;
 using Infrastructure.Context;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,16 @@ namespace Infrastructure.Repository
         {
             return await _context.MessageAttachments.FindAsync(id);
         }
+       
+        public async Task AddAsyncWithoutSaveChanges(MessageAttachment messageAttachment)
+        {
+            await _context.MessageAttachments.AddAsync(messageAttachment);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
