@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Repository;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -45,7 +46,7 @@ namespace Application.Features.MessageFeatures.CreateMessage
             // check access permision to ticket
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId, false);
             if (ticket == null || (ticket.CreatorId != userId && role == "User")) throw new NotFoundException("TicketId not found");
-            if (ticket.Status == "Closed") throw new Exception("ticket is closed");
+            if (ticket.Status == TicketStatus.Closed) throw new Exception("ticket is closed");
 
             var message = new Message
             {
@@ -61,15 +62,15 @@ namespace Application.Features.MessageFeatures.CreateMessage
 
             // fill status field and first-response-date
             bool ticketNeedUpdate = false;
-            if (role == "User" && ticket.Status != "Not Checked")
+            if (role == "User" && ticket.Status != TicketStatus.NotChecked)
             {
-                ticket.Status = "Not Checked";
+                ticket.Status = TicketStatus.NotChecked;
                 ticketNeedUpdate = true;
             }
-            else if (role == "Admin" && ticket.Status != "Checked") // enum
+            else if (role == "Admin" && ticket.Status != TicketStatus.Checked) // enum
             {
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
-                ticket.Status = "Checked";
+                ticket.Status = TicketStatus.Checked;
                 ticketNeedUpdate = true;
             }
             if (ticketNeedUpdate) await _ticketsRepository.UpdateAsync(ticket);

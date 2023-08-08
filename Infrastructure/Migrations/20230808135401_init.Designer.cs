@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230808110902_init")]
+    [Migration("20230808135401_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -210,9 +210,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("FirstResponseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()

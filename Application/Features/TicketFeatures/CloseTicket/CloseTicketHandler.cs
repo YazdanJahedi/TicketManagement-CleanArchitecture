@@ -1,4 +1,5 @@
 ﻿using Application.Repository;
+using Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -24,14 +25,14 @@ namespace Application.Features.TicketFeatures.CloseTicket
             var ticket = await _ticketRepository.FindByIdAsync(request.TicketId);
             if (ticket == null) throw new DirectoryNotFoundException("Ticket not found");
 
-            if (ticket.Status == "Closed")
+            if (ticket.Status == TicketStatus.Closed)
             {
-                ticket.Status = "Checked";
+                ticket.Status = TicketStatus.Checked;
                 ticket.CloseDate = null;
             }
             else
             {
-                ticket.Status = "Closed";
+                ticket.Status = TicketStatus.Closed;
                 ticket.CloseDate = DateTime.Now;
             }
 

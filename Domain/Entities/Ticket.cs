@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
@@ -15,7 +16,7 @@ namespace Domain.Entities
 
         public required string Title { get; set; }
 
-        public required string Status { get; set; }
+        public required TicketStatus Status { get; set; }
         public DateTime? FirstResponseDate { get; set; }     
         public DateTime? CloseDate { get; set; }
 

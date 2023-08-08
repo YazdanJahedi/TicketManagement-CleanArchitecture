@@ -6,6 +6,7 @@ using Domain.Entities;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.AspNetCore.Http;
 using Application.Interfaces;
+using Domain.Enums;
 
 namespace Application.Features.TicketFeatures.CreateTicket
 {
@@ -49,7 +50,7 @@ namespace Application.Features.TicketFeatures.CreateTicket
                 Title = request.Title,
                 CreationDate = DateTime.Now,
                 FaqCategoryId = request.FaqCatgoryId,
-                Status = "Not Checked",
+                Status = TicketStatus.NotChecked,
             };
 
             await _ticketRepository.AddAsync(ticket);
