@@ -94,7 +94,7 @@ namespace Presentation.Installer
             service.AddHttpContextAccessor();
 
             // correct it
-            service.AddMediatR(typeof(LoginRequestHandler));
+            service.AddMediatR(typeof(LoginHandler));
 
             //
             service.AddAutoMapper(typeof(SignupMapper));

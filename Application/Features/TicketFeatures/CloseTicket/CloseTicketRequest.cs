@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.TicketFeatures.CloseTicket
 {
-    public record PostCloseTicketRequest : IRequest
+    public record CloseTicketRequest : IRequest
     {
         public long TicketId { get; set; }
 
-        public PostCloseTicketRequest(long ticketId)
+        public CloseTicketRequest(long ticketId)
         {
             TicketId = ticketId;
         }

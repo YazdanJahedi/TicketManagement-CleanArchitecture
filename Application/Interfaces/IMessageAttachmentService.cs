@@ -9,7 +9,6 @@ namespace Application.Interfaces
 {
     public interface IMessageAttachmentService
     {
-        public Task SaveAttachment(IFormFile file, long Messageid);
         public Task SaveMultipeAttachments(IEnumerable<IFormFile> files, long MessageId);
     }
 }

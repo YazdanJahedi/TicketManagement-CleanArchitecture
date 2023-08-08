@@ -14,19 +14,5 @@ namespace Infrastructure.Repository
             return await _context.Messages.Where(a => a.TicketId == ticketId).ToListAsync();
         }
 
-        // can be changed?? ... Think...
-        public Message? FindLastMessageByTicketId(long ticketId)
-        {
-            return  _context.Messages.OrderBy(m => m.CreationDate).LastOrDefault(e => e.TicketId == ticketId);
-        }
-
-        // delete this
-        public void RemoveAllByTicketId(long ticketId)
-        {
-            var items = _context.Messages.Where(i => i.TicketId == ticketId);
-            _context.Messages.RemoveRange(items);
-            _context.SaveChanges();
-        }
-
     }
 }

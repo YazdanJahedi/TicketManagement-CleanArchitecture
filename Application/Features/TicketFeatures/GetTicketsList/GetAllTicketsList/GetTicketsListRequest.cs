@@ -7,7 +7,5 @@ using System.Threading.Tasks;
 
 namespace Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList
 {
-    public record GetTicketsListRequest : IRequest<IEnumerable<GetTicketsListResponse>>
-    {
-    }
+    public record GetTicketsListRequest : IRequest<IEnumerable<GetTicketsListResponse>> {}
 }

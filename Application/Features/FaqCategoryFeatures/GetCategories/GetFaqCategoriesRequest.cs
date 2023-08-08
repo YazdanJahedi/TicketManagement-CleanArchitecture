@@ -7,6 +7,5 @@ using System.Threading.Tasks;
 
 namespace Application.Features.FaqCategoryFeatures.GetAllCategories
 {
-    public class GetFaqCategoriesRequest : IRequest<IEnumerable<GetFaqCategoriesResponse>>
-    { }
+    public record GetFaqCategoriesRequest : IRequest<IEnumerable<GetFaqCategoriesResponse>> { }
 }

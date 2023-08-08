@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.TicketFeatures.CloseTicket
 {
-    public class CloseTicketHandler : IRequestHandler<PostCloseTicketRequest>
+    public class CloseTicketHandler : IRequestHandler<CloseTicketRequest>
     {
         private readonly ITicketsRepository _ticketRepository;
 
@@ -19,7 +19,7 @@ namespace Application.Features.TicketFeatures.CloseTicket
             _ticketRepository = ticketRepository;
         }
 
-        public async Task<Unit> Handle(PostCloseTicketRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CloseTicketRequest request, CancellationToken cancellationToken)
         {
             var ticket = await _ticketRepository.FindByIdAsync(request.TicketId);
             if (ticket == null) throw new DirectoryNotFoundException("Ticket not found");

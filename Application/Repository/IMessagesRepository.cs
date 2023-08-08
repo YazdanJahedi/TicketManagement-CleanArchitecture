@@ -7,7 +7,6 @@ namespace Application.Repository
     public interface IMessagesRepository : IBaseRepository<Message>
     {
         public Task<IEnumerable<Message>> FindAllByTicketIdAsync(long ticketId);
-        public void RemoveAllByTicketId(long ticketId);
-        public Message? FindLastMessageByTicketId(long ticketId);
+
     }
 }

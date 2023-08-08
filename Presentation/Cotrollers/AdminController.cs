@@ -78,7 +78,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _mediator.Send(new PostCloseTicketRequest(ticketId));
+                await _mediator.Send(new CloseTicketRequest(ticketId));
                 return Ok();
             }
             catch (Exception ex)

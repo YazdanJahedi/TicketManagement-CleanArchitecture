@@ -3,6 +3,7 @@ using Application.Repository;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Application.Features.MessageAttachmentFeatures.DownloadFile
 {
@@ -23,8 +24,14 @@ namespace Application.Features.MessageAttachmentFeatures.DownloadFile
 
         public async Task<DownloadFileResponse> Handle(DownloadFileRequest request, CancellationToken cancellationToken)
         {
-            var attachment = await _messageAttachmentsRepository.FindById(request.attachmentId);
-            if (attachment == null) throw new NotFoundException("attachment not found");
+            var idString = _httpContextAccessor.HttpContext?.User.
+                Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = Convert.ToInt64(idString);
+            var role = _httpContextAccessor.HttpContext?.User.
+                Claims.First(x => x.Type == ClaimTypes.Role).Value;
+
+            var attachment = await _messageAttachmentsRepository.FindByIdAsync(request.attachmentId);
+            if (attachment == null || (role == "User" && attachment.Message!.Ticket!.CreatorId != userId)) throw new NotFoundException("attachment not found");
 
             var response = _mapper.Map<DownloadFileResponse>(attachment);
             return response;

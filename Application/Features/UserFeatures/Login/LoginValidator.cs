@@ -2,9 +2,9 @@
 
 namespace Application.Features.UserFeatures.Login
 {
-    public class LoginRequestValidator : AbstractValidator<LoginRequest>
+    public class LoginValidator : AbstractValidator<LoginRequest>
     {
-        public LoginRequestValidator()
+        public LoginValidator()
         {
             RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress()
                 .WithMessage("Email can not be empty or null");
@@ -15,7 +15,7 @@ namespace Application.Features.UserFeatures.Login
 
         public static bool IsValid(LoginRequest loginRequestDto)
         {
-            LoginRequestValidator validator = new();
+            LoginValidator validator = new();
             var validatorResult = validator.Validate(loginRequestDto);
             return validatorResult.IsValid;
         }

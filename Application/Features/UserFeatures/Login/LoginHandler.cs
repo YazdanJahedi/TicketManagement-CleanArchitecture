@@ -6,12 +6,12 @@ using MediatR;
 
 namespace Application.Features.UserFeatures.Login
 {
-    public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
+    public class LoginHandler : IRequestHandler<LoginRequest, LoginResponse>
     {
         private readonly IUsersRepository _usersRepository;
         private readonly IMapper _mapper;
 
-        public LoginRequestHandler(IUsersRepository usersRepository, IMapper mapper)
+        public LoginHandler(IUsersRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
             _mapper = mapper;
@@ -20,7 +20,7 @@ namespace Application.Features.UserFeatures.Login
         public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
             // Check validation
-            if (!LoginRequestValidator.IsValid(request))
+            if (!LoginValidator.IsValid(request))
             {
                 throw new ValidationErrorException("Email should be in email form and password can not be empty");
             }

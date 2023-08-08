@@ -19,34 +19,20 @@ namespace Application.Services
             _messageAttachmentsRepository = messageAttachmentsRepository;
         }
 
-        public async Task SaveAttachment(IFormFile file, long MesssageId)
-        {
-            var attachment = new MessageAttachment()
-            {
-                MessageId = MesssageId,
-                FileName = file.FileName,
-            };
-
-            var stream = new MemoryStream();       
-            file.CopyTo(stream);
-            attachment.FileData = stream.ToArray();
-
-            await _messageAttachmentsRepository.AddAsync(attachment);
-        }
-
         public async Task SaveMultipeAttachments(IEnumerable<IFormFile> files, long MessageId)
         {
             foreach (var file in files)
             {
+                var stream = new MemoryStream();
+                file.CopyTo(stream);
+
                 var attachment = new MessageAttachment()
                 {
                     MessageId = MessageId,
                     FileName = file.FileName,
+                    FileData = stream.ToArray(),
+                    CreationDate = DateTime.Now,
                 };
-
-                var stream = new MemoryStream();
-                file.CopyTo(stream);
-                attachment.FileData = stream.ToArray();
 
                 await _messageAttachmentsRepository.AddAsyncWithoutSaveChanges(attachment);
             }

@@ -37,15 +37,15 @@ namespace Application.Features.MessageFeatures.CreateMessage
             var role = _httpContextAccessor.HttpContext?.User.
                 Claims.First(x => x.Type == ClaimTypes.Role).Value;
 
-            // check validation
             if (!CreateMessageValidator.IsValid(request))
             {
                 throw new ValidationErrorException("Title can not be empty");
             }
 
-            // check access validation to ticket
-            var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId);
+            // check access permision to ticket
+            var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId, false);
             if (ticket == null || (ticket.CreatorId != userId && role == "User")) throw new NotFoundException("TicketId not found");
+            if (ticket.Status == "Closed") throw new Exception("ticket is closed");
 
             var message = new Message
             {
@@ -56,18 +56,23 @@ namespace Application.Features.MessageFeatures.CreateMessage
             };
 
             await _messagesRepository.AddAsync(message);
-
             if (request.Attacments != null) 
                 await _messageAttachmentService.SaveMultipeAttachments(request.Attacments, message.Id);
 
             // fill status field and first-response-date
-            if (role == "User" && ticket.Status != "Not Checked") ticket.Status = "Not Checked";
-            else // role == "Admin"
+            bool ticketNeedUpdate = false;
+            if (role == "User" && ticket.Status != "Not Checked")
             {
-                ticket.Status = "Checked";
-                if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
+                ticket.Status = "Not Checked";
+                ticketNeedUpdate = true;
             }
-            await _ticketsRepository.UpdateAsync(ticket);
+            else if (role == "Admin" && ticket.Status != "Checked") // enum
+            {
+                if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
+                ticket.Status = "Checked";
+                ticketNeedUpdate = true;
+            }
+            if (ticketNeedUpdate) await _ticketsRepository.UpdateAsync(ticket);
 
             return Unit.Value;
         }

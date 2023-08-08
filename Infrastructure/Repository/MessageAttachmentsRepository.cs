@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,12 @@ namespace Infrastructure.Repository
     {
         public MessageAttachmentsRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public async Task<MessageAttachment?> FindById(long id)
+        public async Task<MessageAttachment?> FindByIdAsync(long id)
         {
-            return await _context.MessageAttachments.FindAsync(id);
+            return await _context.MessageAttachments
+                .Include(a => a.Message)
+                    .ThenInclude(m => m.Ticket)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
        
         public async Task AddAsyncWithoutSaveChanges(MessageAttachment messageAttachment)

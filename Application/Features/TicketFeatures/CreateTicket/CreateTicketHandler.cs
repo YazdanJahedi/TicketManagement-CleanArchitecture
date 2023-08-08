@@ -37,7 +37,6 @@ namespace Application.Features.TicketFeatures.CreateTicket
                 Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var userId = Convert.ToInt64(idString);
 
-            // check validation
             if (!CreateTicketValidator.IsValid(request))
             {
                 throw new ValidationErrorException("Fields can not be empty");
