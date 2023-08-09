@@ -26,8 +26,7 @@ namespace Infrastructure.Extensions
             modelBuilder.Entity<FAQItem>()
                 .HasOne<FAQCategory>(i => i.Category)
                 .WithMany()
-                .HasForeignKey(i => i.CategoryId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(i => i.CategoryId);
 
             modelBuilder.Entity<Message>()
                 .HasOne<User>(m => m.Creator)
@@ -35,11 +34,11 @@ namespace Infrastructure.Extensions
                 .HasForeignKey(m => m.CreatorId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
             modelBuilder.Entity<Ticket>()
                 .HasOne<FAQCategory>(t => t.FaqCategory)
                 .WithMany()
-                .HasForeignKey(t => t.FaqCategoryId);
+                .HasForeignKey(t => t.FaqCategoryId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<MessageAttachment>()
                 .HasOne<Message>(a => a.Message)
