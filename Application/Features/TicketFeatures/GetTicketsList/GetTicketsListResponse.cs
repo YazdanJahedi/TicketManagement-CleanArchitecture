@@ -1,4 +1,5 @@
 ﻿using Application.Common.DTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -12,7 +13,7 @@ namespace Application.Features.TicketFeatures.GetTicketsList
     public record GetTicketsListResponse
     {
         public long Id { get; set; }
-        public required long CreatorId { get; set; }
+        public required GetUserInformationDto Creator { get; set; }
         public required string Title { get; set; }
         public DateTime? FirstResponseDate { get; set; }
         public required string Status { get; set; }

@@ -63,7 +63,8 @@ namespace Infrastructure.Migrations
                         name: "FK_FAQItems_FAQCategories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "FAQCategories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,8 +88,7 @@ namespace Infrastructure.Migrations
                         name: "FK_Tickets_FAQCategories_FaqCategoryId",
                         column: x => x.FaqCategoryId,
                         principalTable: "FAQCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tickets_Users_CreatorId",
                         column: x => x.CreatorId,

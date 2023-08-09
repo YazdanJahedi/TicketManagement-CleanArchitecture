@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230808135401_init")]
+    [Migration("20230809105248_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -279,7 +279,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.FAQCategory", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -326,7 +326,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.FAQCategory", "FaqCategory")
                         .WithMany()
                         .HasForeignKey("FaqCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Creator");

@@ -13,13 +13,18 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<Ticket>> GetFirstOnesByCreatorIdAsync(long creatorId, int number)
         {
             return await _context.Tickets.OrderByDescending(t => t.CreationDate)
-                .Where(a => a.CreatorId == creatorId).Take(number).ToListAsync();
+                            .Where(a => a.CreatorId == creatorId)
+                            .Take(number)
+                            .Include(t => t.Creator)
+                            .ToListAsync();
         }
 
         public async Task<IEnumerable<Ticket>> GetAllFirstOnesAsync(int number)
         {
             return await _context.Tickets.OrderByDescending(t => t.CreationDate)
-                .Take(number).ToListAsync();
+                            .Take(number)
+                            .Include(t => t.Creator)
+                            .ToListAsync();
         }
 
         public async Task<Ticket?> FindByIdAsync(long id, bool loadCompelete = true)

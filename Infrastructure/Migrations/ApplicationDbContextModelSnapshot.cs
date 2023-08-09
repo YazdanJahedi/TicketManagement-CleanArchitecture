@@ -276,7 +276,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.FAQCategory", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -323,7 +323,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.FAQCategory", "FaqCategory")
                         .WithMany()
                         .HasForeignKey("FaqCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Creator");

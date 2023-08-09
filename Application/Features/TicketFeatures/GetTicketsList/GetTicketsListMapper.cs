@@ -13,7 +13,16 @@ namespace Application.Features.TicketFeatures.GetTicketsList
     {
         public GetTicketsListMapper()
         {
-            CreateMap<Ticket, GetTicketsListResponse>();
+            CreateMap<Ticket, GetTicketsListResponse>()
+                .ForMember(dest => dest.Creator, opt => opt.MapFrom(src =>
+                    new GetUserInformationDto
+                    {
+                        Name = src.Creator!.Name,
+                        Email = src.Creator.Email,
+                        Role = src.Creator.Role,
+                        PhoneNumber = src.Creator.PhoneNumber,
+                    }
+                ));
         }
     }
 }
