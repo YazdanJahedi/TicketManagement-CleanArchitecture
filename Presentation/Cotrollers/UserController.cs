@@ -31,11 +31,11 @@ namespace Presentation.Controllers
 
 
         [HttpGet("request/tickets")]
-        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes()
+        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes(int numberOfReturningTickets)
         {
             try
             {
-                var respone = await _mediator.Send(new GetTicketsListRequest());
+                var respone = await _mediator.Send(new GetTicketsListRequest(numberOfReturningTickets));
                 return Ok(respone);
             }
             catch (Exception ex)

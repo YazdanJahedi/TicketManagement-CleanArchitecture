@@ -30,11 +30,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("tickets")]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int numberOfReturningTickets)
         {
             try
             {
-                var respone = await _mediator.Send(new GetTicketsListRequest());
+                var respone = await _mediator.Send(new GetTicketsListRequest(numberOfReturningTickets));
                 return Ok(respone);
             }
             catch (Exception ex)

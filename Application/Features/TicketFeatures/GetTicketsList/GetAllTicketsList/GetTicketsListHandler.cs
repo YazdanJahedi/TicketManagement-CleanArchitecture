@@ -35,9 +35,9 @@ namespace Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList
 
             IEnumerable<Ticket> tickets;
             if (role == "Admin")
-                tickets = await _ticketsRepository.GetAllAsync();
+                tickets = await _ticketsRepository.GetAllFirstOnesAsync(request.NumberOfReturningTickets);
             else // role == "User"
-                tickets = await _ticketsRepository.FindAllByCreatorIdAsync(userId);
+                tickets = await _ticketsRepository.GetFirstOnesByCreatorIdAsync(userId, request.NumberOfReturningTickets);
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
 
