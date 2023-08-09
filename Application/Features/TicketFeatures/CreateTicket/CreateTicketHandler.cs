@@ -38,11 +38,6 @@ namespace Application.Features.TicketFeatures.CreateTicket
                 Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var userId = Convert.ToInt64(idString);
 
-            if (!CreateTicketValidator.IsValid(request))
-            {
-                throw new ValidationErrorException("Fields can not be empty");
-            }
-
             // create a new ticket instance
             var ticket = new Ticket
             {

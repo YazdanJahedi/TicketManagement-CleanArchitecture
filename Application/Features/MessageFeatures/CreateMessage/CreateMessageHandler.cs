@@ -38,11 +38,6 @@ namespace Application.Features.MessageFeatures.CreateMessage
             var role = _httpContextAccessor.HttpContext?.User.
                 Claims.First(x => x.Type == ClaimTypes.Role).Value;
 
-            if (!CreateMessageValidator.IsValid(request))
-            {
-                throw new ValidationErrorException("Title can not be empty");
-            }
-
             // check access permision to ticket
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId, false);
             if (ticket == null || (ticket.CreatorId != userId && role == "User")) throw new NotFoundException("TicketId not found");

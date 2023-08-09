@@ -21,12 +21,6 @@ namespace Application.Features.UserFeatures.Signup
 
         public async Task<SignupResponse> Handle(SignupRequest request, CancellationToken cancellationToken)
         {
-            // Check validation
-            if (!SignupRequestValidator.IsValid(request))
-            {
-                throw new ValidationErrorException("Email must be in email format and password can not be empty");
-            }
-
             // Check if email is used
             var foundUser = await _usersRepository.FindByEmailAsync(request.Email);
             if (foundUser != null) throw new Exception("this Email is used before");

@@ -3,6 +3,7 @@ using Application.Features.UserFeatures.Signup;
 using Application.Interfaces;
 using Application.Repository;
 using Application.Services;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Context;
 using Infrastructure.Repository;
@@ -19,7 +20,6 @@ namespace Presentation.Installer
 {
     public static class RegisterDependentServices
     {
-        [Obsolete]
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
             builder.Services.RegisterControllers();
@@ -32,19 +32,16 @@ namespace Presentation.Installer
             return builder;
         }
 
-        [Obsolete]
         private static void RegisterControllers(this IServiceCollection service)
         {
             service.AddControllers()
-                .AddFluentValidation(options =>
-                    {
-                        options.ImplicitlyValidateChildProperties = true;
-                        options.ImplicitlyValidateRootCollectionElements = true;
-                        options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-                    }
-                ).AddNewtonsoftJson(options =>
+                .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
+
+            service.AddFluentValidationAutoValidation();
+            service.AddFluentValidationClientsideAdapters();
+            service.AddValidatorsFromAssembly(typeof(LoginRequest).Assembly);
 
         }
 

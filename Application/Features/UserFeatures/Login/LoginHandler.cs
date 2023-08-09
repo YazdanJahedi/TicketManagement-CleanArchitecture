@@ -19,11 +19,6 @@ namespace Application.Features.UserFeatures.Login
 
         public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
-            // Check validation
-            if (!LoginValidator.IsValid(request))
-            {
-                throw new ValidationErrorException("Email should be in email form and password can not be empty");
-            }
 
             // Find user by email
             var user = await _usersRepository.FindByEmailAsync(request.Email);

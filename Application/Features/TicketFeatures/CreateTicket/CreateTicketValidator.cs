@@ -11,6 +11,8 @@ namespace Application.Features.TicketFeatures.CreateTicket
 
             RuleFor(x => x.Description).NotNull().NotEmpty()
                 .WithMessage("Descriptiion can not be empty or null");
+
+            RuleFor(x => x.FaqCatgoryId).NotNull().NotEmpty();
         }
         public static bool IsValid(CreateTicketRequest createTicketDto)
         {
