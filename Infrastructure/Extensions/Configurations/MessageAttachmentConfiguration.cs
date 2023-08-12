@@ -14,7 +14,12 @@ namespace Infrastructure.Extensions.Configurations
         public override void Configure(EntityTypeBuilder<MessageAttachment> builder)
         {
             // base.Configure(builder);
+            
+            builder.Property(e => e.MessageId)
+                .IsRequired();
 
+            builder.Property(e => e.FileName)
+                .IsRequired();
 
             // navigation
             

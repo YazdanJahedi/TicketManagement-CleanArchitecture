@@ -15,9 +15,17 @@ namespace Infrastructure.Extensions.Configurations
         {
             // base.Configure(builder);
 
+            builder.Property(e => e.CategoryId)
+                .IsRequired();
+
+            builder.Property(e => e.Title)
+                .IsRequired();
+
+            builder.Property(e => e.Description)
+                .IsRequired();
 
             // navigation
-            builder.HasOne<FAQCategory>(i => i.Category)
+            builder.HasOne(i => i.Category)
                 .WithMany()
                 .HasForeignKey(i => i.CategoryId);
         }

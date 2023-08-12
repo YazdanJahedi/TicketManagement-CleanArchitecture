@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,14 @@ namespace Infrastructure.Extensions.Configurations
         {
             //base.Configure(builder);
 
+            builder.Property(e => e.CreatorId)
+                .IsRequired();
+
+            builder.Property(e => e.FaqCategoryId)
+                .IsRequired();
+
+            builder.Property(e => e.Title)
+                .IsRequired();
 
             // navigation        
             builder.HasOne<FAQCategory>(t => t.FaqCategory)

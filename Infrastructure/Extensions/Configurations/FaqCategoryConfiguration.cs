@@ -15,6 +15,8 @@ namespace Infrastructure.Extensions.Configurations
         {
             // base.Configure(builder);
 
+            builder.Property(e => e.CategoryName)
+                .IsRequired();
         }
     }
 

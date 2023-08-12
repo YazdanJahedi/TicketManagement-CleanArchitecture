@@ -16,7 +16,14 @@ namespace Infrastructure.Extensions.Configurations
         {
             // base.Configure(builder);
 
+            builder.Property(e => e.Ticket)
+                .IsRequired();
 
+            builder.Property(e => e.CreatorId)
+                .IsRequired(); 
+
+            builder.Property(e => e.Text)
+                .IsRequired(); 
 
             // navigation
             builder.HasOne(m => m.Ticket)
