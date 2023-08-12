@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Extensions;
+using Infrastructure.Extensions.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context
@@ -21,7 +22,13 @@ namespace Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ConfigureDataRelations();
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new TicketConfiguration());
+            modelBuilder.ApplyConfiguration(new MessageConfiguration());
+            modelBuilder.ApplyConfiguration(new MessageAttachmentConfiguration());
+            modelBuilder.ApplyConfiguration(new FaqItemConfiguration());
+            modelBuilder.ApplyConfiguration(new FaqCategoryConfiguration());
+
             modelBuilder.Seed();
         }
 
