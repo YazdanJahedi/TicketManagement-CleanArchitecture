@@ -20,14 +20,17 @@ namespace Application.Features.MessageFeatures.CreateMessage
         private readonly IMessagesRepository _messagesRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMessageAttachmentService _messageAttachmentService;
+        private readonly ITicketService _ticketService;
 
         public CreateMessageHandler(ITicketsRepository ticketsRepository, IMessagesRepository messagesRepository,
-                                    IHttpContextAccessor httpContextAccessor, IMessageAttachmentService messageAttachmentService)
+                                    IHttpContextAccessor httpContextAccessor, IMessageAttachmentService messageAttachmentService
+                                    , ITicketService ticketService)
         {
             _httpContextAccessor = httpContextAccessor;
             _ticketsRepository = ticketsRepository;
             _messagesRepository = messagesRepository;
             _messageAttachmentService = messageAttachmentService;
+            _ticketService = ticketService;
         }
 
         public async Task<Unit> Handle(CreateMessageRequest request, CancellationToken cancellationToken)
@@ -37,6 +40,7 @@ namespace Application.Features.MessageFeatures.CreateMessage
             var userId = Convert.ToInt64(idString);
             var role = _httpContextAccessor.HttpContext?.User.
                 Claims.First(x => x.Type == ClaimTypes.Role).Value;
+            if (role == null) throw new NotFoundException("user not found");
 
             // check access permision to ticket
             var ticket = await _ticketsRepository.FindByIdAsync(request.TicketId, false);
@@ -55,20 +59,7 @@ namespace Application.Features.MessageFeatures.CreateMessage
             if (request.Attacments != null) 
                 await _messageAttachmentService.SaveMultipeAttachments(request.Attacments, message.Id);
 
-            // fill status field and first-response-date
-            bool ticketNeedUpdate = false;
-            if (role == "User" && ticket.Status != TicketStatus.NotChecked)
-            {
-                ticket.Status = TicketStatus.NotChecked;
-                ticketNeedUpdate = true;
-            }
-            else if (role == "Admin" && ticket.Status != TicketStatus.Checked) // enum
-            {
-                if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
-                ticket.Status = TicketStatus.Checked;
-                ticketNeedUpdate = true;
-            }
-            if (ticketNeedUpdate) await _ticketsRepository.UpdateAsync(ticket);
+            await _ticketService.UpdateTicketAfterSendNewMessage(ticket, role);
 
             return Unit.Value;
         }

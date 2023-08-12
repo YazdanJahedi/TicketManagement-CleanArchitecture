@@ -87,6 +87,8 @@ namespace Presentation.Installer
             service.AddScoped<IMessageAttachmentsRepository, MessageAttachmentsRepository>();
 
             service.AddScoped<IMessageAttachmentService, MessageAttachementtService>();
+            service.AddScoped<ITicketService, TicketService>();
+
 
             service.AddHttpContextAccessor();
 
