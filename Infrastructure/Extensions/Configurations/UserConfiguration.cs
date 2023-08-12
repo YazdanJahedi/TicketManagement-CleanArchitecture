@@ -9,7 +9,6 @@ namespace Infrastructure.Extensions.Configurations
     {
         public override void Configure(EntityTypeBuilder<User> builder)
         {
-            // base.Configure(builder);
 
             builder.Property(e => e.Name)
                 .IsRequired();

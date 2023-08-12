@@ -14,7 +14,6 @@ namespace Infrastructure.Extensions.Configurations
     {
         public override void Configure(EntityTypeBuilder<Ticket> builder)
         {
-            //base.Configure(builder);
 
             builder.Property(e => e.CreatorId)
                 .IsRequired();
@@ -25,13 +24,14 @@ namespace Infrastructure.Extensions.Configurations
             builder.Property(e => e.Title)
                 .IsRequired();
 
-            // navigation        
-            builder.HasOne<FAQCategory>(t => t.FaqCategory)
+            // navigation
+            
+            builder.HasOne(t => t.FaqCategory)
                 .WithMany()
                 .HasForeignKey(t => t.FaqCategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne<User>(t => t.Creator)
+            builder.HasOne(t => t.Creator)
                 .WithMany(u => u.Tickets)
                 .HasForeignKey(t => t.CreatorId)
                 .OnDelete(DeleteBehavior.Cascade);

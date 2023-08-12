@@ -13,7 +13,6 @@ namespace Infrastructure.Extensions.Configurations
     {
         public override void Configure(EntityTypeBuilder<FAQItem> builder)
         {
-            // base.Configure(builder);
 
             builder.Property(e => e.CategoryId)
                 .IsRequired();
@@ -25,6 +24,7 @@ namespace Infrastructure.Extensions.Configurations
                 .IsRequired();
 
             // navigation
+
             builder.HasOne(i => i.Category)
                 .WithMany()
                 .HasForeignKey(i => i.CategoryId);

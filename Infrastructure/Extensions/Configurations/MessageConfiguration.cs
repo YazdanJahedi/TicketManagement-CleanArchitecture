@@ -14,10 +14,6 @@ namespace Infrastructure.Extensions.Configurations
     {
         public override void Configure(EntityTypeBuilder<Message> builder)
         {
-            // base.Configure(builder);
-
-            builder.Property(e => e.Ticket)
-                .IsRequired();
 
             builder.Property(e => e.CreatorId)
                 .IsRequired(); 
@@ -26,6 +22,7 @@ namespace Infrastructure.Extensions.Configurations
                 .IsRequired(); 
 
             // navigation
+
             builder.HasOne(m => m.Ticket)
                 .WithMany(t => t.Messages)
                 .HasForeignKey(m => m.TicketId)

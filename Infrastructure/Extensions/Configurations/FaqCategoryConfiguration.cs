@@ -13,7 +13,6 @@ namespace Infrastructure.Extensions.Configurations
 
         public override void Configure(EntityTypeBuilder<FAQCategory> builder)
         {
-            // base.Configure(builder);
 
             builder.Property(e => e.CategoryName)
                 .IsRequired();
