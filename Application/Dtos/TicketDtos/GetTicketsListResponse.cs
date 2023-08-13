@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.TicketFeatures.GetTicketsList
+namespace Application.Dtos.TicketDtos
 {
     public record GetTicketsListResponse
     {

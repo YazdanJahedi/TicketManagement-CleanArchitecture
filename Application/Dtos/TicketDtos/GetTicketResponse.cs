@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.TicketFeatures.GetTicket
+namespace Application.Dtos.TicketDtos
 {
     public record GetTicketResponse
     {
         public required long FaqCategoryId { get; set; }
         public required string Title { get; set; }
         public required string Status { get; set; }
-        public IEnumerable<GetMessageDetailsDto>? Messages { get; set; }      
+        public IEnumerable<GetMessageDetailsDto>? Messages { get; set; }
     }
 }

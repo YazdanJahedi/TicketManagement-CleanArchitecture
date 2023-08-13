@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Features.TicketFeatures.CreateTicket
+namespace Application.Dtos.TicketDtos
 {
     public record CreateTicketRequest : IRequest
     {

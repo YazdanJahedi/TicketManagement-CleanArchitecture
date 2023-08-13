@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using Application.Dtos.TicketDtos;
+using FluentValidation;
 
-namespace Application.Features.TicketFeatures.CreateTicket
+namespace Application.Validators
 {
     public class CreateTicketValidator : AbstractValidator<CreateTicketRequest>
     {

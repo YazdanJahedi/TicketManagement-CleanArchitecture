@@ -1,6 +1,6 @@
 ﻿using Application.Dtos.FaqDtos;
+using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
-using Application.Repository;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using Application.Dtos.MessageDtos;
+using FluentValidation;
 
-namespace Application.Features.MessageFeatures.CreateMessage
+namespace Application.Validators
 {
     public class CreateMessageValidator : AbstractValidator<CreateMessageRequest>
     {

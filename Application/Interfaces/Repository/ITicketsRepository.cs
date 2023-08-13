@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Eventing.Reader;
 
-namespace Application.Repository
+namespace Application.Interfaces.Repository
 {
     public interface ITicketsRepository : IBaseRepository<Ticket>
     {

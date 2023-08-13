@@ -1,10 +1,8 @@
 ﻿using Application.Common.DTOs;
 using Application.Dtos.FaqDtos;
+using Application.Dtos.MessageDtos;
+using Application.Dtos.TicketDtos;
 using Application.Features.MessageAttachmentFeatures.DownloadFile;
-using Application.Features.MessageFeatures.CreateMessage;
-using Application.Features.TicketFeatures.CreateTicket;
-using Application.Features.TicketFeatures.GetTicket;
-using Application.Features.TicketFeatures.GetTicketsList;
 using Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList;
 using Application.Interfaces.Service;
 using MediatR;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Repository
+namespace Application.Interfaces.Repository
 {
     public interface IMessageAttachmentsRepository : IBaseRepository<MessageAttachment>
     {

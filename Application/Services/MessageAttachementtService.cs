@@ -1,5 +1,5 @@
-﻿using Application.Interfaces.Service;
-using Application.Repository;
+﻿using Application.Interfaces.Repository;
+using Application.Interfaces.Service;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;

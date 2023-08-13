@@ -10,6 +10,7 @@ namespace Application.Interfaces.Service
     public interface IUserService
     {
         public Task<SignupResponse> Signup(SignupRequest request);
-        public Task<LoginResponse> Login(LoginRequest request); 
+        public Task<LoginResponse> Login(LoginRequest request);
+        public UserClaimsDto GetClaims();
     }
 }

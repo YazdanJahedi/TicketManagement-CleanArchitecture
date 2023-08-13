@@ -1,5 +1,5 @@
 ﻿using Application.Common.Exceptions;
-using Application.Repository;
+using Application.Interfaces.Repository;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;

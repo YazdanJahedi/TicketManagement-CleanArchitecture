@@ -1,4 +1,5 @@
 ﻿using Application.Common.DTOs;
+using Application.Dtos.TicketDtos;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.TicketFeatures.GetTicketsList
+namespace Application.Mappers
 {
     public class GetTicketsListMapper : Profile
     {

@@ -1,7 +1,7 @@
 ﻿using Application.Dtos.UserDtos;
+using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
 using Application.Mappers;
-using Application.Repository;
 using Application.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
