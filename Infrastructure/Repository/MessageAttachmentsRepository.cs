@@ -1,13 +1,7 @@
 ﻿using Application.Repository;
 using Domain.Entities;
 using Infrastructure.Context;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
@@ -23,15 +17,5 @@ namespace Infrastructure.Repository
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
        
-        public async Task AddAsyncWithoutSaveChanges(MessageAttachment messageAttachment)
-        {
-            await _context.MessageAttachments.AddAsync(messageAttachment);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
-
     }
 }

@@ -2,6 +2,7 @@
 using Application.Repository;
 using AutoMapper;
 using MediatR;
+using System.Web.Helpers;
 
 
 namespace Application.Features.UserFeatures.Login
@@ -21,7 +22,7 @@ namespace Application.Features.UserFeatures.Login
         {
 
             // Find user by email
-            var user = await _usersRepository.FindByEmailAsync(request.Email);
+            var user = await _usersRepository.GetAsync(e => e.Email == request.Email);
             if (user == null) throw new NotFoundException("username or password is not correct");
 
             var isPasswordVerified = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);

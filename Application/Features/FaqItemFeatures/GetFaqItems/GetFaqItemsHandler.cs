@@ -18,7 +18,7 @@ namespace Application.Features.FaqItemFeatures.Queries
 
         public async Task<IEnumerable<GetFaqItemsResponse>> Handle(GetFaqItemsRequest request, CancellationToken cancellationToken)
         {
-            var items = await _faqItemsRepository.FindAllByCategoryIdAsync(request.Id);
+            var items = await _faqItemsRepository.GetAllAsync(a => a.CategoryId == request.Id);
 
             var response = _mapper.Map<IEnumerable<GetFaqItemsResponse>>(items);
 

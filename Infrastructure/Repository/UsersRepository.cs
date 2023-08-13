@@ -11,17 +11,5 @@ namespace Infrastructure.Repository
     {
         public UsersRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public async Task<User?> FindByEmailAsync(string email)
-        {
-            return await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
-        }
-
-        public async Task<User?> FindByNameAsync(string username)
-        {
-            return await _context.Users
-                .Include(u => u.Tickets)
-                .FirstOrDefaultAsync(u => u.Name == username);
-
-        }
     }
 }

@@ -3,7 +3,5 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Repository
 {
-    public interface IFAQCategoriesRepository : IBaseRepository<FAQCategory>
-    {
-    }
+    public interface IFAQCategoriesRepository : IBaseRepository<FAQCategory> {}
 }

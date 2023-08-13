@@ -8,8 +8,5 @@ using System.Threading.Tasks;
 
 namespace Application.Repository
 {
-    public interface IFAQItemsRepository : IBaseRepository<FAQItem>
-    {
-        public Task<IEnumerable<FAQItem>> FindAllByCategoryIdAsync(long categoryId);
-    }
+    public interface IFAQItemsRepository : IBaseRepository<FAQItem> {}
 }

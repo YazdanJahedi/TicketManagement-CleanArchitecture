@@ -34,7 +34,7 @@ namespace Application.Services
                     CreationDate = DateTime.Now,
                 };
 
-                await _messageAttachmentsRepository.AddAsyncWithoutSaveChanges(attachment);
+                await _messageAttachmentsRepository.AddAsync(attachment);
             }
             await _messageAttachmentsRepository.SaveChangesAsync();
         }

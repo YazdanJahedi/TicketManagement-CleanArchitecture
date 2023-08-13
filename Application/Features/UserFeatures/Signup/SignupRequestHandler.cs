@@ -3,6 +3,7 @@ using Application.Repository;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using System.Web.Helpers;
 
 
 namespace Application.Features.UserFeatures.Signup
@@ -22,7 +23,7 @@ namespace Application.Features.UserFeatures.Signup
         public async Task<SignupResponse> Handle(SignupRequest request, CancellationToken cancellationToken)
         {
             // Check if email is used
-            var foundUser = await _usersRepository.FindByEmailAsync(request.Email);
+            var foundUser = await _usersRepository.GetAsync(e => e.Email == request.Email);
             if (foundUser != null) throw new Exception("this Email is used before");
 
             // Creating new user

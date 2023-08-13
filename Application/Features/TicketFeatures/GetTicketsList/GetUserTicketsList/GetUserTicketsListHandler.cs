@@ -24,7 +24,7 @@ namespace Application.Features.TicketFeatures.GetTicketsList.GetUserTicketsList
 
         public async Task<IEnumerable<GetTicketsListResponse>?> Handle(GetUserTicketsListRequest request, CancellationToken cancellationToken)
         {
-            var user = await _usersRepository.FindByNameAsync(request.UserName);
+            var user = await _usersRepository.GetAsync(u => u.Name == request.UserName, "Tickets");
             if (user == null) throw new NotFoundException("user not found");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(user.Tickets);
