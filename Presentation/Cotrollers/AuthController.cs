@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using Application.Features.UserFeatures.Signup;
-using Application.Features.UserFeatures.Login;
 using Application.Common.DTOs;
+using Application.Dtos.UserDtos;
+using Application.Interfaces.Service;
 
 namespace Presentation.Controllers
 {
@@ -11,11 +11,11 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-
-        private readonly IMediator _mediator;
-        public AuthController(IMediator mediator)
+        private readonly IUserService _userService;
+     
+        public AuthController(IUserService userService)
         {
-            _mediator = mediator;
+            _userService = userService;
         }
 
         [HttpPost("signup")]
@@ -23,7 +23,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _mediator.Send(req);
+                var response = await _userService.Signup(req);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -37,7 +37,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _mediator.Send(req);
+                var response = await _userService.Login(req);
                 return Ok(response);
             } 
             catch (Exception ex)

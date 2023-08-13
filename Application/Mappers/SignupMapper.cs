@@ -1,7 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Dtos.UserDtos;
+using AutoMapper;
 using Domain.Entities;
 
-namespace Application.Features.UserFeatures.Signup
+namespace Application.Mappers
 {
     public class SignupMapper : Profile
     {

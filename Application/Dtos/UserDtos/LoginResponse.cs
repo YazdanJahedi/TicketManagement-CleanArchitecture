@@ -1,4 +1,4 @@
-﻿namespace Application.Features.UserFeatures.Login
+﻿namespace Application.Dtos.UserDtos
 {
     public record LoginResponse
     {

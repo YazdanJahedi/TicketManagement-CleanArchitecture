@@ -1,4 +1,4 @@
-﻿using Application.Features.FaqItemFeatures.GetAllFaqItems;
+﻿using Application.Dtos.FaqDtos;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.FaqItemFeatures.GetFaqItems
+namespace Application.Mappers
 {
     public class GetFaqItemsMapper : Profile
     {
-        public GetFaqItemsMapper() 
+        public GetFaqItemsMapper()
         {
-            CreateMap<FAQItem, GetFaqItemsResponse > ();
+            CreateMap<FAQItem, GetFaqItemsResponse>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Features.UserFeatures.Login
+namespace Application.Dtos.UserDtos
 {
     public record LoginRequest : IRequest<LoginResponse>
     {

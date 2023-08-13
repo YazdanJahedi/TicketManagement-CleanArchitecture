@@ -5,8 +5,8 @@ using System.Security.Claims;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.AspNetCore.Http;
-using Application.Interfaces;
 using Domain.Enums;
+using Application.Interfaces.Service;
 
 namespace Application.Features.TicketFeatures.CreateTicket
 {

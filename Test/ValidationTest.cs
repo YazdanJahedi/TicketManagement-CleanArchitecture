@@ -1,5 +1,5 @@
-using Application.Features.UserFeatures.Login;
-using Application.Features.UserFeatures.Signup;
+using Application.Dtos.UserDtos;
+using Application.Validators;
 
 namespace Test
 {

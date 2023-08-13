@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using Application.Dtos.UserDtos;
+using FluentValidation;
 
-namespace Application.Features.UserFeatures.Signup
+namespace Application.Validators
 {
     public class SignupRequestValidator : AbstractValidator<SignupRequest>
     {

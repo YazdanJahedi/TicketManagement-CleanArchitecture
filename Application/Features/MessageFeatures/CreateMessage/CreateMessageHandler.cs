@@ -1,5 +1,5 @@
 ﻿using Application.Common.Exceptions;
-using Application.Interfaces;
+using Application.Interfaces.Service;
 using Application.Repository;
 using Domain.Entities;
 using Domain.Enums;

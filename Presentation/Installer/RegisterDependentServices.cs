@@ -1,6 +1,6 @@
-﻿using Application.Features.UserFeatures.Login;
-using Application.Features.UserFeatures.Signup;
-using Application.Interfaces;
+﻿using Application.Dtos.UserDtos;
+using Application.Interfaces.Service;
+using Application.Mappers;
 using Application.Repository;
 using Application.Services;
 using FluentValidation;

@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Domain.Entities;
 
-namespace Application.Features.UserFeatures.Login
+namespace Application.Services
 {
     public static class CreateJwtToken
     {

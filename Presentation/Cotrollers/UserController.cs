@@ -1,14 +1,12 @@
 ﻿using Application.Common.DTOs;
-using Application.Features.FaqCategoryFeatures.GetAllCategories;
-using Application.Features.FaqCategoryFeatures.Queries;
-using Application.Features.FaqItemFeatures.GetAllFaqItems;
-using Application.Features.FaqItemFeatures.Queries;
+using Application.Dtos.FaqDtos;
 using Application.Features.MessageAttachmentFeatures.DownloadFile;
 using Application.Features.MessageFeatures.CreateMessage;
 using Application.Features.TicketFeatures.CreateTicket;
 using Application.Features.TicketFeatures.GetTicket;
 using Application.Features.TicketFeatures.GetTicketsList;
 using Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList;
+using Application.Interfaces.Service;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +20,11 @@ namespace Presentation.Controllers
     public class UserController : ControllerBase
     {
 
-        private readonly IMediator _mediator;
+        private readonly IFaqService _faqService;
 
-        public UserController(IMediator mediator)
+        public UserController(IFaqService faqService)
         {
-            _mediator = mediator;
+            _faqService = faqService;
         }
 
 
@@ -107,7 +105,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respose = await _mediator.Send(new GetFaqCategoriesRequest());
+                var respose = await _faqService.GetFaqCategories();
                 return Ok(respose);
             }
             catch (Exception ex)
@@ -122,7 +120,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _mediator.Send(new GetFaqItemsRequest(id));
+                var response = await _faqService.GetFaqItems(id);
                 return Ok(response);
             }
             catch (Exception ex)

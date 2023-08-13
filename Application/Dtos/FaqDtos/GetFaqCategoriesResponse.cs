@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.FaqCategoryFeatures.GetAllCategories
+namespace Application.Dtos.FaqDtos
 {
     public record GetFaqCategoriesResponse
     {

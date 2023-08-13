@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.UserFeatures.Signup
+namespace Application.Dtos.UserDtos
 {
     public record SignupResponse
     {
