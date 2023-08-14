@@ -5,7 +5,7 @@ using Application.Interfaces.Service;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services
 {
@@ -22,14 +22,23 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<DownloadFileResponse> Download(long fileId)
+        public async Task<DownloadResponse> Download(long fileId)
         {
             var claims = _userService.GetClaims();
 
             var attachment = await _messageAttachmentsRepository.FindByIdAsync(fileId);
             if (attachment == null || (claims.Role == "User" && attachment.Message!.Ticket!.CreatorId != claims.Id)) throw new NotFoundException("attachment not found");
 
-            var response = _mapper.Map<DownloadFileResponse>(attachment);
+            var filePath = Path.Combine(attachment.Path, attachment.FileName);
+
+            var bytes = await File.ReadAllBytesAsync(filePath);
+
+            var response = new DownloadResponse
+            {
+                FileName = attachment.FileName,
+                Data = bytes,
+                MimeType = "application/octet-stream",
+            };
             return response;
         }
 

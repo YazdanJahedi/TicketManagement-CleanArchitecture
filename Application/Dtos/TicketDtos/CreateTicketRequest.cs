@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Application.Dtos.TicketDtos
 {
-    public record CreateTicketRequest : IRequest
+    public record CreateTicketRequest 
     {
         public required string Title { get; set; }
         public required string Description { get; set; }

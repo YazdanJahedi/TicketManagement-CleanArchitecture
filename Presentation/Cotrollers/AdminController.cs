@@ -106,7 +106,7 @@ namespace Presentation.Controllers
         {
             try 
             {
-                await _messageService.AddMessage(req);
+                await _messageService.Add(req);
                 return Ok();
             } 
             catch (Exception ex)
@@ -122,7 +122,7 @@ namespace Presentation.Controllers
             try
             {
                 var response = await _messageAttachmentService.Download(fileId);
-                return File(response.FileData, response.MimeType, response.FileName);
+                return File(response.Data, response.MimeType, response.FileName);
             }
             catch (Exception ex)
             {

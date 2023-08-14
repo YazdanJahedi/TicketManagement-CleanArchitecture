@@ -9,6 +9,6 @@ namespace Application.Interfaces.Service
 {
     public interface IMessageService
     {
-        public Task AddMessage(CreateMessageRequest request);
+        public Task Add(CreateMessageRequest request);
     }
 }

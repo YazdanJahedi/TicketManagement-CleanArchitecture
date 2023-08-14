@@ -27,17 +27,15 @@ namespace Infrastructure.Repository
                             .ToListAsync();
         }
 
-        public async Task<Ticket?> FindByIdAsync(long id, bool loadCompelete = true)
+        public async Task<Ticket?> FindByIdAsync(long id)
         {
-            if (loadCompelete) 
-                return await _context.Tickets
-                            .Include(t => t.Messages)!
-                                .ThenInclude(m => m.Creator)
-                            .Include(t => t.Messages)!
-                                .ThenInclude(m => m.Attachments)
-                            .FirstOrDefaultAsync(t => t.Id == id);
+            return await _context.Tickets
+                        .Include(t => t.Messages)!
+                            .ThenInclude(m => m.Creator)
+                        .Include(t => t.Messages)!
+                            .ThenInclude(m => m.Attachments)
+                        .FirstOrDefaultAsync(t => t.Id == id);
 
-            return await _context.Tickets.FindAsync(id);
         }
         
         public async Task RemoveAsync(Ticket ticket)

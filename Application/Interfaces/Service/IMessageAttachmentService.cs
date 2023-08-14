@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.MessageAttachmentDtos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace Application.Interfaces.Service
     public interface IMessageAttachmentService
     {
         public Task UploadRange(IEnumerable<IFormFile> files, long MessageId);
-        public Task<DownloadFileResponse> Download(long fileId);
+        public Task<DownloadResponse> Download(long fileId);
     }
 }

@@ -13,16 +13,19 @@ namespace Application.Services
     {
         private readonly ITicketsRepository _ticketsRepository;
         private readonly IMessagesRepository _messagesRepository;
+        private readonly IMessageAttachmentService _messageAttachmentService;
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
 
         public TicketService(ITicketsRepository ticketsRepository,
                              IMessagesRepository messagesRepository,
+                             IMessageAttachmentService messageAttachmentService,
                              IAuthService userService,
                              IMapper mapper)
         {
             _ticketsRepository = ticketsRepository;
             _messagesRepository = messagesRepository;
+            _messageAttachmentService = messageAttachmentService;
             _authService = userService;
             _mapper = mapper;
         }
@@ -31,7 +34,6 @@ namespace Application.Services
         {
             var claim = _authService.GetClaims();
 
-            // Create a new ticket instance
             var ticket = new Ticket
             {
                 CreatorId = claim.Id,
@@ -43,7 +45,7 @@ namespace Application.Services
 
             await _ticketsRepository.AddAsync(ticket);
 
-            var firstMesage = new Message
+            var firstMessage = new Message
             {
                 TicketId = ticket.Id,
                 CreatorId = claim.Id,
@@ -52,29 +54,12 @@ namespace Application.Services
 
             };
 
-            await _messagesRepository.AddAsync(firstMesage);
-            //if (request.Attachments != null)
-            //    await _messageAttachmentService.SaveMultipeAttachments(request.Attachments, firstMesage.Id);
+            await _messagesRepository.AddAsync(firstMessage);
 
-        }
+            if (request.Attachments != null)
+                await _messageAttachmentService
+                    .UploadRange(request.Attachments, firstMessage.Id);
 
-        public async Task Close(long ticketId)
-        {
-            var ticket = await _ticketsRepository.FindByIdAsync(ticketId);
-            if (ticket == null) throw new DirectoryNotFoundException("Ticket not found");
-
-            if (ticket.Status == TicketStatus.Closed)
-            {
-                ticket.Status = TicketStatus.Checked;
-                ticket.CloseDate = null;
-            }
-            else
-            {
-                ticket.Status = TicketStatus.Closed;
-                ticket.CloseDate = DateTime.Now;
-            }
-
-            await _ticketsRepository.UpdateAsync(ticket);
         }
 
         public async Task<GetTicketResponse> Get(long ticketId)
@@ -92,11 +77,9 @@ namespace Application.Services
         {
             var claims = _authService.GetClaims();
 
-            IEnumerable<Ticket> tickets;
-            if (claims.Role == "Admin")
-                tickets = await _ticketsRepository.GetAllFirstOnesAsync(number);
-            else // role == "User"
-                tickets = await _ticketsRepository.GetFirstOnesByCreatorIdAsync(claims.Id, number);
+            var tickets = claims.Role == "Admin" ?
+                await _ticketsRepository.GetAllFirstOnesAsync(number) :
+                await _ticketsRepository.GetFirstOnesByCreatorIdAsync(claims.Id, number);
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
 
@@ -105,7 +88,6 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetTicketsListResponse>> GetAllByUser(string username)
         {
-            // not checked
             var tickets = await _ticketsRepository.GetAllAsync(t => t.Creator!.Name == username, "Creator");
             if (tickets == null) throw new NotFoundException("no ticket found");
 
@@ -121,23 +103,38 @@ namespace Application.Services
 
             await _ticketsRepository.RemoveAsync(ticket);
         }
+        public async Task Close(long ticketId)
+        {
+            var ticket = await _ticketsRepository.GetAsync(t => t.Id == ticketId);
+            if (ticket == null) throw new NotFoundException("Ticket not found");
+
+            if (ticket.Status == TicketStatus.Closed)
+            {
+                ticket.Status = TicketStatus.Checked;
+                ticket.CloseDate = null;
+            }
+            else
+            {
+                ticket.Status = TicketStatus.Closed;
+                ticket.CloseDate = DateTime.Now;
+            }
+
+            await _ticketsRepository.UpdateAsync(ticket);
+        }
 
         public async Task UpdateTicketAfterSendNewMessage(Ticket ticket, string creatorRole)
         {
-            // fill status field and first-response-date
-            bool ticketNeedUpdate = false;
             if (creatorRole == "User" && ticket.Status != TicketStatus.NotChecked)
             {
                 ticket.Status = TicketStatus.NotChecked;
-                ticketNeedUpdate = true;
+                await _ticketsRepository.UpdateAsync(ticket);
             }
-            else if (creatorRole == "Admin" && ticket.Status != TicketStatus.Checked) 
+            else if (creatorRole == "Admin" && ticket.Status != TicketStatus.Checked)
             {
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
                 ticket.Status = TicketStatus.Checked;
-                ticketNeedUpdate = true;
+                await _ticketsRepository.UpdateAsync(ticket);
             }
-            if (ticketNeedUpdate) await _ticketsRepository.UpdateAsync(ticket);
         }
     }
 }
