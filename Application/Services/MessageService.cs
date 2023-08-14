@@ -34,7 +34,7 @@ namespace Application.Services
             var claims = _userService.GetClaims();
 
             // check access permision to ticket
-            var ticket = await _ticketsRepository.GetAsync(t => t.Id == request.TicketId);
+            var ticket = await _ticketsRepository.GetByConditionAsync(t => t.Id == request.TicketId);
             if (ticket == null || (ticket.CreatorId != claims.Id && claims.Role == "User")) throw new NotFoundException("TicketId not found");
             if (ticket.Status == TicketStatus.Closed) throw new Exception("ticket is closed");
 

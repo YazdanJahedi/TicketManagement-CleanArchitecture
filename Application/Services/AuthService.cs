@@ -26,7 +26,7 @@ namespace Application.Services
         public async Task<LoginResponse> Login(LoginRequest request)
         {
             // Find by email and check user 
-            var user = await _usersRepository.GetAsync(e => e.Email == request.Email);
+            var user = await _usersRepository.GetByConditionAsync(e => e.Email == request.Email);
             if (user == null) throw new NotFoundException("username or password is not correct");
 
             // Check password
@@ -41,7 +41,7 @@ namespace Application.Services
         public async Task<SignupResponse> Signup(SignupRequest request)
         {
             // Check if email is used
-            var foundUser = await _usersRepository.GetAsync(e => e.Email == request.Email);
+            var foundUser = await _usersRepository.GetByConditionAsync(e => e.Email == request.Email);
             if (foundUser != null) throw new Exception("this Email is used before");
 
             // Creating new user

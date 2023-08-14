@@ -30,7 +30,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetFaqItemsResponse>> GetFaqItems(long faqCategoryId)
         {
-            var items = await _faqItemsRepository.GetAllAsync(a => a.CategoryId == faqCategoryId);
+            var items = await _faqItemsRepository.GetAllAsync(condition: a => a.CategoryId == faqCategoryId);
 
             var response = _mapper.Map<IEnumerable<GetFaqItemsResponse>>(items);
 

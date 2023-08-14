@@ -78,8 +78,8 @@ namespace Application.Services
             var claims = _authService.GetClaims();
 
             var tickets = claims.Role == "Admin" ?
-                await _ticketsRepository.GetAllFirstOnesAsync(number) :
-                await _ticketsRepository.GetFirstOnesByCreatorIdAsync(claims.Id, number);
+                await _ticketsRepository.GetAllAsync(number: number, includes: "Creator") :
+                await _ticketsRepository.GetAllAsync(number: number, condition: e => e.CreatorId== claims.Id, includes: "Creator");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
 
@@ -88,7 +88,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetTicketsListResponse>> GetAllByUser(string username)
         {
-            var tickets = await _ticketsRepository.GetAllAsync(t => t.Creator!.Name == username, "Creator");
+            var tickets = await _ticketsRepository.GetAllAsync(condition: t => t.Creator!.Name == username, includes: "Creator");
             if (tickets == null) throw new NotFoundException("no ticket found");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
@@ -105,7 +105,7 @@ namespace Application.Services
         }
         public async Task Close(long ticketId)
         {
-            var ticket = await _ticketsRepository.GetAsync(t => t.Id == ticketId);
+            var ticket = await _ticketsRepository.GetByConditionAsync(t => t.Id == ticketId);
             if (ticket == null) throw new NotFoundException("Ticket not found");
 
             if (ticket.Status == TicketStatus.Closed)

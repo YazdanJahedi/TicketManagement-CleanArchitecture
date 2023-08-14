@@ -20,15 +20,20 @@ namespace Infrastructure.Repository
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? condition = null, params string[] includes)
+        public async Task<IEnumerable<T>> GetAllAsync(int number = 0, Expression<Func<T, bool>>? condition = null, params string[] includes)
         {
-            var query = ApplyIncludes(_context.Set<T>(), includes);
+            
+            var context = number == 0 ?
+                _context.Set<T>().OrderByDescending(e => e.CreationDate) :
+                _context.Set<T>().OrderByDescending(e => e.CreationDate).Take(number);
+
+            var query = ApplyIncludes(context, includes);
 
             if (condition != null) query = query.Where(condition);
            
             return await query.ToListAsync();
         }
-        public async Task<T?> GetAsync(Expression<Func<T, bool>> condition, params string[] includes)
+        public async Task<T?> GetByConditionAsync(Expression<Func<T, bool>> condition, params string[] includes)
         {
             var query = ApplyIncludes(_context.Set<T>(), includes);
 

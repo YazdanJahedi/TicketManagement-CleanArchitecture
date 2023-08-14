@@ -10,23 +10,6 @@ namespace Infrastructure.Repository
     {
         public TicketsRepository(ApplicationDbContext _context): base(_context) {}
 
-        public async Task<IEnumerable<Ticket>> GetFirstOnesByCreatorIdAsync(long creatorId, int number)
-        {
-            return await _context.Tickets.OrderByDescending(t => t.CreationDate)
-                            .Where(a => a.CreatorId == creatorId)
-                            .Take(number)
-                            .Include(t => t.Creator)
-                            .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Ticket>> GetAllFirstOnesAsync(int number)
-        {
-            return await _context.Tickets.OrderByDescending(t => t.CreationDate)
-                            .Take(number)
-                            .Include(t => t.Creator)
-                            .ToListAsync();
-        }
-
         public async Task<Ticket?> FindByIdAsync(long id)
         {
             return await _context.Tickets
