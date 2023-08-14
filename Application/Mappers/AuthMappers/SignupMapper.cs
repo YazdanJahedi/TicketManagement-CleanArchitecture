@@ -2,7 +2,7 @@
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.Mappers
+namespace Application.Mappers.AuthMappers
 {
     public class SignupMapper : Profile
     {

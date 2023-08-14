@@ -8,6 +8,5 @@ namespace Application.Interfaces.Repository
         Task AddAsync(T entity);
         Task<T?> GetAsync(Expression<Func<T, bool>> condition, params string[] includes);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? condition = null, params string[] includes);
-        Task SaveChangesAsync();
     }
 }

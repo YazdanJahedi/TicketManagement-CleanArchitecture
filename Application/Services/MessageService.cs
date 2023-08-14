@@ -15,11 +15,11 @@ namespace Application.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _userService;
         private readonly IMessagesRepository _messagesRepository;
         private readonly ITicketsRepository _ticketsRepository;
 
-        public MessageService(IUserService userService, IMessagesRepository messagesRepository, ITicketsRepository ticketsRepository)
+        public MessageService(IAuthService userService, IMessagesRepository messagesRepository, ITicketsRepository ticketsRepository)
         {
             _userService = userService;
             _messagesRepository = messagesRepository;

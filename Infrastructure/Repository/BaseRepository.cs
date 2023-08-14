@@ -15,8 +15,11 @@ namespace Infrastructure.Repository
             _context = context;
         }
 
-        public async Task AddAsync(T entity) => await _context.Set<T>().AddAsync(entity);
-        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+        public async Task AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? condition = null, params string[] includes)
         {
             var query = ApplyIncludes(_context.Set<T>(), includes);

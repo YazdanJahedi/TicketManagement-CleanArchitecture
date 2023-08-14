@@ -38,7 +38,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Presentation.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Presentation.Controllers
                 return Ok();
             } catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
 
         }

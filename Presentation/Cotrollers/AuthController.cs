@@ -1,7 +1,4 @@
-﻿using Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
-using MediatR;
-using Application.Common.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
 using Application.Dtos.UserDtos;
 using Application.Interfaces.Service;
 
@@ -11,11 +8,11 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
      
-        public AuthController(IUserService userService)
+        public AuthController(IAuthService authService)
         {
-            _userService = userService;
+            _authService = authService;
         }
 
         [HttpPost("signup")]
@@ -23,12 +20,12 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _userService.Signup(req);
+                var response = await _authService.Signup(req);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionDto(ex.GetType().Name, ex.Message));
+                return BadRequest(ex);
             }
         }
 
@@ -37,12 +34,12 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _userService.Login(req);
+                var response = await _authService.Login(req);
                 return Ok(response);
             } 
             catch (Exception ex)
             {  
-                return BadRequest(new ExceptionDto(ex.GetType().Name , ex.Message));               
+                return BadRequest(ex);               
             }
             
         }

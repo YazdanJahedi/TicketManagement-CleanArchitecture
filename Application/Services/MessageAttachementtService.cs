@@ -18,9 +18,9 @@ namespace Application.Services
     public class MessageAttachementtService : IMessageAttachmentService
     {
         private readonly IMessageAttachmentsRepository _messageAttachmentsRepository;
-        private readonly IUserService _userService;
+        private readonly IAuthService _userService;
         private readonly IMapper _mapper;
-        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository, IUserService userService,
+        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository, IAuthService userService,
                                 IMapper mapper)
         {
             _messageAttachmentsRepository = messageAttachmentsRepository;
@@ -56,7 +56,7 @@ namespace Application.Services
 
                 await _messageAttachmentsRepository.AddAsync(attachment);
             }
-            await _messageAttachmentsRepository.SaveChangesAsync();
+            //await _messageAttachmentsRepository.SaveChangesAsync();
         }
     }
 }

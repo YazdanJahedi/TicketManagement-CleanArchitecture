@@ -51,7 +51,7 @@ namespace Test
                 Password = "something",
             };
 
-            LoginValidator validator = new();
+            LoginRequestValidator validator = new();
             var validatorResult = validator.Validate(req);
 
             if (validatorResult.IsValid)
@@ -67,7 +67,7 @@ namespace Test
                 Password = "something",
             };
 
-            LoginValidator validator = new();
+            LoginRequestValidator validator = new();
             var validatorResult = validator.Validate(req);
 
             if (!validatorResult.IsValid)

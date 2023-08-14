@@ -1,7 +1,7 @@
 ﻿using Application.Dtos.UserDtos;
 using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
-using Application.Mappers;
+using Application.Mappers.AuthMappers;
 using Application.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -91,7 +91,7 @@ namespace Presentation.Installer
             service.AddScoped<ITicketService, TicketService>();
             service.AddScoped<IMessageService, MessageService>();
             service.AddScoped<IFaqService, FaqService>();
-            service.AddScoped<IUserService, UserService>();
+            service.AddScoped<IAuthService, AuthService>();
             
 
             service.AddHttpContextAccessor();

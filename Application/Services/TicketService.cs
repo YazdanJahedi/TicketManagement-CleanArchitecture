@@ -18,10 +18,10 @@ namespace Application.Services
     public class TicketService : ITicketService
     {
         private readonly ITicketsRepository _ticketsRepository;
-        private readonly IUserService _userService;
+        private readonly IAuthService _userService;
         private readonly IMapper _mapper;
 
-        public TicketService(ITicketsRepository ticketsRepository, IUserService userService,
+        public TicketService(ITicketsRepository ticketsRepository, IAuthService userService,
                              IMapper mapper)
         {
             _ticketsRepository = ticketsRepository;
