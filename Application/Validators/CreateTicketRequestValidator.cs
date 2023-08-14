@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Validators
 {
-    public class CreateTicketValidator : AbstractValidator<CreateTicketRequest>
+    public class CreateTicketRequestValidator : AbstractValidator<CreateTicketRequest>
     {
-        public CreateTicketValidator()
+        public CreateTicketRequestValidator()
         {
             RuleFor(x => x.Title).NotNull().NotEmpty()
                 .WithMessage("Title can not be empty or null");
@@ -17,7 +17,7 @@ namespace Application.Validators
         }
         public static bool IsValid(CreateTicketRequest createTicketDto)
         {
-            CreateTicketValidator validator = new();
+            CreateTicketRequestValidator validator = new();
             var validatorResult = validator.Validate(createTicketDto);
             return validatorResult.IsValid;
         }

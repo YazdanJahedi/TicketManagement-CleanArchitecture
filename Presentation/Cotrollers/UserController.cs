@@ -1,5 +1,4 @@
-﻿using Application.Common.DTOs;
-using Application.Dtos.FaqDtos;
+﻿using Application.Dtos.FaqDtos;
 using Application.Dtos.MessageDtos;
 using Application.Dtos.TicketDtos;
 using Application.Interfaces.Service;

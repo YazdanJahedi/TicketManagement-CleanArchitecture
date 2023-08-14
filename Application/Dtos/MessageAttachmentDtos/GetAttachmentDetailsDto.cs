@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Common.DTOs
+namespace Application.Dtos.MessageAttachmentDtos
 {
     public record GetAttachmentDetailsDto
     {
         public required long Id { get; set; }
-        public required String FileName { get; set; }
+        public required string FileName { get; set; }
     }
 }

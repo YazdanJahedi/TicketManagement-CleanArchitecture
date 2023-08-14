@@ -1,14 +1,9 @@
-﻿using Application.Common.DTOs;
-using Application.Dtos.TicketDtos;
+﻿using Application.Dtos.TicketDtos;
+using Application.Dtos.UserDtos;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Mappers
+namespace Application.Mappers.TicketMappers
 {
     public class GetTicketsListMapper : Profile
     {

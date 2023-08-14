@@ -1,11 +1,13 @@
-﻿using Domain.Entities;
+﻿using Application.Dtos.MessageAttachmentDtos;
+using Application.Dtos.UserDtos;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Common.DTOs
+namespace Application.Dtos.MessageDtos
 {
     public record GetMessageDetailsDto
     {
