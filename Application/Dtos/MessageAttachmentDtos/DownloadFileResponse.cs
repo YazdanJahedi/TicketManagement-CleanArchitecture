@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.MessageAttachmentFeatures.DownloadFile
+namespace Application.Dtos.MessageAttachmentDtos
 {
     public record DownloadFileResponse
     {

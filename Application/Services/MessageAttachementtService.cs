@@ -1,11 +1,15 @@
-﻿using Application.Interfaces.Repository;
+﻿using Application.Common.Exceptions;
+using Application.Dtos.MessageAttachmentDtos;
+using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +18,25 @@ namespace Application.Services
     public class MessageAttachementtService : IMessageAttachmentService
     {
         private readonly IMessageAttachmentsRepository _messageAttachmentsRepository;
-        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository)
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
+        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository, IUserService userService,
+                                IMapper mapper)
         {
             _messageAttachmentsRepository = messageAttachmentsRepository;
+            _userService = userService;
+            _mapper = mapper;
+        }
+
+        public async Task<DownloadFileResponse> Download(long fileId)
+        {
+            var claims = _userService.GetClaims();
+
+            var attachment = await _messageAttachmentsRepository.FindByIdAsync(fileId);
+            if (attachment == null || (claims.Role == "User" && attachment.Message!.Ticket!.CreatorId != claims.Id)) throw new NotFoundException("attachment not found");
+
+            var response = _mapper.Map<DownloadFileResponse>(attachment);
+            return response;
         }
 
         public async Task SaveMultipeAttachments(IEnumerable<IFormFile> files, long MessageId)
