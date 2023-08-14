@@ -1,12 +1,7 @@
 ﻿using Application.Common.DTOs;
 using Application.Dtos.MessageDtos;
 using Application.Dtos.TicketDtos;
-using Application.Features.MessageAttachmentFeatures.DownloadFile;
-using Application.Features.TicketFeatures.CloseTicket;
-using Application.Features.TicketFeatures.DeleteTicket;
-using Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList;
-using Application.Features.TicketFeatures.GetTicketsList.GetUserTicketsList;
-using Application.Repository;
+using Application.Interfaces.Service;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,11 +16,16 @@ namespace Presentation.Controllers
     public class AdminController : ControllerBase
     {
 
-        private readonly IMediator _mediator;
+        private readonly ITicketService _ticketService; 
+        private readonly IMessageService _messageService;
+        private readonly IMessageAttachmentService _messageAttachmentService;
 
-        public AdminController(IMediator mediator)
+        public AdminController(ITicketService ticketService, IMessageService messageService,
+                               IMessageAttachmentService messageAttachmentService)
         {
-            _mediator = mediator;
+            _ticketService = ticketService;
+            _messageService = messageService;
+            _messageAttachmentService = messageAttachmentService;
         }
 
         [HttpGet("tickets")]
@@ -33,7 +33,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respone = await _mediator.Send(new GetTicketsListRequest(numberOfReturningTickets));
+                var respone = await _ticketService.GetAll(numberOfReturningTickets);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respone = await _mediator.Send(new GetUserTicketsListRequest(username));
+                var respone = await _ticketService.GetAllByUser(username);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respones = await _mediator.Send(new GetTicketRequest(ticketId));
+                var respones = await _ticketService.Get(ticketId);
                 return Ok(respones);
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _mediator.Send(new CloseTicketRequest(ticketId));
+                await _ticketService.Close(ticketId);
                 return Ok();
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _mediator.Send(new DeleteTicketRequest(ticketId));
+                await _ticketService.Remove(ticketId);
                 return Ok();
             }
             catch (Exception ex)
@@ -106,7 +106,7 @@ namespace Presentation.Controllers
         {
             try 
             {
-                var response = await _mediator.Send(req);
+                await _messageService.AddMessage(req);
                 return Ok();
             } 
             catch (Exception ex)
@@ -116,12 +116,12 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpPost("messages/download")]
-        public async Task<ActionResult> Download(DownloadFileRequest req)
+        [HttpPost("messages/download/{fileId}")]
+        public async Task<ActionResult> Download(long fileId)
         {
             try
             {
-                var response = await _mediator.Send(req);
+                var response = await _messageAttachmentService.Download(fileId);
                 return File(response.FileData, response.MimeType, response.FileName);
             }
             catch (Exception ex)

@@ -2,13 +2,9 @@
 using Application.Dtos.FaqDtos;
 using Application.Dtos.MessageDtos;
 using Application.Dtos.TicketDtos;
-using Application.Features.MessageAttachmentFeatures.DownloadFile;
-using Application.Features.TicketFeatures.GetTicketsList.GetAllTicketsList;
 using Application.Interfaces.Service;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
@@ -19,10 +15,16 @@ namespace Presentation.Controllers
     {
 
         private readonly IFaqService _faqService;
+        private readonly ITicketService _ticketService;
+        private readonly IMessageAttachmentService _messageAttachmentService;
+        private readonly IMessageService _messageService;
 
-        public UserController(IFaqService faqService)
+        public UserController(IFaqService faqService, ITicketService ticketService, IMessageAttachmentService messageAttachmentService, IMessageService messageService)
         {
             _faqService = faqService;
+            _ticketService = ticketService;
+            _messageAttachmentService = messageAttachmentService;
+            _messageService = messageService;
         }
 
 
@@ -31,7 +33,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respone = await _mediator.Send(new GetTicketsListRequest(numberOfReturningTickets));
+                var respone = await _ticketService.GetAll(numberOfReturningTickets);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -45,7 +47,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _mediator.Send(new GetTicketRequest(ticketId));
+                var response = await _ticketService.Get(ticketId);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -60,7 +62,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _mediator.Send(req);
+                await _ticketService.Add(req);
                 return Ok();
             }
             catch(Exception ex)
@@ -75,7 +77,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _mediator.Send(req);
+                await _messageService.AddMessage(req);
                 return Ok();
             } catch (Exception ex)
             {
@@ -83,12 +85,12 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("request/messages/download")]
-        public async Task<ActionResult> Download(DownloadFileRequest req)
+        [HttpPost("request/messages/download/{fileId}")]
+        public async Task<ActionResult> Download(long fileId)
         {
             try
             {
-                var response = await _mediator.Send(req);
+                var response = await _messageAttachmentService.Download(fileId);
                 return File(response.FileData, response.MimeType, response.FileName);
             }
             catch (Exception ex)

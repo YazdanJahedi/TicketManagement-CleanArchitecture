@@ -86,16 +86,17 @@ namespace Presentation.Installer
             service.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
             service.AddScoped<IMessageAttachmentsRepository, MessageAttachmentsRepository>();
 
+
             service.AddScoped<IMessageAttachmentService, MessageAttachementtService>();
             service.AddScoped<ITicketService, TicketService>();
-
+            service.AddScoped<IMessageService, MessageService>();
+            service.AddScoped<IFaqService, FaqService>();
+            service.AddScoped<IUserService, UserService>();
+            
 
             service.AddHttpContextAccessor();
 
-            // correct it
-            service.AddMediatR(typeof(LoginHandler));
 
-            //
             service.AddAutoMapper(typeof(SignupMapper));
             service.AddControllersWithViews();
 

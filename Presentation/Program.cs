@@ -1,7 +1,4 @@
-using Application.Repository;
-using FluentValidation.AspNetCore;
-using Infrastructure.Context;
-using Infrastructure.Repository;
+
 using Presentation.Installer;
 
 namespace Presentation
