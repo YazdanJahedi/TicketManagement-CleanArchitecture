@@ -2,11 +2,6 @@
 using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -15,8 +10,9 @@ namespace Application.Services
         private readonly IFAQCategoriesRepository _faqCategoriesRepository;
         private readonly IFAQItemsRepository _faqItemsRepository;
         private readonly IMapper _mapper;
-        public FaqService(IFAQCategoriesRepository faqCategoriesRepository, IFAQItemsRepository faqItemsRepository
-            , IMapper mapper)
+        public FaqService(IFAQCategoriesRepository faqCategoriesRepository,
+                          IFAQItemsRepository faqItemsRepository,
+                          IMapper mapper)
         {
             _faqCategoriesRepository = faqCategoriesRepository;
             _faqItemsRepository = faqItemsRepository;

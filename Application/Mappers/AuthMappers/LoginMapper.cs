@@ -1,5 +1,5 @@
-﻿using Application.Dtos.UserDtos;
-using Application.Services;
+﻿using Application.Common;
+using Application.Dtos.UserDtos;
 using AutoMapper;
 using Domain.Entities;
 

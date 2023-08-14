@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Mappers
+namespace Application.Mappers.FaqMappers
 {
     public class GetFaqItemsMapper : Profile
     {
