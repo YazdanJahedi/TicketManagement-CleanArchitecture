@@ -1,4 +1,6 @@
 .vs/
 **/bin/
 **/obj/
+
+# uploaded files in api 
 **/Upload/
