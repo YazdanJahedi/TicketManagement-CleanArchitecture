@@ -15,11 +15,6 @@ namespace Application.Validators
 
             RuleFor(x => x.FaqCatgoryId).NotNull().NotEmpty();
         }
-        public static bool IsValid(CreateTicketRequest createTicketDto)
-        {
-            CreateTicketRequestValidator validator = new();
-            var validatorResult = validator.Validate(createTicketDto);
-            return validatorResult.IsValid;
-        }
+
     }
 }

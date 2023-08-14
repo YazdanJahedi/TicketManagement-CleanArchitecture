@@ -14,11 +14,5 @@ namespace Application.Validators
 
         }
 
-        public static bool IsValid(CreateMessageRequest createMessageDto)
-        {
-            CreateMessageRequestValidator validator = new();
-            var validatorResult = validator.Validate(createMessageDto);
-            return validatorResult.IsValid;
-        }
     }
 }
