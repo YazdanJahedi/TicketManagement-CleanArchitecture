@@ -5,35 +5,33 @@ using Application.Interfaces.Service;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Services
 {
     public class TicketService : ITicketService
     {
         private readonly ITicketsRepository _ticketsRepository;
-        private readonly IAuthService _userService;
+        private readonly IMessagesRepository _messagesRepository;
+        private readonly IAuthService _authService;
         private readonly IMapper _mapper;
 
-        public TicketService(ITicketsRepository ticketsRepository, IAuthService userService,
+        public TicketService(ITicketsRepository ticketsRepository,
+                             IMessagesRepository messagesRepository,
+                             IAuthService userService,
                              IMapper mapper)
         {
             _ticketsRepository = ticketsRepository;
-            _userService = userService;
+            _messagesRepository = messagesRepository;
+            _authService = userService;
             _mapper = mapper;
         }
 
         public async Task Add(CreateTicketRequest request)
         {
-            var claim = _userService.GetClaims();
+            var claim = _authService.GetClaims();
 
-            // create a new ticket instance
+            // Create a new ticket instance
             var ticket = new Ticket
             {
                 CreatorId = claim.Id,
@@ -54,7 +52,7 @@ namespace Application.Services
 
             };
 
-            //await _messagesRepository.AddAsync(firstMesage);
+            await _messagesRepository.AddAsync(firstMesage);
             //if (request.Attachments != null)
             //    await _messageAttachmentService.SaveMultipeAttachments(request.Attachments, firstMesage.Id);
 
@@ -81,7 +79,7 @@ namespace Application.Services
 
         public async Task<GetTicketResponse> Get(long ticketId)
         {
-            var claims = _userService.GetClaims();
+            var claims = _authService.GetClaims();
 
             var ticket = await _ticketsRepository.FindByIdAsync(ticketId);
             if (ticket == null || claims.Role == "User" && ticket.Creator!.Id != claims.Id) throw new NotFoundException("Ticket not found");
@@ -92,7 +90,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetTicketsListResponse>> GetAll(int number)
         {
-            var claims = _userService.GetClaims();
+            var claims = _authService.GetClaims();
 
             IEnumerable<Ticket> tickets;
             if (claims.Role == "Admin")

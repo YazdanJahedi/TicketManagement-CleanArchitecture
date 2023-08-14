@@ -4,14 +4,8 @@ using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
 using AutoMapper;
 using Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Services
 {
@@ -39,24 +33,34 @@ namespace Application.Services
             return response;
         }
 
-        public async Task SaveMultipeAttachments(IEnumerable<IFormFile> files, long MessageId)
+        public async Task UploadRange(IEnumerable<IFormFile> files, long messageId)
         {
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload", messageId.ToString());
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
             foreach (var file in files)
             {
-                var stream = new MemoryStream();
-                file.CopyTo(stream);
+                var fileName = Path.GetFileName(file.FileName);
+                var filePath = Path.Combine(path, fileName);
 
-                var attachment = new MessageAttachment()
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    MessageId = MessageId,
-                    FileName = file.FileName,
-                    FileData = stream.ToArray(),
-                    CreationDate = DateTime.Now,
-                };
-
-                await _messageAttachmentsRepository.AddAsync(attachment);
+                    await file.CopyToAsync(stream);
+                }
             }
-            //await _messageAttachmentsRepository.SaveChangesAsync();
+
+            var attachments = files.Select(f => 
+                new MessageAttachment
+                {
+                    MessageId = messageId,
+                    FileName = f.FileName,
+                    Path = path,
+                    CreationDate = DateTime.Now,
+                }
+            );
+
+            await _messageAttachmentsRepository.AddRangeAsync(attachments);
         }
     }
 }

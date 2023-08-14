@@ -10,7 +10,7 @@ namespace Application.Interfaces.Service
 {
     public interface IMessageAttachmentService
     {
-        public Task SaveMultipeAttachments(IEnumerable<IFormFile> files, long MessageId);
+        public Task UploadRange(IEnumerable<IFormFile> files, long MessageId);
         public Task<DownloadFileResponse> Download(long fileId);
     }
 }

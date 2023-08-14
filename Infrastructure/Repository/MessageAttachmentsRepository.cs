@@ -9,6 +9,12 @@ namespace Infrastructure.Repository
     {
         public MessageAttachmentsRepository(ApplicationDbContext _context) : base(_context) { }
 
+        public async Task AddRangeAsync(IEnumerable<MessageAttachment> messageAttachments)
+        {
+            await _context.MessageAttachments.AddRangeAsync(messageAttachments);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<MessageAttachment?> FindByIdAsync(long id)
         {
             return await _context.MessageAttachments
