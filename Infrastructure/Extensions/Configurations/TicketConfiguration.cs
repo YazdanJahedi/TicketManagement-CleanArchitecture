@@ -32,7 +32,7 @@ namespace Infrastructure.Extensions.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.Creator)
-                .WithMany(u => u.Tickets)
+                .WithMany()
                 .HasForeignKey(t => t.CreatorId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

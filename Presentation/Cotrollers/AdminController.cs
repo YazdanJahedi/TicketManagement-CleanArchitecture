@@ -2,10 +2,8 @@
 using Application.Dtos.TicketDtos;
 using Application.Interfaces.Service;
 using Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Presentation.Controllers
 {

@@ -1,34 +1,24 @@
-﻿using Application.Dtos.UserDtos;
-using Application.Interfaces.Repository;
-using Application.Interfaces.Service;
-using Application.Mappers.AuthMappers;
-using Application.Services;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Infrastructure.Context;
-using Infrastructure.Repository;
-using MediatR;
-using Microsoft.AspNetCore.Hosting;
+﻿using Application;
+using Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using System.Reflection;
 using System.Text;
-using System.Web.Mvc;
 
 namespace Presentation.Installer
 {
-    public static class RegisterDependentServices
+    public static class ServiceExtentions
     {
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
+            builder.Services.ApplicationServiceConfiguration();
+            builder.Services.InfrastructureServiceConfiguration();
+
             builder.Services.RegisterControllers();
-            builder.Services.AddDbContext<ApplicationDbContext>();
-            builder.Services.RegisterScoped();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.RegisterSwaggerGen();
             builder.Services.RegisterJwtBarear(builder.Configuration);
-
+            
             return builder;
         }
 
@@ -38,10 +28,6 @@ namespace Presentation.Installer
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
-
-            service.AddFluentValidationAutoValidation();
-            service.AddFluentValidationClientsideAdapters();
-            service.AddValidatorsFromAssembly(typeof(LoginRequest).Assembly);
 
         }
 
@@ -76,31 +62,5 @@ namespace Presentation.Installer
                         };
                     });
         }
-
-        private static void RegisterScoped(this IServiceCollection service)
-        {
-            service.AddScoped<IUsersRepository, UsersRepository>();
-            service.AddScoped<ITicketsRepository, TicketsRepository>();
-            service.AddScoped<IMessagesRepository, MessagesRepository>();
-            service.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
-            service.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
-            service.AddScoped<IMessageAttachmentsRepository, MessageAttachmentsRepository>();
-
-
-            service.AddScoped<IMessageAttachmentService, MessageAttachementtService>();
-            service.AddScoped<ITicketService, TicketService>();
-            service.AddScoped<IMessageService, MessageService>();
-            service.AddScoped<IFaqService, FaqService>();
-            service.AddScoped<IAuthService, AuthService>();
-            
-
-            service.AddHttpContextAccessor();
-
-
-            service.AddAutoMapper(typeof(SignupMapper));
-            service.AddControllersWithViews();
-
-        }
-
     }
 }
