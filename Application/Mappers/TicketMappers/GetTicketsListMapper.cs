@@ -11,7 +11,7 @@ namespace Application.Mappers.TicketMappers
         {
             CreateMap<Ticket, GetTicketsListResponse>()
                 .ForMember(dest => dest.Creator, opt => opt.MapFrom(src =>
-                    new GetUserInformationDto
+                    new UserDetailsDto
                     {
                         Name = src.Creator!.Name,
                         Email = src.Creator.Email,

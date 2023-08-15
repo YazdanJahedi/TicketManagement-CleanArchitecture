@@ -122,7 +122,7 @@ namespace Application.Services
             await _ticketsRepository.UpdateAsync(ticket);
         }
 
-        public async Task UpdateTicketAfterSendNewMessage(Ticket ticket, string creatorRole)
+        public async Task UpdateAfterSendMessage(Ticket ticket, string creatorRole)
         {
             if (creatorRole == "User" && ticket.Status != TicketStatus.NotChecked)
             {

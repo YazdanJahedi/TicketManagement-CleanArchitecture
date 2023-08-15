@@ -2,10 +2,8 @@
 using Application.Dtos.MessageAttachmentDtos;
 using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
-using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services
 {
@@ -13,13 +11,10 @@ namespace Application.Services
     {
         private readonly IMessageAttachmentsRepository _messageAttachmentsRepository;
         private readonly IAuthService _userService;
-        private readonly IMapper _mapper;
-        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository, IAuthService userService,
-                                IMapper mapper)
+        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository, IAuthService userService)
         {
             _messageAttachmentsRepository = messageAttachmentsRepository;
             _userService = userService;
-            _mapper = mapper;
         }
 
         public async Task<DownloadResponse> Download(long fileId)
@@ -31,12 +26,12 @@ namespace Application.Services
 
             var filePath = Path.Combine(attachment.Path, attachment.FileName);
 
-            var bytes = await File.ReadAllBytesAsync(filePath);
+            var data = await File.ReadAllBytesAsync(filePath);
 
             var response = new DownloadResponse
             {
                 FileName = attachment.FileName,
-                Data = bytes,
+                Data = data,
                 MimeType = "application/octet-stream",
             };
             return response;

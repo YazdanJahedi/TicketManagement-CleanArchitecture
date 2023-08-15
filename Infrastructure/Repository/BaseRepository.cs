@@ -20,10 +20,10 @@ namespace Infrastructure.Repository
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task<IEnumerable<T>> GetAllAsync(int number = 0, Expression<Func<T, bool>>? condition = null, params string[] includes)
+        public async Task<IEnumerable<T>> GetAllAsync(int number = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes)
         {
             
-            var context = number == 0 ?
+            var context = number == int.MaxValue ?
                 _context.Set<T>().OrderByDescending(e => e.CreationDate) :
                 _context.Set<T>().OrderByDescending(e => e.CreationDate).Take(number);
 

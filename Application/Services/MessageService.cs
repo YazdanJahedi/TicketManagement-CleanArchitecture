@@ -50,7 +50,7 @@ namespace Application.Services
             if (request.Attacments != null)
                await _messageAttachmentService.UploadRange(request.Attacments, message.Id);
             
-            await _ticketService.UpdateTicketAfterSendNewMessage(ticket, claims.Role);
+            await _ticketService.UpdateAfterSendMessage(ticket, claims.Role);
         }
     }
 }

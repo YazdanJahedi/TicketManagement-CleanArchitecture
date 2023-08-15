@@ -14,10 +14,10 @@ namespace Application.Mappers.TicketMappers
 
             CreateMap<Ticket, GetTicketResponse>()
                .ForMember(dest => dest.Messages, opt => opt.MapFrom(src =>
-                   src.Messages!.Select(m => new GetMessageDetailsDto
+                   src.Messages!.Select(m => new MessageDetailsDto
                    {
                        Text = m.Text,
-                       Creator = new GetUserInformationDto
+                       Creator = new UserDetailsDto
                        {
                            Name = m.Creator!.Name,
                            PhoneNumber = m.Creator.PhoneNumber,
@@ -25,8 +25,8 @@ namespace Application.Mappers.TicketMappers
                            Role = m.Creator.Role
                        },
                        CreationDate = m.CreationDate,
-                       Attachments = m.Attachments.Select(x =>
-                       new GetAttachmentDetailsDto
+                       Attachments = m.Attachments!.Select(x =>
+                       new AttachmentDetailsDto
                        {
                            Id = x.Id,
                            FileName = x.FileName

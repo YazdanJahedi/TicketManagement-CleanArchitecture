@@ -1,6 +1,4 @@
 ﻿using Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Eventing.Reader;
 
 namespace Application.Interfaces.Repository
 {
