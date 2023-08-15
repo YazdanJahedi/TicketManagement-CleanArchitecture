@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230814115640_init")]
+    [Migration("20230815084545_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -318,7 +318,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
                 {
                     b.HasOne("Domain.Entities.User", "Creator")
-                        .WithMany("Tickets")
+                        .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -342,11 +342,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
                 {
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }
