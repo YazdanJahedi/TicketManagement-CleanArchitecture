@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace Domain.Common
+﻿namespace Domain.Common
 {
     public record BaseEntity
     {
