@@ -48,15 +48,20 @@ namespace Application.Services
                 try
                 {
                     await _unitOfWork.MessagesRepository.AddAsync(message);
+                    await _unitOfWork.SaveAsync();
+
                     if (request.Attacments != null)
                         await _messageAttachmentService.UploadRange(request.Attacments, message.Id);
 
-                    await _ticketService.UpdateAfterSendMessage(ticket, claims.Role);
+                    _ticketService.UpdateAfterSendMessage(ticket, claims.Role);
+
                     await _unitOfWork.SaveAsync();
+                    await transaction.CommitAsync();
                 } 
                 catch (Exception) 
                 {
                     transaction.Rollback();
+                    throw;
                 }
             }
         }

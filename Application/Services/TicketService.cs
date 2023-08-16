@@ -31,36 +31,41 @@ namespace Application.Services
         {
             var claim = _authService.GetClaims();
 
-            var ticket = new Ticket
-            {
-                CreatorId = claim.Id,
-                Title = request.Title,
-                CreationDate = DateTime.Now,
-                FaqCategoryId = request.FaqCatgoryId,
-                Status = TicketStatus.NotChecked,
-            };
-            var firstMessage = new Message
-            {
-                TicketId = ticket.Id,
-                CreatorId = claim.Id,
-                CreationDate = DateTime.Now,
-                Text = request.Description,
-
-            };
-
             using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
+                    var ticket = new Ticket
+                    {
+                        CreatorId = claim.Id,
+                        Title = request.Title,
+                        CreationDate = DateTime.Now,
+                        FaqCategoryId = request.FaqCatgoryId,
+                        Status = TicketStatus.NotChecked,
+                    };
                     await _unitOfWork.TicketsRepository.AddAsync(ticket);
+                    await _unitOfWork.SaveAsync();
+
+                    var firstMessage = new Message
+                    {
+                        TicketId = ticket.Id,
+                        CreatorId = claim.Id,
+                        CreationDate = DateTime.Now,
+                        Text = request.Description,
+                    };
                     await _unitOfWork.MessagesRepository.AddAsync(firstMessage);
+                    await _unitOfWork.SaveAsync();
+
                     if (request.Attachments != null)
                         await _messageAttachmentService.UploadRange(request.Attachments, firstMessage.Id);
+
                     await _unitOfWork.SaveAsync();
-                } 
+                    await transaction.CommitAsync();
+                }
                 catch (Exception)
                 {
                     transaction.Rollback();
+                    throw;
                 }
             }
         }
@@ -82,7 +87,7 @@ namespace Application.Services
 
             var tickets = claims.Role == "Admin" ?
                 await _unitOfWork.TicketsRepository.GetAllAsync(number: number, includes: "Creator") :
-                await _unitOfWork.TicketsRepository.GetAllAsync(number: number, condition: e => e.CreatorId== claims.Id, includes: "Creator");
+                await _unitOfWork.TicketsRepository.GetAllAsync(number: number, condition: e => e.CreatorId == claims.Id, includes: "Creator");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
 
@@ -127,20 +132,18 @@ namespace Application.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateAfterSendMessage(Ticket ticket, string creatorRole)
+        public void UpdateAfterSendMessage(Ticket ticket, string creatorRole)
         {
             if (creatorRole == "User" && ticket.Status != TicketStatus.NotChecked)
             {
                 ticket.Status = TicketStatus.NotChecked;
                 _unitOfWork.TicketsRepository.Update(ticket);
-                await _unitOfWork.SaveAsync();
             }
             else if (creatorRole == "Admin" && ticket.Status != TicketStatus.Checked)
             {
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
                 ticket.Status = TicketStatus.Checked;
                 _unitOfWork.TicketsRepository.Update(ticket);
-                await _unitOfWork.SaveAsync();
             }
         }
     }

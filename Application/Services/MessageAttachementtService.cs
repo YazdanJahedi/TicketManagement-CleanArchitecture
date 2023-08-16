@@ -65,7 +65,6 @@ namespace Application.Services
             );
 
             await _unitOfWork.MessageAttachmentsRepository.AddRangeAsync(attachments);
-            await _unitOfWork.SaveAsync(); 
         }
     }
 }

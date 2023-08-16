@@ -12,6 +12,6 @@ namespace Application.Interfaces.Service
         public Task<IEnumerable<GetTicketsListResponse>> GetAll(int number);
         public Task<IEnumerable<GetTicketsListResponse>> GetAllByUser(string username);     
         public Task Close(long ticketId);
-        public Task UpdateAfterSendMessage(Ticket ticket, string creatorRole);
+        public void UpdateAfterSendMessage(Ticket ticket, string creatorRole);
     }
 }
