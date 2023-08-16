@@ -12,7 +12,6 @@ namespace Infrastructure.Repository
         public async Task AddRangeAsync(IEnumerable<MessageAttachment> messageAttachments)
         {
             await _context.MessageAttachments.AddRangeAsync(messageAttachments);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<MessageAttachment?> FindByIdAsync(long id)

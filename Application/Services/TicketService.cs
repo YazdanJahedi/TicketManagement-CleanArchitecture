@@ -119,7 +119,7 @@ namespace Application.Services
                 ticket.CloseDate = DateTime.Now;
             }
 
-            await _ticketsRepository.UpdateAsync(ticket);
+            await _ticketsRepository.Update(ticket);
         }
 
         public async Task UpdateAfterSendMessage(Ticket ticket, string creatorRole)
@@ -127,13 +127,13 @@ namespace Application.Services
             if (creatorRole == "User" && ticket.Status != TicketStatus.NotChecked)
             {
                 ticket.Status = TicketStatus.NotChecked;
-                await _ticketsRepository.UpdateAsync(ticket);
+                await _ticketsRepository.Update(ticket);
             }
             else if (creatorRole == "Admin" && ticket.Status != TicketStatus.Checked)
             {
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
                 ticket.Status = TicketStatus.Checked;
-                await _ticketsRepository.UpdateAsync(ticket);
+                await _ticketsRepository.Update(ticket);
             }
         }
     }

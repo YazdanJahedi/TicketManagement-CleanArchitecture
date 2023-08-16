@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.Repository;
 using Domain.Entities;
 using Infrastructure.Context;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
@@ -21,16 +20,14 @@ namespace Infrastructure.Repository
 
         }
         
-        public async Task RemoveAsync(Ticket ticket)
+        public void Remove(Ticket ticket)
         {
             _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Ticket ticket)
+        public void Update(Ticket ticket)
         {
             _context.Entry(ticket).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
 
     }

@@ -17,8 +17,7 @@ namespace Infrastructure.Repository
 
         public async Task AddAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _context.Set<T>().AddAsync(entity);   
         }
         public async Task<IEnumerable<T>> GetAllAsync(int number = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes)
         {

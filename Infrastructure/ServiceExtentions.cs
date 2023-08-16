@@ -18,14 +18,9 @@ namespace Infrastructure
             // DI for context
             services.AddDbContext<ApplicationDbContext>();
 
-            // DI for Repositories
-            services.AddScoped<IUsersRepository, UsersRepository>();
-            services.AddScoped<ITicketsRepository, TicketsRepository>();
-            services.AddScoped<IMessagesRepository, MessagesRepository>();
-            services.AddScoped<IFAQCategoriesRepository, FAQCategoriesRepository>();
-            services.AddScoped<IFAQItemsRepository, FAQItemsRepository>();
-            services.AddScoped<IMessageAttachmentsRepository, MessageAttachmentsRepository>();
-
+            // unit of work
+            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }
