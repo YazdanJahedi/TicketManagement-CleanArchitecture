@@ -11,20 +11,17 @@ namespace Application.Services
 {
     public class TicketService : ITicketService
     {
-        private readonly ITicketsRepository _ticketsRepository;
-        private readonly IMessagesRepository _messagesRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMessageAttachmentService _messageAttachmentService;
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
 
-        public TicketService(ITicketsRepository ticketsRepository,
-                             IMessagesRepository messagesRepository,
+        public TicketService(IUnitOfWork unitOfWork,
                              IMessageAttachmentService messageAttachmentService,
                              IAuthService userService,
                              IMapper mapper)
         {
-            _ticketsRepository = ticketsRepository;
-            _messagesRepository = messagesRepository;
+            _unitOfWork = unitOfWork;
             _messageAttachmentService = messageAttachmentService;
             _authService = userService;
             _mapper = mapper;
@@ -42,9 +39,6 @@ namespace Application.Services
                 FaqCategoryId = request.FaqCatgoryId,
                 Status = TicketStatus.NotChecked,
             };
-
-            await _ticketsRepository.AddAsync(ticket);
-
             var firstMessage = new Message
             {
                 TicketId = ticket.Id,
@@ -54,19 +48,28 @@ namespace Application.Services
 
             };
 
-            await _messagesRepository.AddAsync(firstMessage);
-
-            if (request.Attachments != null)
-                await _messageAttachmentService
-                    .UploadRange(request.Attachments, firstMessage.Id);
-
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            {
+                try
+                {
+                    await _unitOfWork.TicketsRepository.AddAsync(ticket);
+                    await _unitOfWork.MessagesRepository.AddAsync(firstMessage);
+                    if (request.Attachments != null)
+                        await _messageAttachmentService.UploadRange(request.Attachments, firstMessage.Id);
+                    await _unitOfWork.SaveAsync();
+                } 
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
 
         public async Task<GetTicketResponse> Get(long ticketId)
         {
             var claims = _authService.GetClaims();
 
-            var ticket = await _ticketsRepository.FindByIdAsync(ticketId);
+            var ticket = await _unitOfWork.TicketsRepository.FindByIdAsync(ticketId);
             if (ticket == null || claims.Role == "User" && ticket.Creator!.Id != claims.Id) throw new NotFoundException("Ticket not found");
 
             var response = _mapper.Map<GetTicketResponse>(ticket);
@@ -78,8 +81,8 @@ namespace Application.Services
             var claims = _authService.GetClaims();
 
             var tickets = claims.Role == "Admin" ?
-                await _ticketsRepository.GetAllAsync(number: number, includes: "Creator") :
-                await _ticketsRepository.GetAllAsync(number: number, condition: e => e.CreatorId== claims.Id, includes: "Creator");
+                await _unitOfWork.TicketsRepository.GetAllAsync(number: number, includes: "Creator") :
+                await _unitOfWork.TicketsRepository.GetAllAsync(number: number, condition: e => e.CreatorId== claims.Id, includes: "Creator");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
 
@@ -88,7 +91,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetTicketsListResponse>> GetAllByUser(string username)
         {
-            var tickets = await _ticketsRepository.GetAllAsync(condition: t => t.Creator!.Name == username, includes: "Creator");
+            var tickets = await _unitOfWork.TicketsRepository.GetAllAsync(condition: t => t.Creator!.Name == username, includes: "Creator");
             if (tickets == null) throw new NotFoundException("no ticket found");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
@@ -98,14 +101,15 @@ namespace Application.Services
 
         public async Task Remove(long ticketId)
         {
-            var ticket = await _ticketsRepository.FindByIdAsync(ticketId);
+            var ticket = await _unitOfWork.TicketsRepository.FindByIdAsync(ticketId);
             if (ticket == null) throw new NotFoundException("Ticket not found");
 
-            await _ticketsRepository.RemoveAsync(ticket);
+            _unitOfWork.TicketsRepository.Remove(ticket);
+            await _unitOfWork.SaveAsync();
         }
         public async Task Close(long ticketId)
         {
-            var ticket = await _ticketsRepository.GetByConditionAsync(t => t.Id == ticketId);
+            var ticket = await _unitOfWork.TicketsRepository.GetByConditionAsync(t => t.Id == ticketId);
             if (ticket == null) throw new NotFoundException("Ticket not found");
 
             if (ticket.Status == TicketStatus.Closed)
@@ -119,7 +123,8 @@ namespace Application.Services
                 ticket.CloseDate = DateTime.Now;
             }
 
-            await _ticketsRepository.Update(ticket);
+            _unitOfWork.TicketsRepository.Update(ticket);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task UpdateAfterSendMessage(Ticket ticket, string creatorRole)
@@ -127,13 +132,15 @@ namespace Application.Services
             if (creatorRole == "User" && ticket.Status != TicketStatus.NotChecked)
             {
                 ticket.Status = TicketStatus.NotChecked;
-                await _ticketsRepository.Update(ticket);
+                _unitOfWork.TicketsRepository.Update(ticket);
+                await _unitOfWork.SaveAsync();
             }
             else if (creatorRole == "Admin" && ticket.Status != TicketStatus.Checked)
             {
                 if (ticket.FirstResponseDate == null) ticket.FirstResponseDate = DateTime.Now;
                 ticket.Status = TicketStatus.Checked;
-                await _ticketsRepository.Update(ticket);
+                _unitOfWork.TicketsRepository.Update(ticket);
+                await _unitOfWork.SaveAsync();
             }
         }
     }

@@ -13,26 +13,26 @@ namespace Infrastructure.Repository
     {
         private readonly ApplicationDbContext _context;
 
-        public IFAQCategoriesRepository _faqCategoriesRepository { get; set; }
-        public IFAQItemsRepository _faqItemsRepository { get; set; }
-        public IMessageAttachmentsRepository _messageAttachmentsRepository { get; set; }
-        public IMessagesRepository _messagesRepository { get; set; }
-        public ITicketsRepository _ticketsRepository { get; set; }
-        public IUsersRepository _usersRepository { get; set; }
+        public IFAQCategoriesRepository FaqCategoriesRepository { get; set; }
+        public IFAQItemsRepository FaqItemsRepository { get; set; }
+        public IMessageAttachmentsRepository MessageAttachmentsRepository { get; set; }
+        public IMessagesRepository MessagesRepository { get; set; }
+        public ITicketsRepository TicketsRepository { get; set; }
+        public IUsersRepository UsersRepository { get; set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
-            _faqCategoriesRepository = new FAQCategoriesRepository(context);
-            _faqItemsRepository = new FAQItemsRepository(context);
-            _messageAttachmentsRepository = new MessageAttachmentsRepository(context);
-            _messagesRepository = new MessagesRepository(context);
-            _ticketsRepository = new TicketsRepository(context);
-            _usersRepository = new UsersRepository(context);
+            FaqCategoriesRepository = new FAQCategoriesRepository(context);
+            FaqItemsRepository = new FAQItemsRepository(context);
+            MessageAttachmentsRepository = new MessageAttachmentsRepository(context);
+            MessagesRepository = new MessagesRepository(context);
+            TicketsRepository = new TicketsRepository(context);
+            UsersRepository = new UsersRepository(context);
         }
 
 
-        public async void SaveAsync()
+        public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }

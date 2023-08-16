@@ -9,11 +9,11 @@ namespace Application.Services
 {
     public class MessageAttachementtService : IMessageAttachmentService
     {
-        private readonly IMessageAttachmentsRepository _messageAttachmentsRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthService _userService;
-        public MessageAttachementtService(IMessageAttachmentsRepository messageAttachmentsRepository, IAuthService userService)
+        public MessageAttachementtService(IUnitOfWork unitOfWork, IAuthService userService)
         {
-            _messageAttachmentsRepository = messageAttachmentsRepository;
+            _unitOfWork = unitOfWork;
             _userService = userService;
         }
 
@@ -21,7 +21,7 @@ namespace Application.Services
         {
             var claims = _userService.GetClaims();
 
-            var attachment = await _messageAttachmentsRepository.FindByIdAsync(fileId);
+            var attachment = await _unitOfWork.MessageAttachmentsRepository.FindByIdAsync(fileId);
             if (attachment == null || (claims.Role == "User" && attachment.Message!.Ticket!.CreatorId != claims.Id)) throw new NotFoundException("attachment not found");
 
             var filePath = Path.Combine(attachment.Path, attachment.FileName);
@@ -64,7 +64,8 @@ namespace Application.Services
                 }
             );
 
-            await _messageAttachmentsRepository.AddRangeAsync(attachments);
+            await _unitOfWork.MessageAttachmentsRepository.AddRangeAsync(attachments);
+            await _unitOfWork.SaveAsync(); 
         }
     }
 }

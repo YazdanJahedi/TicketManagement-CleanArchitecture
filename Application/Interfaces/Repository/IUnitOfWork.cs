@@ -9,16 +9,16 @@ namespace Application.Interfaces.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
-        public void SaveAsync();
+        public Task SaveAsync();
         public Task<IDbContextTransaction> BeginTransactionAsync();
 
 
         // repositories
-        public IFAQCategoriesRepository _faqCategoriesRepository { get; }
-        public IFAQItemsRepository _faqItemsRepository { get; }
-        public IMessageAttachmentsRepository _messageAttachmentsRepository { get; }
-        public IMessagesRepository _messagesRepository { get; }
-        public ITicketsRepository _ticketsRepository { get; }
-        public IUsersRepository _usersRepository { get; }
+        public IFAQCategoriesRepository FaqCategoriesRepository { get; }
+        public IFAQItemsRepository FaqItemsRepository { get; }
+        public IMessageAttachmentsRepository MessageAttachmentsRepository { get; }
+        public IMessagesRepository MessagesRepository { get; }
+        public ITicketsRepository TicketsRepository { get; }
+        public IUsersRepository UsersRepository { get; }
     }
 }
