@@ -22,15 +22,14 @@ namespace Infrastructure.Repository
         }
         public async Task<IEnumerable<T>> GetAllAsync(int number = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes)
         {
+            IQueryable<T> context = _context.Set<T>().OrderByDescending(e => e.CreationDate);
             
-            var context = number == int.MaxValue ?
-                _context.Set<T>().OrderByDescending(e => e.CreationDate) :
-                _context.Set<T>().OrderByDescending(e => e.CreationDate).Take(number);
+            if (number !=  int.MaxValue) context = context.Take(number);
+
+            if (condition != null) context = context.Where(condition);
 
             var query = ApplyIncludes(context, includes);
 
-            if (condition != null) query = query.Where(condition);
-           
             return await query.ToListAsync();
         }
         public async Task<T?> GetByConditionAsync(Expression<Func<T, bool>> condition, params string[] includes)
