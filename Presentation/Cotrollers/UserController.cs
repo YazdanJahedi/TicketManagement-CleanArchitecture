@@ -27,7 +27,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpGet("request/tickets")]
+        [HttpGet]
+        [Route("request/tickets")]
         public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes(int numberOfReturningTickets)
         {
             try
@@ -41,7 +42,8 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("request/tickets/{ticketId}")]
+        [HttpGet]
+        [Route("request/tickets/{ticketId}")]
         public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
         {
             try
@@ -56,7 +58,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpPost("request/tickets")]
+        [HttpPost]
+        [Route("request/tickets")]
         public async Task<ActionResult> PostTicket([FromForm] CreateTicketRequest req)
         {
             try
@@ -71,7 +74,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpPost("request/messages")]
+        [HttpPost]
+        [Route("request/messages")]
         public async Task<ActionResult> PostMessage([FromForm] CreateMessageRequest req)
         {
             try
@@ -84,7 +88,8 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("request/messages/download/{fileId}")]
+        [HttpPost]
+        [Route("request/messages/download/{fileId}")]
         public async Task<ActionResult> Download(long fileId)
         {
             try
@@ -99,7 +104,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpGet("request/FAQ")]
+        [HttpGet]
+        [Route("request/FAQ")]
         public async Task<ActionResult<IEnumerable<GetFaqCategoriesResponse>>> GetFAQCategories()
         {
             try
@@ -114,7 +120,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpGet("request/FAQ/{id}")]
+        [HttpGet]
+        [Route("request/FAQ/{id}")]
         public async Task<ActionResult<IEnumerable<GetFaqItemsResponse>>> GetFAQItems(long id)
         {
             try

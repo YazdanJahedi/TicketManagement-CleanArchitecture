@@ -15,7 +15,8 @@ namespace Presentation.Controllers
             _authService = authService;
         }
 
-        [HttpPost("signup")]
+        [HttpPost]
+        [Route("signup")]
         public async Task<ActionResult<SignupResponse>> Signup([FromForm] SignupRequest req)
         {
             try
@@ -29,7 +30,8 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("login")]
+        [HttpPost]
+        [Route("login")]
         public async Task<ActionResult<LoginResponse>> Login([FromForm] LoginRequest req)
         {
             try

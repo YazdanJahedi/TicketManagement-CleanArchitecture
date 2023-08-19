@@ -25,7 +25,8 @@ namespace Presentation.Controllers
             _messageAttachmentService = messageAttachmentService;
         }
 
-        [HttpGet("tickets")]
+        [HttpGet]
+        [Route("tickets")]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int numberOfReturningTickets)
         {
             try
@@ -40,7 +41,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpGet("tickets/{username}")]
+        [HttpGet]
+        [Route("tickets/{username}")]
         public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetUserTicketsList(string username)
         {
             try
@@ -54,7 +56,8 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpGet("tickt/{ticketId}")]
+        [HttpGet]
+        [Route("tickt/{ticketId}")]
         public async Task<ActionResult<GetTicketResponse>> GetTicket(long ticketId)
         {
             try
@@ -69,7 +72,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpPost("tickets/close/{ticketId}")]
+        [HttpPost]
+        [Route("tickets/close/{ticketId}")]
         public async Task<ActionResult> CloseTicket(long ticketId)
         {
             try
@@ -84,7 +88,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpDelete("tickets/{ticketId}")]
+        [HttpDelete]
+        [Route("tickets/{ticketId}")]
         public async Task<ActionResult> DeleteTicket(long ticketId)
         {
             try
@@ -98,7 +103,8 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("messages")]
+        [HttpPost]
+        [Route("messages")]
         public async Task<ActionResult> PostMessage([FromForm] CreateMessageRequest req)
         {
             try 
@@ -113,7 +119,8 @@ namespace Presentation.Controllers
         }
 
 
-        [HttpPost("messages/download/{fileId}")]
+        [HttpPost]
+        [Route("messages/download/{fileId}")]
         public async Task<ActionResult> Download(long fileId)
         {
             try
