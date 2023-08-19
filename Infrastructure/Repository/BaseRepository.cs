@@ -3,6 +3,7 @@ using Domain.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 
 namespace Infrastructure.Repository
 {
@@ -19,11 +20,12 @@ namespace Infrastructure.Repository
         {
             await _context.Set<T>().AddAsync(entity);   
         }
-        public async Task<IEnumerable<T>> GetAllAsync(int number = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes)
+        public async Task<IEnumerable<T>> GetAllAsync(int first = 0, int last = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes)
         {
             IQueryable<T> context = _context.Set<T>().OrderByDescending(e => e.CreationDate);
-            
-            if (number !=  int.MaxValue) context = context.Take(number);
+
+            if (last !=  int.MaxValue) context = context.Take(last);
+            if (first != 0) context = context.TakeLast(last - first);
 
             if (condition != null) context = context.Where(condition);
 

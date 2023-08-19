@@ -81,22 +81,22 @@ namespace Infrastructure.Services
             return response;
         }
 
-        public async Task<IEnumerable<GetTicketsListResponse>> GetAll(int number)
+        public async Task<IEnumerable<GetTicketsListResponse>> GetAll(int first, int to)
         {
             var claims = _authService.GetClaims();
 
             var tickets = claims.Role == "Admin" ?
-                await _unitOfWork.TicketsRepository.GetAllAsync(number: number, includes: "Creator") :
-                await _unitOfWork.TicketsRepository.GetAllAsync(number: number, condition: e => e.CreatorId == claims.Id, includes: "Creator");
+                await _unitOfWork.TicketsRepository.GetAllAsync(first: first, last: to, includes: "Creator") :
+                await _unitOfWork.TicketsRepository.GetAllAsync(first: first, last: to, condition: e => e.CreatorId == claims.Id, includes: "Creator");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);
 
             return response;
         }
 
-        public async Task<IEnumerable<GetTicketsListResponse>> GetAllByUser(string username)
+        public async Task<IEnumerable<GetTicketsListResponse>> GetAllByUser(string username, int first, int to)
         {
-            var tickets = await _unitOfWork.TicketsRepository.GetAllAsync(condition: t => t.Creator!.Name == username, includes: "Creator");
+            var tickets = await _unitOfWork.TicketsRepository.GetAllAsync(first: first, last: to, condition: t => t.Creator!.Name == username, includes: "Creator");
             if (tickets == null) throw new NotFoundException("no ticket found");
 
             var response = _mapper.Map<IEnumerable<GetTicketsListResponse>>(tickets);

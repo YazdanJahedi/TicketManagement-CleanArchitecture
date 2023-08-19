@@ -27,11 +27,11 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("tickets")]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int numberOfReturningTickets)
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets(int first, int last)
         {
             try
             {
-                var respone = await _ticketService.GetAll(numberOfReturningTickets);
+                var respone = await _ticketService.GetAll(first, last);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -43,11 +43,11 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("tickets/{username}")]
-        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetUserTicketsList(string username)
+        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetUserTicketsList(string username, int first, int last)
         {
             try
             {
-                var respone = await _ticketService.GetAllByUser(username);
+                var respone = await _ticketService.GetAllByUser(username, first, last);
                 return Ok(respone);
             }
             catch (Exception ex)

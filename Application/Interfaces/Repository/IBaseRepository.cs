@@ -7,6 +7,6 @@ namespace Application.Interfaces.Repository
     {
         Task AddAsync(T entity);
         Task<T?> GetByConditionAsync(Expression<Func<T, bool>> condition, params string[] includes);
-        Task<IEnumerable<T>> GetAllAsync(int number = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes);
+        Task<IEnumerable<T>> GetAllAsync(int first = 0, int last = int.MaxValue, Expression<Func<T, bool>>? condition = null, params string[] includes);
     }
 }
