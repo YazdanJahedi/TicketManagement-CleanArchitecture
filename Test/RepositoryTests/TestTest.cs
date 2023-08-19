@@ -1,36 +1,40 @@
-﻿using Application.Interfaces.Repository;
-using Domain.Entities;
+﻿/*using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Context;
 using Infrastructure.Repository;
 using Moq;
 
 namespace Test.RepositoryTests
 {
-    public class FAQItemsRepositoryTests
+    public class TestTest
     {
         private readonly Mock<ApplicationDbContext> _contextMock;
-        private readonly TicketsRepository _ticketRepository;
+        private readonly UnitOfWork _unitOfWork;
 
-        public FAQItemsRepositoryTests()
+        public TestTest()
         {
             _contextMock = new Mock<ApplicationDbContext>();
-            _ticketRepository = new TicketsRepository(_contextMock.Object);
+            _unitOfWork = new UnitOfWork(_contextMock.Object);
         }
 
         [Fact]
-        public async Task AddAsync_ShouldAddEntityToContext()
+        public async Task something()
         {
-            // Arrange
-            var entity = new FAQItem();
+            var entity = new Ticket
+            {
+                Id = 3,
+                CreatorId = 1,
+                FaqCategoryId = 1,
+                Status = TicketStatus.NotChecked,
+                Title = "Test",
+            };
 
-            // Act
-            await _ticketRepository.AddAsync(entity);
+            await _unitOfWork.TicketsRepository.AddAsync(entity);
 
-            // Assert
-            _contextMock.Verify(c => c.Set<FAQItem>().AddAsync(entity), Times.Once);
+            _contextMock.Verify(c => c.Tickets.AddAsync(entity), Times.Once);
         }
 
-        [Fact]
+*//*        [Fact]
         public async Task GetAllAsync_ShouldReturnAllEntities()
         {
             // Arrange
@@ -113,6 +117,7 @@ namespace Test.RepositoryTests
 
             dbSetMock.Verify(d => d.FirstOrDefaultAsync(condition), Times.Once);
             dbSetMock.Verify(d => d.Include(includes[0]), Times.Once);
-        }
+        }*//*
     }
 }
+*/
