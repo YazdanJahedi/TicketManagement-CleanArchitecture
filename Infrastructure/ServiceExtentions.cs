@@ -2,11 +2,8 @@
 using Infrastructure.Context;
 using Infrastructure.Repository;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infrastructure.Services;
+using Application.Interfaces.Service;
 
 namespace Infrastructure
 {
@@ -19,8 +16,16 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>();
 
             // unit of work
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+            // DI for All Services
+            services.AddScoped<IMessageAttachmentService, MessageAttachementtService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IFaqService, FaqService>();
+            services.AddScoped<IAuthService, AuthService>();
+
         }
     }
 }

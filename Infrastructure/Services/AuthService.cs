@@ -7,7 +7,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public class AuthService : IAuthService
     {

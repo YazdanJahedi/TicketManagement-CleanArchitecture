@@ -7,7 +7,7 @@ using Domain.Entities;
 using Domain.Enums;
 
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public class TicketService : ITicketService
     {

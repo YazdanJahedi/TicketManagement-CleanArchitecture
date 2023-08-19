@@ -3,7 +3,7 @@ using Application.Interfaces.Repository;
 using Application.Interfaces.Service;
 using AutoMapper;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public class FaqService : IFaqService
     {

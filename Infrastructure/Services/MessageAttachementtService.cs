@@ -5,7 +5,7 @@ using Application.Interfaces.Service;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public class MessageAttachementtService : IMessageAttachmentService
     {
