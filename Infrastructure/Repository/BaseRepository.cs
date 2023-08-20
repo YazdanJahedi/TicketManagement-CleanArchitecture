@@ -26,8 +26,8 @@ namespace Infrastructure.Repository
         {
             IQueryable<T> context = _context.Set<T>().OrderByDescending(e => e.CreationDate);
 
-            if (last !=  int.MaxValue) context = context.Take(last);
-            if (first != 0) context = context.TakeLast(last - first);
+            if (first != 0) context = context.Skip(first);
+            if (last !=  int.MaxValue) context = context.Take(last - first);
 
             if (condition != null) context = context.Where(condition);
 
