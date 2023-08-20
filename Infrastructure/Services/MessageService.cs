@@ -48,10 +48,9 @@ namespace Infrastructure.Services
                 try
                 {
                     await _unitOfWork.MessagesRepository.AddAsync(message);
-                    await _unitOfWork.SaveAsync();
 
                     if (request.Attacments != null)
-                        await _messageAttachmentService.UploadRange(request.Attacments, message.Id);
+                        await _messageAttachmentService.UploadRange(request.Attacments, message);
 
                     _ticketService.UpdateAfterSendMessage(ticket, claims.Role);
 

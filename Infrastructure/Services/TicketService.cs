@@ -44,20 +44,19 @@ namespace Infrastructure.Services
                         Status = TicketStatus.NotChecked,
                     };
                     await _unitOfWork.TicketsRepository.AddAsync(ticket);
-                    await _unitOfWork.SaveAsync();
 
                     var firstMessage = new Message
                     {
+                        Ticket = ticket,
                         TicketId = ticket.Id,
                         CreatorId = claim.Id,
                         CreationDate = DateTime.Now,
                         Text = request.Description,
                     };
                     await _unitOfWork.MessagesRepository.AddAsync(firstMessage);
-                    await _unitOfWork.SaveAsync();
 
                     if (request.Attachments != null)
-                        await _messageAttachmentService.UploadRange(request.Attachments, firstMessage.Id);
+                        await _messageAttachmentService.UploadRange(request.Attachments, firstMessage);
 
                     await _unitOfWork.SaveAsync();
                     await transaction.CommitAsync();

@@ -29,11 +29,11 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("request/tickets")]
-        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes(int numberOfReturningTickets)
+        public async Task<ActionResult<IEnumerable<GetTicketsListResponse>>> GetTickes(int first, int last)
         {
             try
             {
-                var respone = await _ticketService.GetAll(numberOfReturningTickets);
+                var respone = await _ticketService.GetAll(first, last);
                 return Ok(respone);
             }
             catch (Exception ex)

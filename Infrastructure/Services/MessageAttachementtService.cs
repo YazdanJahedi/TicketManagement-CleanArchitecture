@@ -37,10 +37,10 @@ namespace Infrastructure.Services
             return response;
         }
 
-        public async Task UploadRange(IEnumerable<IFormFile> files, long messageId)
+        public async Task UploadRange(IEnumerable<IFormFile> files, Message message)
         {
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload", messageId.ToString());
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload", message.Id.ToString());
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
             foreach (var file in files)
@@ -57,7 +57,8 @@ namespace Infrastructure.Services
             var attachments = files.Select(f => 
                 new MessageAttachment
                 {
-                    MessageId = messageId,
+                    Message = message,
+                    MessageId = message.Id,
                     FileName = f.FileName,
                     Path = path,
                     CreationDate = DateTime.Now,

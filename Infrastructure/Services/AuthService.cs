@@ -11,7 +11,6 @@ namespace Infrastructure.Services
 {
     public class AuthService : IAuthService
     {
-
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
