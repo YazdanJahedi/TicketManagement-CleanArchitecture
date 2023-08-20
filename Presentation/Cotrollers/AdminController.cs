@@ -73,7 +73,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _unitOfSevice.TicketService.Close(ticketId);
+                await _unitOfSevice.TicketService.ChangeCloseStatus(ticketId);
                 return Ok();
             }
             catch (Exception ex)

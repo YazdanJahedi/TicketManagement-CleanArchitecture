@@ -111,7 +111,7 @@ namespace Infrastructure.Services
             _unitOfWork.TicketsRepository.Remove(ticket);
             await _unitOfWork.SaveAsync();
         }
-        public async Task Close(long ticketId)
+        public async Task ChangeCloseStatus(long ticketId)
         {
             var ticket = await _unitOfWork.TicketsRepository.GetByConditionAsync(t => t.Id == ticketId);
             if (ticket == null) throw new NotFoundException("Ticket not found");
