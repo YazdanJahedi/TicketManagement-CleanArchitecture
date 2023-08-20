@@ -13,16 +13,11 @@ namespace Presentation.Controllers
     public class AdminController : ControllerBase
     {
 
-        private readonly ITicketService _ticketService; 
-        private readonly IMessageService _messageService;
-        private readonly IMessageAttachmentService _messageAttachmentService;
+        private readonly IUnitOfSevice _unitOfSevice;
 
-        public AdminController(ITicketService ticketService, IMessageService messageService,
-                               IMessageAttachmentService messageAttachmentService)
+        public AdminController(IUnitOfSevice unitOfSevice)
         {
-            _ticketService = ticketService;
-            _messageService = messageService;
-            _messageAttachmentService = messageAttachmentService;
+            _unitOfSevice = unitOfSevice;
         }
 
         [HttpGet]
@@ -31,7 +26,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respone = await _ticketService.GetAll(first, last);
+                var respone = await _unitOfSevice.TicketService.GetAll(first, last);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -47,7 +42,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respone = await _ticketService.GetAllByUser(username, first, last);
+                var respone = await _unitOfSevice.TicketService.GetAllByUser(username, first, last);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -62,7 +57,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respones = await _ticketService.Get(ticketId);
+                var respones = await _unitOfSevice.TicketService.Get(ticketId);
                 return Ok(respones);
             }
             catch (Exception ex)
@@ -78,7 +73,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _ticketService.Close(ticketId);
+                await _unitOfSevice.TicketService.Close(ticketId);
                 return Ok();
             }
             catch (Exception ex)
@@ -94,7 +89,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _ticketService.Remove(ticketId);
+                await _unitOfSevice.TicketService.Remove(ticketId);
                 return Ok();
             }
             catch (Exception ex)
@@ -109,7 +104,7 @@ namespace Presentation.Controllers
         {
             try 
             {
-                await _messageService.Add(req);
+                await _unitOfSevice.MessageService.Add(req);
                 return Ok();
             } 
             catch (Exception ex)
@@ -125,7 +120,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _messageAttachmentService.Download(fileId);
+                var response = await _unitOfSevice.MessageAttachmentService.Download(fileId);
                 return File(response.Data, response.MimeType, response.FileName);
             }
             catch (Exception ex)

@@ -8,11 +8,11 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IUnitOfSevice _unitOfSevice;
      
-        public AuthController(IAuthService authService)
+        public AuthController(IUnitOfSevice unitOfService)
         {
-            _authService = authService;
+            _unitOfSevice = unitOfService;
         }
 
         [HttpPost]
@@ -21,7 +21,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _authService.Signup(req);
+                var response = await _unitOfSevice.AuthService.Signup(req);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _authService.Login(req);
+                var response = await _unitOfSevice.AuthService.Login(req);
                 return Ok(response);
             } 
             catch (Exception ex)

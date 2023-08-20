@@ -13,17 +13,11 @@ namespace Presentation.Controllers
     public class UserController : ControllerBase
     {
 
-        private readonly IFaqService _faqService;
-        private readonly ITicketService _ticketService;
-        private readonly IMessageAttachmentService _messageAttachmentService;
-        private readonly IMessageService _messageService;
+        private readonly IUnitOfSevice _unitOfSevice;
 
-        public UserController(IFaqService faqService, ITicketService ticketService, IMessageAttachmentService messageAttachmentService, IMessageService messageService)
+        public UserController(IUnitOfSevice unitOfSevice)
         {
-            _faqService = faqService;
-            _ticketService = ticketService;
-            _messageAttachmentService = messageAttachmentService;
-            _messageService = messageService;
+            _unitOfSevice = unitOfSevice;
         }
 
 
@@ -33,7 +27,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respone = await _ticketService.GetAll(first, last);
+                var respone = await _unitOfSevice.TicketService.GetAll(first, last);
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -48,7 +42,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _ticketService.Get(ticketId);
+                var response = await _unitOfSevice.TicketService.Get(ticketId);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -64,7 +58,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _ticketService.Add(req);
+                await _unitOfSevice.TicketService.Add(req);
                 return Ok();
             }
             catch(Exception ex)
@@ -80,7 +74,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                await _messageService.Add(req);
+                await _unitOfSevice.MessageService.Add(req);
                 return Ok();
             } catch (Exception ex)
             {
@@ -94,7 +88,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _messageAttachmentService.Download(fileId);
+                var response = await _unitOfSevice.MessageAttachmentService.Download(fileId);
                 return File(response.Data, response.MimeType, response.FileName);
             }
             catch (Exception ex)
@@ -110,7 +104,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var respose = await _faqService.GetFaqCategories();
+                var respose = await _unitOfSevice.FaqService.GetFaqCategories();
                 return Ok(respose);
             }
             catch (Exception ex)
@@ -126,7 +120,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var response = await _faqService.GetFaqItems(id);
+                var response = await _unitOfSevice.FaqService.GetFaqItems(id);
                 return Ok(response);
             }
             catch (Exception ex)

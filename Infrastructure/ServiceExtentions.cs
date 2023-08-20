@@ -17,7 +17,8 @@ namespace Infrastructure
 
             // unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            // unit of service
+            services.AddScoped<IUnitOfSevice, UnitOfSevice>();
 
             // DI for All Services
             services.AddScoped<IMessageAttachmentService, MessageAttachementtService>();
@@ -25,6 +26,7 @@ namespace Infrastructure
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IFaqService, FaqService>();
             services.AddScoped<IAuthService, AuthService>();
+
 
         }
     }
